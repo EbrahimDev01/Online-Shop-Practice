@@ -164,7 +164,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_DeleteConfirm_Result_Deleted()
         {
-            _mockProductService.Setup(productService => productService.DeleteAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
                 .ReturnsAsync(new ResultMethodService());
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as RedirectToActionResult;
@@ -180,7 +180,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             var resultMethod = new ResultMethodService();
             resultMethod.NotFound();
 
-            _mockProductService.Setup(productService => productService.DeleteAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as NotFoundResult;
@@ -193,7 +193,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         {
             var resultMethod = new ResultMethodService(false, true);
 
-            _mockProductService.Setup(productService => productService.DeleteAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as ViewResult;

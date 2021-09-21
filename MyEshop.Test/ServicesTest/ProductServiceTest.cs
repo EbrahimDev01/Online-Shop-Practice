@@ -228,7 +228,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public async Task Test_Geg_Product_Delete_Reulst_Founded()
+        public async Task Test_Get_Product_Delete_Reulst_Founded()
         {
             _mockProductRepository.Setup(productRepository =>
                 productRepository.GetProductByIdAsync(It.IsAny<int>()))
@@ -256,7 +256,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public async Task Test_Geg_Product_Delete_Reulst_Not_Found()
+        public async Task Test_Get_Product_Delete_Reulst_Not_Found()
         {
             _mockProductRepository.Setup(productRepository =>
                 productRepository.GetProductByIdAsync(It.IsAny<int>()))

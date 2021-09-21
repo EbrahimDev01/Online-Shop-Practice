@@ -78,7 +78,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         [ActionName(nameof(Delete))]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var resultProductDelete = await _productService.DeleteAsync(id);
+            var resultProductDelete = await _productService.DeleteProductAsync(id);
 
             if (resultProductDelete.IsNotFound)
                 return NotFound();
