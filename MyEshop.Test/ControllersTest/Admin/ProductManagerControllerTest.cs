@@ -174,7 +174,6 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.Equal("ProductManager", resultProductDeleteConfirm.ControllerName);
         }
 
-
         [Fact]
         public async Task Test_DeleteConfirm_Result_Not_found()
         {
@@ -189,5 +188,19 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductDeleteConfirm);
         }
 
+        [Fact]
+        public async Task Test_DeleteConfirm_Result_not_saved()
+        {
+            var resultMethod = new ResultMethodService(false, true);
+
+            _mockProductService.Setup(productService => productService.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as ViewResult;
+
+            Assert.NotNull(resultProductDeleteConfirm);
+            Assert.NotNull(resultProductDeleteConfirm.Model);
+            Assert.IsType<ProductDeleteViewModel>(resultProductDeleteConfirm.Model);
+        }
     }
 }
