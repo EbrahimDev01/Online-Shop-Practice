@@ -72,5 +72,26 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
             return View(product);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName(nameof(Delete))]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var resultProductDelete = await _productService.DeleteAsync(id);
+
+            if (resultProductDelete.IsNotFound)
+                return NotFound();
+
+            if (resultProductDelete.IsSuccess)
+                return RedirectToAction(nameof(Index));
+
+            foreach (var error in resultProductDelete)
+                ModelState.AddModelError(error.Title, error.Message);
+
+            var product = await _productService.GetProductDeleteViewByProductIdAsync(id);
+
+            return View(product);
+        }
     }
 }
