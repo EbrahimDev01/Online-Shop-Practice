@@ -267,5 +267,26 @@ namespace MyEshop.Test.ServicesTest
             Assert.Null(productDeleteModel);
         }
 
+        [Fact]
+        public async Task Test_Delete_Product_Result_Deleted()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
+                .ReturnsAsync(true);
+
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+
+            Assert.NotNull(resultProductDelete);
+            Assert.True(resultProductDelete.IsSuccess);
+            Assert.Equal(0, resultProductDelete.Errors.Count());
+        }
     }
 }
