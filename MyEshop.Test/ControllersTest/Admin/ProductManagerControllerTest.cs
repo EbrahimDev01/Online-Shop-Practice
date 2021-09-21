@@ -173,5 +173,21 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.Equal(nameof(ProductManagerController.Index), resultProductDeleteConfirm.ActionName);
             Assert.Equal("ProductManager", resultProductDeleteConfirm.ControllerName);
         }
+
+
+        [Fact]
+        public async Task Test_DeleteConfirm_Result_Not_found()
+        {
+            var resultMethod = new ResultMethodService();
+            resultMethod.NotFound();
+
+            _mockProductService.Setup(productService => productService.DeleteAsync(It.IsAny<int>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as NotFoundResult;
+
+            Assert.NotNull(resultProductDeleteConfirm);
+        }
+
     }
 }
