@@ -305,5 +305,30 @@ namespace MyEshop.Test.ServicesTest
             Assert.True(resultProductDelete.IsNotFound);
             Assert.Equal(0, resultProductDelete.Errors.Count());
         }
+
+        [Fact]
+        public async Task Test_Delete_Product_Result_Not_Delete()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(new Product());
+
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+                .ReturnsAsync(false);
+
+            _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
+                .ReturnsAsync(true);
+
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+
+            Assert.NotNull(resultProductDelete);
+            Assert.False(resultProductDelete.IsSuccess);
+            Assert.Equal(1, resultProductDelete.Errors.Count());
+        }
     }
 }
