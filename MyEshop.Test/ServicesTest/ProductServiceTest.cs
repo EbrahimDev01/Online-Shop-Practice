@@ -292,5 +292,18 @@ namespace MyEshop.Test.ServicesTest
             Assert.Equal(0, resultProductDelete.Errors.Count());
         }
 
+        [Fact]
+        public async Task Test_Delete_Product_Result_Not_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null as Product);
+
+            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+
+            Assert.NotNull(resultProductDelete);
+            Assert.False(resultProductDelete.IsSuccess);
+            Assert.True(resultProductDelete.IsNotFound);
+            Assert.Equal(0, resultProductDelete.Errors.Count());
+        }
     }
 }
