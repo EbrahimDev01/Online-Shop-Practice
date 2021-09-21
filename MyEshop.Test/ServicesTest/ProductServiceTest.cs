@@ -270,7 +270,10 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public async Task Test_Delete_Product_Result_Deleted()
         {
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync(It.IsAny<int>()))
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
@@ -288,5 +291,6 @@ namespace MyEshop.Test.ServicesTest
             Assert.True(resultProductDelete.IsSuccess);
             Assert.Equal(0, resultProductDelete.Errors.Count());
         }
+
     }
 }
