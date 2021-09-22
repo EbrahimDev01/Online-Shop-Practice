@@ -19,7 +19,7 @@ namespace MyEshop.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public ValueTask<bool> DeleteImagesByProductIdAsync(IEnumerable<Image> images)
+        public ValueTask<bool> DeleteImagesAsync(IEnumerable<Image> images)
         {
             try
             {
