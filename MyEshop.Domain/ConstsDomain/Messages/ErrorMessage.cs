@@ -11,10 +11,9 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string IsExist = "{0} وارد شده از قبل موجود است";
         public const string RangeNumber = "عدد وارد شده باید {0} رقمی باشد";
         public const string Compare = "{0} باید با {1} مطابقت داشته باشد";
-        public const string NotSave = "مشکلی در ذخیره فایل وجود دارد";
-        public const string NotExistCategory = "گروه وارد شده مورد تایید نمی باشد";
-        public const string NotExistTag = "برچسب های وارد شده مورد تایید نمی باشد";
-
-
+        public const string ExceptionSave = "مشکلی در ذخیره فایل وجود دارد";
+        public const string ExceptionExistCategory = "گروه وارد شده مورد تایید نمی باشد";
+        public const string ExceptionExistTag = "برچسب های وارد شده مورد تایید نمی باشد";
+        public const string ExceptionCommentDelete = "مشکلی در حذف کامنت های این محصول به وجود آمده";
     }
 }
