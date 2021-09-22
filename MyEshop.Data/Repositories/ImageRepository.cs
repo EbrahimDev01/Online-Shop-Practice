@@ -19,10 +19,26 @@ namespace MyEshop.Data.Repositories
             _dbContext = dbContext;
         }
 
+        public ValueTask<bool> DeleteImagesByProductIdAsync(IEnumerable<Image> images)
+        {
+            try
+            {
+                _dbContext.Images.RemoveRange(images);
+
+                return ValueTask.FromResult(true);
+            }
+            catch
+            {
+                return ValueTask.FromResult(false);
+            }
+        }
+
         public async ValueTask<string> GetFirstImageUrlProductByProductIdAsync(int productId)
             => (await _dbContext.Images.FirstOrDefaultAsync(image => image.ProductId == productId)).UrlImage;
 
         public IEnumerable<Image> GetImagesProductByProductId(int productId) =>
             _dbContext.Images.Where(image => image.ProductId == productId);
+
+
     }
 }
