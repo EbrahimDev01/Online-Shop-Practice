@@ -17,7 +17,24 @@ namespace MyEshop.Data.Repositories
             _dbContext = dbContext;
         }
 
+        public ValueTask<bool> DeleteCommentsByProductIdAsync(int productId)
+        {
+            try
+            {
+                var comments = _dbContext.Comments.Where(comment => comment.ProductId == productId);
+
+                _dbContext.Comments.RemoveRange(comments);
+
+                return ValueTask.FromResult(false);
+            }
+            catch
+            {
+                return ValueTask.FromResult(false);
+            }
+        }
+
         public int GetCommentCountProductByProductId(int productId)
             => _dbContext.Comments.Where(comment => comment.ProductId == productId).Count();
+
     }
 }

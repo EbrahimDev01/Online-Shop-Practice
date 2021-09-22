@@ -9,5 +9,7 @@ namespace MyEshop.Domain.Interfaces
     public interface ICommentRepository
     {
         public int GetCommentCountProductByProductId(int productId);
+
+        public ValueTask<bool> DeleteCommentsByProductIdAsync(int productId);
     }
 }
