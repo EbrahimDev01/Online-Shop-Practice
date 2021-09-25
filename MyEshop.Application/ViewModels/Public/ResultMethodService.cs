@@ -34,6 +34,6 @@ namespace MyEshop.Application.ViewModels.Public
             Errors.Add(new ErrorResultMethodService(title, message));
         }
 
-        public void NotFound() => IsNotFound = false;
+        public void NotFound() => IsNotFound = true;
     }
 }
