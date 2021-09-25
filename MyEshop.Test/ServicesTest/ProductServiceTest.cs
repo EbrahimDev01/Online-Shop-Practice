@@ -435,8 +435,7 @@ namespace MyEshop.Test.ServicesTest
 
             var product = await _productService.GetProductDetailsByIdAsync(It.IsAny<int>());
 
-            Assert.NotNull(product);
-            Assert.IsType<ProductDetailsViewModel>(product);
+            Assert.Null(product);
         }
     }
 }

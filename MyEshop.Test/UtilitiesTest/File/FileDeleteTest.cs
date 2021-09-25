@@ -35,7 +35,7 @@ namespace MyEshop.Test.UtilitiesTest.File
             {
                 new Image
                 {
-                    UrlImage= Path.Combine(newPath,"wwwroot", "image", nameFile)
+                    UrlImage= Path.Combine("image", nameFile)
                 }
             };
 
