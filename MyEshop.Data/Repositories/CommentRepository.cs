@@ -1,5 +1,6 @@
 ﻿using MyEshop.Data.Context;
 using MyEshop.Domain.Interfaces;
+using MyEshop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,24 +18,38 @@ namespace MyEshop.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public ValueTask<bool> DeleteCommentsByProductIdAsync(int productId)
+        public bool DeleteCommentsByProductId(int productId)
         {
             try
             {
-                var comments = _dbContext.Comments.Where(comment => comment.ProductId == productId);
+                var comments = GetCommentsByProductId(productId);
 
-                _dbContext.Comments.RemoveRange(comments);
-
-                return ValueTask.FromResult(false);
+                return DeleteComments(comments);
             }
             catch
             {
-                return ValueTask.FromResult(false);
+                return false;
             }
         }
 
         public int GetCommentCountProductByProductId(int productId)
             => _dbContext.Comments.Where(comment => comment.ProductId == productId).Count();
 
+        public IEnumerable<Comment> GetCommentsByProductId(int productId)
+            => _dbContext.Comments.Where(comment => comment.ProductId == productId);
+
+        public bool DeleteComments(IEnumerable<Comment> comments)
+        {
+            try
+            {
+                _dbContext.Comments.RemoveRange(comments);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

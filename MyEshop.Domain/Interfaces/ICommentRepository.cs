@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyEshop.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,10 @@ namespace MyEshop.Domain.Interfaces
     {
         public int GetCommentCountProductByProductId(int productId);
 
-        public ValueTask<bool> DeleteCommentsByProductIdAsync(int productId);
+        public bool DeleteCommentsByProductId(int productId);
+
+        public IEnumerable<Comment> GetCommentsByProductId(int productId);
+
+        public bool DeleteComments(IEnumerable<Comment> comments);
     }
 }
