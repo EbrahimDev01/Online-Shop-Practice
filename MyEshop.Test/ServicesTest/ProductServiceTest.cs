@@ -228,46 +228,6 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public async Task Test_Get_Product_Delete_Reulst_Founded()
-        {
-            _mockProductRepository.Setup(productRepository =>
-                productRepository.GetProductByIdAsync(It.IsAny<int>()))
-                    .ReturnsAsync(new Product());
-
-            _mockCategorySerivce.Setup(categoryRepository =>
-                categoryRepository.GetCategorieChildrenByIdAsync(It.IsAny<int>()))
-                    .ReturnsAsync(new CategoryViewModel());
-
-            _mockTagRepository.Setup(mockTagRepository =>
-                mockTagRepository.GetTagsProductByProductId(It.IsAny<int>()))
-                    .Returns(new List<Tag>().AsQueryable());
-
-            _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
-                    .Returns(new List<Image>().AsEnumerable());
-
-            _mockCommentRepository.Setup(commentRepository =>
-               commentRepository.GetCommentCountProductByProductId(It.IsAny<int>()))
-                   .Returns(0);
-
-            var productDeleteModel = await _productService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>());
-
-            Assert.NotNull(productDeleteModel);
-        }
-
-        [Fact]
-        public async Task Test_Get_Product_Delete_Reulst_Not_Found()
-        {
-            _mockProductRepository.Setup(productRepository =>
-                productRepository.GetProductByIdAsync(It.IsAny<int>()))
-                    .ReturnsAsync(null as Product);
-
-            var productDeleteModel = await _productService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>());
-
-            Assert.Null(productDeleteModel);
-        }
-
-        [Fact]
         public async Task Test_Delete_Product_Result_Deleted()
         {
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
