@@ -35,6 +35,9 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         {
             var product = await _productService.GetProductDetailsByIdAsync(id);
 
+            if (product is null)
+                return NotFound();
+
             return View(product);
         }
 
