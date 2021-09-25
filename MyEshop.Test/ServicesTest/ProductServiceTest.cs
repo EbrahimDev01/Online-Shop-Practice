@@ -237,7 +237,7 @@ namespace MyEshop.Test.ServicesTest
             _mockCategorySerivce.Setup(categoryRepository =>
                 categoryRepository.GetCategorieChildrenByIdAsync(It.IsAny<int>()))
                     .ReturnsAsync(new CategoryViewModel());
-            
+
             _mockTagRepository.Setup(mockTagRepository =>
                 mockTagRepository.GetTagsProductByProductId(It.IsAny<int>()))
                     .Returns(new List<Tag>().AsQueryable());
@@ -453,6 +453,31 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
             Assert.Single(resultProductDelete.Errors);
+        }
+
+        [Fact]
+        public async Task Test_GetProductDetailsByIdAsync_Result_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            var product = await _productService.GetProductDetailsByIdAsync(It.IsAny<int>());
+
+            Assert.NotNull(product);
+            Assert.IsType<ProductDetailsViewModel>(product);
+        }
+
+
+        [Fact]
+        public async Task Test_GetProductDetailsByIdAsync_Result_Not_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null as Product);
+
+            var product = await _productService.GetProductDetailsByIdAsync(It.IsAny<int>());
+
+            Assert.NotNull(product);
+            Assert.IsType<ProductDetailsViewModel>(product);
         }
     }
 }
