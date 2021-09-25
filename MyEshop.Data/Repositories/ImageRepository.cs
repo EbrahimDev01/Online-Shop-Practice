@@ -38,7 +38,5 @@ namespace MyEshop.Data.Repositories
 
         public IEnumerable<Image> GetImagesProductByProductId(int productId) =>
             _dbContext.Images.Where(image => image.ProductId == productId);
-
-
     }
 }
