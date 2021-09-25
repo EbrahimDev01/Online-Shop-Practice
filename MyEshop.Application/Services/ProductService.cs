@@ -44,10 +44,10 @@ namespace MyEshop.Application.Services
             var tags = _tagRepository.GetTagsByIds(tagIdesSelected).ToList();
 
             if (!isExistCategory)
-                resultMethodService.AddError(nameof(createProduct.CategoryId), ErrorMessage.NotExistCategory);
+                resultMethodService.AddError(nameof(createProduct.CategoryId), ErrorMessage.ExceptionExistCategory);
 
             if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
-                resultMethodService.AddError(nameof(createProduct.Tags), ErrorMessage.NotExistTag);
+                resultMethodService.AddError(nameof(createProduct.Tags), ErrorMessage.ExceptionExistTag);
 
             if (!resultMethodService.IsSuccess)
                 return resultMethodService;
@@ -68,11 +68,11 @@ namespace MyEshop.Application.Services
             if (createProduct?.Images?.Count > 0 && createProduct?.Images?.FirstOrDefault().Length > 0)
                 foreach (var imageItem in createProduct.Images)
                 {
-                    string resultNameFile = await CreateFile.CreateAsync(imageItem);
+                    string resultNameFile = await FileCreate.CreateAsync(imageItem);
 
                     if (resultNameFile == null)
                     {
-                        resultMethodService.AddError(nameof(Product.Images), ErrorMessage.NotSave);
+                        resultMethodService.AddError(nameof(Product.Images), ErrorMessage.ExceptionSave);
 
                         return resultMethodService;
                     }
@@ -86,9 +86,73 @@ namespace MyEshop.Application.Services
             resultMethodService.IsSuccess = isCreate && isSave;
 
             if (!isCreate && !isSave)
-                resultMethodService.AddError("", ErrorMessage.NotSave);
+                resultMethodService.AddError("", ErrorMessage.ExceptionSave);
 
             return resultMethodService;
+        }
+
+        public async ValueTask<ResultMethodService> DeleteProductAsync(int productId)
+        {
+            var resultMethod = new ResultMethodService();
+
+            var product = await _productRepository.GetProductByIdAsync(productId);
+
+            if (product == null)
+            {
+                resultMethod.NotFound();
+                return ReturnMethodWithErrorMessage(ErrorMessage.NotFound("محصول"));
+            }
+
+            bool isDeleteComments = _commentRepository.DeleteCommentsByProductId(productId);
+
+            if (!isDeleteComments)
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionCommentsDelete);
+
+            IEnumerable<Image> imagesProduct;
+
+            try
+            {
+                imagesProduct = _imageRepository.GetImagesProductByProductId(productId);
+            }
+            catch
+            {
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionImagesFind);
+            }
+
+            var imagesProductCopy = new List<Image>(imagesProduct);
+
+            bool isDeleteImages = await _imageRepository.DeleteImagesAsync(imagesProduct);
+
+            if (imagesProduct != null && !isDeleteImages)
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionImagesDelete);
+
+
+            bool isDeleteProduct = await _productRepository.DeleteProductAsync(product);
+
+            if (!isDeleteProduct)
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionProductDelete);
+
+            bool isSave = await _productRepository.SaveAsync();
+
+            if (!isSave)
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionSave);
+
+            if (imagesProductCopy?.Count() > 0)
+            {
+                bool isDeletFiles = FileDelete.Delete(imagesProductCopy);
+
+                if (!isDeletFiles)
+                    return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
+            }
+
+            return resultMethod;
+
+            ResultMethodService ReturnMethodWithErrorMessage(string errorMessage)
+            {
+                resultMethod.AddError(string.Empty, errorMessage);
+
+                return resultMethod;
+            }
         }
 
         public IAsyncEnumerable<PreviewAdminProductViewModel> GetAllPreviewAdminProductsAsync()
@@ -108,6 +172,7 @@ namespace MyEshop.Application.Services
 
             return new(product, category, tags, images, commentCount);
         }
+
+
     }
 }
-
