@@ -160,7 +160,7 @@ namespace MyEshop.Application.Services
             .SelectAwait(async p => new PreviewAdminProductViewModel(p,
                 await _imageRepository.GetFirstImageUrlProductByProductIdAsync(p.ProductId)));
 
-        public async ValueTask<ProductDetailsViewModel> GetProductDeleteViewByProductIdAsync(int productId)
+        public async ValueTask<ProductDetailsViewModel> GetProductDetailsByIdAsync(int productId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
             if (product == null) return null;
