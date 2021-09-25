@@ -79,7 +79,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _productService.GetProductDeleteViewByProductIdAsync(id);
+            var product = await _productService.GetProductDetailsByIdAsync(id);
 
             if (product == null) return NotFound();
 
@@ -102,7 +102,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             foreach (var error in resultProductDelete.Errors)
                 ModelState.AddModelError(error.Title, error.Message);
 
-            var product = await _productService.GetProductDeleteViewByProductIdAsync(id);
+            var product = await _productService.GetProductDetailsByIdAsync(id);
 
             return View(product);
         }
