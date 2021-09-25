@@ -17,7 +17,7 @@ namespace MyEshop.Domain.Interfaces
 
         public ValueTask<bool> EditProductAsync(Product product);
 
-        public ValueTask<bool> DeleteProductAsync(int id);
+        public ValueTask<bool> DeleteProductByIdAsync(int id);
 
         public ValueTask<bool> DeleteProductAsync(Product product);
 

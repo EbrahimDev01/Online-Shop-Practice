@@ -50,7 +50,7 @@ namespace MyEshop.Data.Repositories
             }
         }
 
-        public async ValueTask<bool> DeleteProductAsync(int id)
+        public async ValueTask<bool> DeleteProductByIdAsync(int id)
         {
             try
             {
