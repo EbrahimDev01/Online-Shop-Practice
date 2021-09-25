@@ -139,7 +139,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_Delete_View_Result()
         {
-            _mockProductService.Setup(mockProductService => mockProductService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
+            _mockProductService.Setup(mockProductService => mockProductService.GetProductDetailsByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new ProductDetailsViewModel());
 
 
@@ -153,7 +153,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_Delete_Result_Not_Found()
         {
-            _mockProductService.Setup(mockProductService => mockProductService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
+            _mockProductService.Setup(mockProductService => mockProductService.GetProductDetailsByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(null as ProductDetailsViewModel);
 
             var resultProductDelete = await _productController.Delete(It.IsAny<int>()) as NotFoundResult;
@@ -195,7 +195,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
-            _mockProductService.Setup(productService => productService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new ProductDetailsViewModel());
 
 
