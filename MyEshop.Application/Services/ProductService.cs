@@ -137,7 +137,7 @@ namespace MyEshop.Application.Services
             if (!isSave)
                 return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionSave);
 
-            if (imagesProductCopy?.Count() > 0)
+            if (imagesProductCopy?.Count > 0)
             {
                 bool isDeletFiles = FileDelete.Delete(imagesProductCopy);
 
@@ -160,7 +160,7 @@ namespace MyEshop.Application.Services
             .SelectAwait(async p => new PreviewAdminProductViewModel(p,
                 await _imageRepository.GetFirstImageUrlProductByProductIdAsync(p.ProductId)));
 
-        public async ValueTask<ProductDeleteViewModel> GetProductDeleteViewByProductIdAsync(int productId)
+        public async ValueTask<ProductDetailsViewModel> GetProductDeleteViewByProductIdAsync(int productId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
             if (product == null) return null;

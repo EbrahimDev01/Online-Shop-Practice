@@ -140,21 +140,21 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async Task Test_Delete_View_Result()
         {
             _mockProductService.Setup(mockProductService => mockProductService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new ProductDeleteViewModel());
+                .ReturnsAsync(new ProductDetailsViewModel());
 
 
             var resultProductDelete = await _productController.Delete(It.IsAny<int>()) as ViewResult;
 
             Assert.NotNull(resultProductDelete);
             Assert.NotNull(resultProductDelete.Model);
-            Assert.IsType<ProductDeleteViewModel>(resultProductDelete.Model);
+            Assert.IsType<ProductDetailsViewModel>(resultProductDelete.Model);
         }
 
         [Fact]
         public async Task Test_Delete_Result_Not_Found()
         {
             _mockProductService.Setup(mockProductService => mockProductService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
-               .ReturnsAsync(null as ProductDeleteViewModel);
+               .ReturnsAsync(null as ProductDetailsViewModel);
 
             var resultProductDelete = await _productController.Delete(It.IsAny<int>()) as NotFoundResult;
 
@@ -196,14 +196,14 @@ namespace MyEshop.Test.ControllersTest.Admin
                 .ReturnsAsync(resultMethod);
 
             _mockProductService.Setup(productService => productService.GetProductDeleteViewByProductIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new ProductDeleteViewModel());
+                .ReturnsAsync(new ProductDetailsViewModel());
 
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as ViewResult;
 
             Assert.NotNull(resultProductDeleteConfirm);
             Assert.NotNull(resultProductDeleteConfirm.Model);
-            Assert.IsType<ProductDeleteViewModel>(resultProductDeleteConfirm.Model);
+            Assert.IsType<ProductDetailsViewModel>(resultProductDeleteConfirm.Model);
         }
 
         [Fact]
