@@ -280,7 +280,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(true);
+                .Returns(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                 .ReturnsAsync(true);
@@ -325,7 +325,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(true);
+                .Returns(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
@@ -353,7 +353,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(false);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(true);
+                .Returns(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
@@ -381,7 +381,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(false);
+                .Returns(false);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
@@ -410,7 +410,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(true);
+                .Returns(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
@@ -439,7 +439,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
-                .ReturnsAsync(true);
+                .Returns(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Throws(new Exception());
