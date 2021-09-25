@@ -31,6 +31,15 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(products);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productService.GetProductDetailsByIdAsync(id);
+
+            return View(product);
+        }
+
+        #region Create
+
         public async Task<IActionResult> Create()
         {
             var tags = await _tagService.GetTagsForSelectAsync();
@@ -63,6 +72,10 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(createProduct);
         }
 
+        #endregion
+
+        #region Delete
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -93,5 +106,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
             return View(product);
         }
+
+        #endregion
     }
 }

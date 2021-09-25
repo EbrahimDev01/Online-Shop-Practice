@@ -467,7 +467,6 @@ namespace MyEshop.Test.ServicesTest
             Assert.IsType<ProductDetailsViewModel>(product);
         }
 
-
         [Fact]
         public async Task Test_GetProductDetailsByIdAsync_Result_Not_Found()
         {
