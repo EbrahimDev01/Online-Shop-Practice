@@ -86,7 +86,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             if (resultProductDelete.IsSuccess)
                 return RedirectToAction(nameof(Index));
 
-            foreach (var error in resultProductDelete)
+            foreach (var error in resultProductDelete.Errors)
                 ModelState.AddModelError(error.Title, error.Message);
 
             var product = await _productService.GetProductDeleteViewByProductIdAsync(id);
