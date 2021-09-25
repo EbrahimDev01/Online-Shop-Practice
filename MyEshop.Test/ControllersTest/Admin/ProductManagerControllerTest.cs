@@ -205,5 +205,29 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductDeleteConfirm.Model);
             Assert.IsType<ProductDeleteViewModel>(resultProductDeleteConfirm.Model);
         }
+
+        [Fact]
+        public async Task Test_Details_Result_Founded()
+        {
+            _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
+                .ReturnAsync(new ProductDetailsViewModel());
+
+            var resultProductDetails = await _productController.Details(It.IsAny<int>()) as ViewResult;
+
+            Assert.NotNull(resultProductDetails);
+            Assert.NotNull(resultProductDetails.Model);
+            Assert.IsType<ProductDetailsViewModel>(resultProductDetails.Model);
+        }
+
+        [Fact]
+        public async Task Test_Details_Result_Not_Founded()
+        {
+            _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
+                .ReturnAsync(null as ProductDetailsViewModel);
+
+            var resultProductDetails = await _productController.Details(It.IsAny<int>()) as NotFoundResult;
+
+            Assert.NotNull(resultProductDetails);
+        }
     }
 }
