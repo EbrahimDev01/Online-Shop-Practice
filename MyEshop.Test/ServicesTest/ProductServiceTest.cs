@@ -197,7 +197,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(isCreateProduct.IsSuccess);
             Assert.Single(isCreateProduct.Errors);
             Assert.Equal(nameof(ProductCreateViewModel.CategoryId), isCreateProduct.Errors.FirstOrDefault().Title);
-            Assert.Equal(ErrorMessage.NotExistCategory, isCreateProduct.Errors.FirstOrDefault().Message);
+            Assert.Equal(ErrorMessage.ExceptionExistCategory, isCreateProduct.Errors.FirstOrDefault().Message);
         }
 
         [Fact]
@@ -224,7 +224,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(isCreateProduct.IsSuccess);
             Assert.Single(isCreateProduct.Errors);
             Assert.Equal(nameof(ProductCreateViewModel.Tags), isCreateProduct.Errors.FirstOrDefault().Title);
-            Assert.Equal(ErrorMessage.NotExistTag, isCreateProduct.Errors.FirstOrDefault().Message);
+            Assert.Equal(ErrorMessage.ExceptionExistTag, isCreateProduct.Errors.FirstOrDefault().Message);
         }
 
         [Fact]
@@ -237,7 +237,7 @@ namespace MyEshop.Test.ServicesTest
             _mockCategorySerivce.Setup(categoryRepository =>
                 categoryRepository.GetCategorieChildrenByIdAsync(It.IsAny<int>()))
                     .ReturnsAsync(new CategoryViewModel());
-
+            
             _mockTagRepository.Setup(mockTagRepository =>
                 mockTagRepository.GetTagsProductByProductId(It.IsAny<int>()))
                     .Returns(new List<Tag>().AsQueryable());
@@ -273,29 +273,29 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<Product>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<int>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                 .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
             var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.True(resultProductDelete.IsSuccess);
-            Assert.Equal(0, resultProductDelete.Errors.Count());
+            Assert.Empty(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -309,7 +309,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
             Assert.True(resultProductDelete.IsNotFound);
-            Assert.Equal(0, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -318,26 +318,26 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductByIdAsync((It.IsAny<int>())))
                 .ReturnsAsync(false);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
             var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
-            Assert.Equal(1, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -346,26 +346,26 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductByIdAsync((It.IsAny<int>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(false);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
             var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
-            Assert.Equal(1, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -374,19 +374,19 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductByIdAsync((It.IsAny<int>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(false);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
 
@@ -394,7 +394,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
-            Assert.Equal(1, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -403,19 +403,19 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductByIdAsync((It.IsAny<int>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Returns(new List<Image>());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(false);
 
 
@@ -423,7 +423,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
-            Assert.Equal(1, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
 
         [Fact]
@@ -432,19 +432,19 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new Product());
 
-            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync((It.IsAny<int>())))
+            _mockProductRepository.Setup(productRepository => productRepository.DeleteProductByIdAsync((It.IsAny<int>())))
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductIdAsync(It.IsAny<int>()))
+            _mockCommentRepository.Setup(commentRepository => commentRepository.DeleteCommentsByProductId(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
                .Throws(new Exception());
 
-            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImageByProductIdAsync(It.IsAny<IEnumerable<Image>>()))
+            _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(false);
 
 
@@ -452,7 +452,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
-            Assert.Equal(1, resultProductDelete.Errors.Count());
+            Assert.Single(resultProductDelete.Errors);
         }
     }
 }
