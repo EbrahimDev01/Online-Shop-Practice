@@ -256,5 +256,15 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductEditModel.AvailableImages);
         }
 
+        [Fact]
+        public async Task Test_Edit_Product_Rresult_Not_Found()
+        {
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(null as ProductEditViewModel);
+
+            var resultProductEdit = (await _productController.Edit(It.IsAny<int>())) as NotFoundResult;
+
+            Assert.NotNull(resultProductEdit);
+        }
     }
 }
