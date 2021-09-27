@@ -16,7 +16,8 @@ namespace MyEshop.Application.Interfaces
 
         public ValueTask<ProductDetailsViewModel> GetProductDetailsByIdAsync(int productId);
 
-        public ValueTask<ResultMethodService> DeleteProductAsync(int productId);
+        public ValueTask<ResultMethodService> DeleteProductByProductIdAsync(int productId);
 
+        public ValueTask<ProductEditViewModel> GetProductEditDetailsByProductIdAsync(int productId);
     }
 }

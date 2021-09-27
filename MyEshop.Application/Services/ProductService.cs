@@ -1,7 +1,9 @@
 ﻿using MyEshop.Application.Interfaces;
 using MyEshop.Application.Utilities.File;
+using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.Public;
+using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Interfaces;
 using MyEshop.Domain.Models;
@@ -91,7 +93,7 @@ namespace MyEshop.Application.Services
             return resultMethodService;
         }
 
-        public async ValueTask<ResultMethodService> DeleteProductAsync(int productId)
+        public async ValueTask<ResultMethodService> DeleteProductByProductIdAsync(int productId)
         {
             var resultMethod = new ResultMethodService();
 
@@ -173,6 +175,29 @@ namespace MyEshop.Application.Services
             return new(product, category, tags, images, commentCount);
         }
 
+        public async ValueTask<ProductEditViewModel> GetProductEditDetailsByProductIdAsync(int productId)
+        {
+            var product = await _productRepository.GetProductByIdAsync(productId);
 
+            if (product is null)
+                return null;
+
+            var categories = _categoryService.GetCategoriesChildrenAsync();
+
+            var tagsProduct = _tagRepository.GetTagsProductByProductId(productId);
+            
+            var tags = await _tagRepository.GetTagsAsync()
+                .Select(tag => new TagForSelect(tag)
+                {
+                    IsSelected = tagsProduct.Any(tagProduct => tag.TagId == tagProduct.TagId)
+                })
+                .ToListAsync();
+
+            var images = _imageRepository.GetImagesProductByProductId(productId)
+                .Select(image => new SelectImageToDelete(image))
+                .ToList();
+
+            return new ProductEditViewModel(product, categories, tags, images);
+        }
     }
 }
