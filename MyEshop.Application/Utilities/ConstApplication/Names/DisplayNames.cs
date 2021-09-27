@@ -23,6 +23,8 @@ namespace MyEshop.Application.ConstApplication.Names
         public const string CreateDateTimePersian = "تاریخ ثبت";
         public const string Views = "بازدید";
         public const string Category = "دسته بندی";
+        public const string AvailableImages = "تصاویر ثبت شده برای این محصول";
+        public const string AvailableImagesInfo = "برای حذف هر تصویر آن را انتخاب کنید";
 
     }
 }
