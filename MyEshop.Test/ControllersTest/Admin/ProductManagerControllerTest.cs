@@ -166,7 +166,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_DeleteConfirm_Result_Deleted()
         {
-            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductByProductIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new ResultMethodService());
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as RedirectToActionResult;
@@ -181,7 +181,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             var resultMethod = new ResultMethodService();
             resultMethod.NotFound();
 
-            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductByProductIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
             var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as NotFoundResult;
@@ -194,7 +194,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         {
             var resultMethod = new ResultMethodService(false, false);
 
-            _mockProductService.Setup(productService => productService.DeleteProductAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.DeleteProductByProductIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
             _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
@@ -235,7 +235,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_Edit_Product_Rresult_View_Result()
         {
-            _mockProductService.Setup(productService => productService.GetProductEditDetailsByIdAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new ProductEditViewModel()
                {
                    Categories = new List<CategoryViewModel>().ToAsyncEnumerable(),
@@ -258,7 +258,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_Edit_Product_Rresult_Not_Found()
         {
-            _mockProductService.Setup(productService => productService.GetProductEditDetailsByIdAsync(It.IsAny<int>()))
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>()))
                .ReturnsAsync(null as ProductEditViewModel);
 
             var resultProductEdit = (await _productController.Edit(It.IsAny<int>())) as NotFoundResult;
