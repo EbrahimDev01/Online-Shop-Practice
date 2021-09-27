@@ -25,6 +25,17 @@ namespace MyEshop.Application.ViewModels.Product
             Categories = categories;
             Tags = tagsForSelect;
         }
+        public ProductCreateViewModel(Domain.Models.Product product, IAsyncEnumerable<CategoryViewModel> categories, IList<TagForSelect> tagsForSelect)
+        {
+            Categories = categories;
+            Tags = tagsForSelect;
+
+            Title = product.Title;
+            Descritption = product.Descritption;
+            Explanation = product.Explanation;
+            Price = (int)product.Price;
+            QuantityInStok = product.QuantityInStok;
+        }
 
         [Display(Name = DisplayNames.Title)]
         [Required(ErrorMessage = ErrorMessage.Required)]
