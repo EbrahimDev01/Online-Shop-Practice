@@ -23,8 +23,7 @@ namespace MyEshop.Test.UtilitiesTest.File
                 Headers = new HeaderDictionary(),
                 ContentType = "image/jpeg",
             };
-
-            string newPath = Path.Combine("D:", "", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc");
+            string newPath = Path.Combine("D:", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc");
 
 
             string nameFile = await FileCreate.CreateAsync(file, newPath);
