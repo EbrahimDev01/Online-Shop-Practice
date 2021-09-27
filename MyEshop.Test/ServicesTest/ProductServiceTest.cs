@@ -28,7 +28,7 @@ namespace MyEshop.Test.ServicesTest
         private readonly Mock<ITagService> _mockTagService;
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<ICommentRepository> _mockCommentRepository;
-        private readonly Mock<ICategoryService> _mockCategorySerivce;
+        private readonly Mock<ICategoryService> _mockCategoryService;
         private readonly IProductService _productService;
 
         public ProductServiceTest()
@@ -38,7 +38,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository = new Mock<ITagRepository>();
             _mockImageRepository = new Mock<IImageRepository>();
             _mockCommentRepository = new Mock<ICommentRepository>();
-            _mockCategorySerivce = new Mock<ICategoryService>();
+            _mockCategoryService = new Mock<ICategoryService>();
             _mockTagService = new Mock<ITagService>();
 
 
@@ -254,7 +254,7 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.True(resultProductDelete.IsSuccess);
@@ -267,7 +267,7 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(null as Product);
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -296,7 +296,7 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -324,7 +324,7 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository.Setup(imageRepository => imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                .ReturnsAsync(true);
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -353,7 +353,7 @@ namespace MyEshop.Test.ServicesTest
                .ReturnsAsync(true);
 
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -382,7 +382,7 @@ namespace MyEshop.Test.ServicesTest
                .ReturnsAsync(false);
 
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -411,7 +411,7 @@ namespace MyEshop.Test.ServicesTest
                .ReturnsAsync(false);
 
 
-            var resultProductDelete = await _productService.DeleteProductAsync(It.IsAny<int>());
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
@@ -444,27 +444,51 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public async Task Test_GetProductEditDetailsByProductIdAsync_Result_Found()
         {
+            var categoriesList = new List<Category>
+            {
+                new(){CategoryParentId = 1},
+                new(){CategoryParentId = 2},
+                new(){CategoryParentId = 3}
+            }.ToAsyncEnumerable();
+            var tagsProduct = new List<Tag>
+            {
+                new(),
+                new(),
+                new()
+            }.AsQueryable();
+            var tagsList = tagsProduct.ToAsyncEnumerable();
+            var imageList = new List<Image>
+            {
+                new(),
+                new(),
+                new()
+            }.AsEnumerable();
+
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new Product());
 
-            _mockCategorySerivce.Setup(categorySerivce => categorySerivce.GetCategorieChildrenByIdAsync(It.IsAny<int>()))
-               .ReturnsAsync(new CategoryViewModel());
+            _mockCategoryRepository.Setup(categoryService => categoryService.GetCategoriesAsync())
+                .Returns(categoriesList);
 
-            _mockCategorySerivce.Setup(categorySerivce => categorySerivce.GetCategoriesChildrenAsync())
-               .Returns(new List<CategoryViewModel>().ToAsyncEnumerable());
 
-            _mockTagService.Setup(tagRepository => tagRepository.GetTagsForSelectAsync())
-               .ReturnsAsync(new List<TagForSelect>());
+            _mockCategoryRepository.Setup(categoryService => categoryService.GetCategoryByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Category(""));
+
+            _mockTagRepository.Setup(tagService => tagService.GetTagsAsync())
+                .Returns(tagsList);
+
+            _mockTagRepository.Setup(tagService => tagService.GetTagsProductByProductId(It.IsAny<int>()))
+                .Returns(tagsProduct);
 
             _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
-               .Returns(new List<Image>());
+               .Returns(imageList);
 
             var product = await _productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>());
 
             Assert.NotNull(product);
             Assert.IsType<ProductEditViewModel>(product);
-        }
-        
+}
+
         [Fact]
         public async Task Test_GetProductEditDetailsByProductIdAsync_Result_Not_Found()
         {
