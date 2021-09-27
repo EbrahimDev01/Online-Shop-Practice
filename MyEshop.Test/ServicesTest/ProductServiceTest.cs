@@ -25,6 +25,7 @@ namespace MyEshop.Test.ServicesTest
         private readonly Mock<IProductRepository> _mockProductRepository;
         private readonly Mock<ICategoryRepository> _mockCategoryRepository;
         private readonly Mock<ITagRepository> _mockTagRepository;
+        private readonly Mock<ITagService> _mockTagService;
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<ICommentRepository> _mockCommentRepository;
         private readonly Mock<ICategoryService> _mockCategorySerivce;
@@ -38,10 +39,12 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository = new Mock<IImageRepository>();
             _mockCommentRepository = new Mock<ICommentRepository>();
             _mockCategorySerivce = new Mock<ICategoryService>();
+            _mockTagService = new Mock<ITagService>();
+
 
             _productService = new ProductService(_mockProductRepository.Object, _mockCategoryRepository.Object,
-                _mockTagRepository.Object, _mockImageRepository.Object,
-                _mockCommentRepository.Object);
+                    _mockTagRepository.Object, _mockImageRepository.Object,
+                    _mockCommentRepository.Object);
         }
 
         [Fact]
@@ -436,6 +439,30 @@ namespace MyEshop.Test.ServicesTest
             var product = await _productService.GetProductDetailsByIdAsync(It.IsAny<int>());
 
             Assert.Null(product);
+        }
+
+        [Fact]
+        public async Task Test_GetProductEditDetailsByProductIdAsync_Result_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategorySerivce.Setup(categorySerivce => categorySerivce.GetCategorieChildrenByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(new CategoryViewModel());
+
+            _mockCategorySerivce.Setup(categorySerivce => categorySerivce.GetCategoriesChildrenAsync())
+               .Returns(new List<CategoryViewModel>().ToAsyncEnumerable());
+
+            _mockTagService.Setup(tagRepository => tagRepository.GetTagsForSelectAsync())
+               .ReturnsAsync(new List<TagForSelect>());
+
+            _mockImageRepository.Setup(imageRepository => imageRepository.GetImagesProductByProductId(It.IsAny<int>()))
+               .Returns(new List<Image>());
+
+            var product = await _productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>());
+
+            Assert.NotNull(product);
+            Assert.IsType<ProductEditViewModel>(product);
         }
     }
 }

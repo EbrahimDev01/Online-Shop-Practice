@@ -23,7 +23,6 @@ namespace MyEshop.Test.ControllersTest.Admin
         private readonly Mock<IProductService> _mockProductService;
         private readonly Mock<ITagService> _mockTagService;
         private readonly Mock<ICategoryService> _mockCategorytService;
-        private readonly Mock<IImageService> _mockImageService;
         private readonly ProductManagerController _productController;
 
         public ProductManagerControllerTest()
@@ -31,9 +30,8 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService = new Mock<IProductService>();
             _mockTagService = new Mock<ITagService>();
             _mockCategorytService = new Mock<ICategoryService>();
-            _mockImageService = new Mock<IImageService>();
             _productController = new ProductManagerController(_mockProductService.Object, _mockTagService.Object,
-                _mockCategorytService.Object, _mockImageService);
+                _mockCategorytService.Object);
         }
 
         [Fact]

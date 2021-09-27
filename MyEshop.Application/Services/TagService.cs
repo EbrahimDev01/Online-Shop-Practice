@@ -19,6 +19,6 @@ namespace MyEshop.Application.Services
         }
 
         public async ValueTask<IList<TagForSelect>> GetTagsForSelectAsync()
-            =>await _tagRepository.GetTagsAsync().Select(t => new TagForSelect(t)).ToListAsync();
+            => await _tagRepository.GetTagsAsync().Select(t => new TagForSelect(t)).ToListAsync();
     }
 }
