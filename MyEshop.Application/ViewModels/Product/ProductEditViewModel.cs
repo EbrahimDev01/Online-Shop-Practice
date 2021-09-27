@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.ViewModels.Category;
+using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
 using System;
