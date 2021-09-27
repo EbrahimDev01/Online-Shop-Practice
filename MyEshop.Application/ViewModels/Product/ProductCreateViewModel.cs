@@ -34,10 +34,12 @@ namespace MyEshop.Application.ViewModels.Product
         [Display(Name = DisplayNames.Descritption)]
         [Required(ErrorMessage = ErrorMessage.Required)]
         [StringLength(250, MinimumLength = 10, ErrorMessage = ErrorMessage.StringLength)]
+        [DataType(DataType.MultilineText)]
         public string Descritption { set; get; }
 
         [Display(Name = DisplayNames.Explanation)]
         [Required(ErrorMessage = ErrorMessage.Required)]
+        [DataType(DataType.MultilineText)]
         public string Explanation { get; set; }
 
         [Display(Name = DisplayNames.Price)]
