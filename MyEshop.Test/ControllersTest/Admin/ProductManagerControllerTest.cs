@@ -239,9 +239,9 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService.Setup(productService => productService.GetProductEditDetailsByIdAsync(It.IsAny<int>()))
                .ReturnsAsync(new ProductEditViewModel()
                {
-                   Categories = new List<CategoryViewModel>(),
-                   Tags = new List<ImageForSelectDelete>(),
-                   AvailableImages = new List<TagForSelect>()
+                   Categories = new List<CategoryViewModel>().ToAsyncEnumerable(),
+                   Tags = new List<TagForSelect>(),
+                   AvailableImages = new List<SelectImageToDelete>()
                });
 
 
