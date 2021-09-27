@@ -111,5 +111,19 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region Edit
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _productService.GetProductEditDetailsByIdAsync(id);
+
+            if (product is null) return NotFound();
+
+            return View(product);
+        }
+
+        #endregion
     }
 }
