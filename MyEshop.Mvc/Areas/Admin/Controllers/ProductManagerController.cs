@@ -94,7 +94,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         [ActionName(nameof(Delete))]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
-            var resultProductDelete = await _productService.DeleteProductAsync(id);
+            var resultProductDelete = await _productService.DeleteProductByProductIdAsync(id);
 
             if (resultProductDelete.IsNotFound)
                 return NotFound();
@@ -117,7 +117,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _productService.GetProductEditDetailsByIdAsync(id);
+            var product = await _productService.GetProductEditDetailsByProductIdAsync(id);
 
             if (product is null) return NotFound();
 
