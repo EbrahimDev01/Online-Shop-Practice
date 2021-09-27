@@ -2,6 +2,7 @@
 using Moq;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.ViewModels.Category;
+using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.Public;
 using MyEshop.Application.ViewModels.Tag;
