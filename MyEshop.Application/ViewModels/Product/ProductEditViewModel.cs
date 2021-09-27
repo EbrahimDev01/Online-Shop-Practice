@@ -19,19 +19,14 @@ namespace MyEshop.Application.ViewModels.Product
         {
 
         }
-        public ProductEditViewModel(IAsyncEnumerable<CategoryViewModel> categories, IList<TagForSelect> tagsForSelect,
-            IList<SelectImageToDelete> availableImages) : base(categories, tagsForSelect)
+        public ProductEditViewModel(Domain.Models.Product product, IAsyncEnumerable<CategoryViewModel> categories, IList<TagForSelect> tagsForSelect,
+            IList<SelectImageToDelete> availableImages) : base(product, categories, tagsForSelect)
         {
             AvailableImages = availableImages;
+            ProductId = product.ProductId;
         }
 
         public int ProductId { set; get; }
-
-        [Display(Name = DisplayNames.Price)]
-        new public int Price { set; get; }
-
-        [Display(Name = DisplayNames.QuantityInStok)]
-        new public int QuantityInStok { set; get; }
 
         #region Relations
 
