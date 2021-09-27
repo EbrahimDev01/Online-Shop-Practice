@@ -464,5 +464,16 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(product);
             Assert.IsType<ProductEditViewModel>(product);
         }
+        
+        [Fact]
+        public async Task Test_GetProductEditDetailsByProductIdAsync_Result_Not_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null as Product);
+
+            var product = await _productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>());
+
+            Assert.Null(product);
+        }
     }
 }
