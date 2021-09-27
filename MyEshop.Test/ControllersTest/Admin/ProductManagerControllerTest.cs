@@ -22,6 +22,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         private readonly Mock<IProductService> _mockProductService;
         private readonly Mock<ITagService> _mockTagService;
         private readonly Mock<ICategoryService> _mockCategorytService;
+        private readonly Mock<IImageService> _mockImageService;
         private readonly ProductManagerController _productController;
 
         public ProductManagerControllerTest()
@@ -29,7 +30,9 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService = new Mock<IProductService>();
             _mockTagService = new Mock<ITagService>();
             _mockCategorytService = new Mock<ICategoryService>();
-            _productController = new ProductManagerController(_mockProductService.Object, _mockTagService.Object, _mockCategorytService.Object);
+            _mockImageService = new Mock<IImageService>();
+            _productController = new ProductManagerController(_mockProductService.Object, _mockTagService.Object,
+                _mockCategorytService.Object, _mockImageService);
         }
 
         [Fact]
@@ -229,5 +232,29 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultProductDetails);
         }
+
+        [Fact]
+        public async Task Test_Edit_Product_Rresult_View_Result()
+        {
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByIdAsync(It.IsAny<int>()))
+               .ReturnsAsync(new ProductEditViewModel()
+               {
+                   Categories = new List<CategoryViewModel>(),
+                   Tags = new List<ImageForSelectDelete>(),
+                   AvailableImages = new List<TagForSelect>()
+               });
+
+
+            var resultProductEdit = (await _productController.Edit(It.IsAny<int>())) as ViewResult;
+
+            var resultProductEditModel = resultProductEdit.Model as ProductEditViewModel;
+
+            Assert.NotNull(resultProductEdit);
+            Assert.NotNull(resultProductEditModel);
+            Assert.NotNull(resultProductEditModel.Categories);
+            Assert.NotNull(resultProductEditModel.Tags);
+            Assert.NotNull(resultProductEditModel.AvailableImages);
+        }
+
     }
 }
