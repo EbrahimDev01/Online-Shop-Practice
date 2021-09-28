@@ -4,7 +4,7 @@ using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
 using MyEshop.Application.ViewModels.Category;
 using MyEshop.Application.ViewModels.Product;
-using MyEshop.Application.ViewModels.Public;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Data.Repositories;
 using MyEshop.Domain.ConstsDomain.Messages;

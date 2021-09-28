@@ -2,7 +2,7 @@
 using MyEshop.Application.Utilities.File;
 using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
-using MyEshop.Application.ViewModels.Public;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Interfaces;

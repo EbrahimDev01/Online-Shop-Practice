@@ -1,5 +1,5 @@
 ﻿using MyEshop.Application.ViewModels.Product;
-using MyEshop.Application.ViewModels.Public;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
