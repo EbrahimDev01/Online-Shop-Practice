@@ -1,0 +1,114 @@
+﻿@model MyEshop.Application.ViewModels.Product.ProductEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ProductEditViewModel</h4>
+<hr />
+<div class="row">
+    <div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descritption" class="control-label"></label>
+                <textarea asp-for="Descritption" class="form-control"></textarea>
+                <span asp-validation-for="Descritption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Explanation" class="control-label"></label>
+                <textarea asp-for="Explanation" class="form-control"></textarea>
+                <span asp-validation-for="Explanation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityInStok" class="control-label"></label>
+                <input asp-for="QuantityInStok" class="form-control" />
+                <span asp-validation-for="QuantityInStok" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="CategoryId">
+                    <partial name="_SelectOptionsCategoryPartialView" model="Model.Categories" />
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                @if (Model.Tags?.Any() ?? false)
+                {
+                    <partial name="_TagForSelectPartialView" model="Model.Tags" />
+                }
+                else
+                {
+                    <span>
+                        برچسب موجد نیست
+                    </span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Images" class="control-label"></label>
+                <input asp-for="Images" class="form-control" />
+                <span asp-validation-for="Images" class="text-danger"></span>
+
+                @if (Model.AvailableImages?.Any() ?? false)
+                {
+                    <div class="form-group">
+                        <label class="control-label d-block">
+                            @DisplayNames.AvailableImages
+                        </label>
+                        <label class="control-label d-block">
+                            @DisplayNames.AvailableImagesInfo
+                        </label>
+                        <div class="row">
+                            @for (int i = 0; i < Model.AvailableImages.Count; i++)
+                            {
+                                <div class="col-12 col-lg-4">
+                                    <label asp-for="AvailableImages[i].IsSelected">
+                                        <div class="card">
+                                            <img src="@Model.AvailableImages[i].UrlImage" class="card-img-top" alt="@Model.Title" width="80">
+
+                                            <div class="card-body">
+                                                <input asp-for="AvailableImages[i].IsSelected" />
+                                                <input asp-for="AvailableImages[i].ImageId" hidden />
+                                                <input asp-for="AvailableImages[i].UrlImage" hidden />
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <span>
+                        تصویر موجد نیست
+                    </span>
+                }
+            </div>
+            <input asp-for="ProductId" hidden />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
