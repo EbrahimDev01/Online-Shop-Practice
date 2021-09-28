@@ -123,6 +123,32 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(product);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProductEditViewModel productModel, int id)
+        {
+            if (id != productModel.ProductId)
+                return NotFound();
+
+            var resultEditProduct = _productService.EditProductAsync(productModel.ProductId);
+
+            if (resultEditProduct.IsSuccess)
+                return RedirectToAction(nameof(ProductManagerController.Index));
+
+            if (resultEditProduct.IsNotFound)
+                return NotFound();
+
+            foreach (var error in resultEditProduct.Errors)
+                ModelState.AddModelError(error.Title, error.Message);
+
+            var product = await _productService.GetProductEditDetailsByProductIdAsync(productModel.ProductId);
+
+            if (product is null) return NotFound();
+
+            return View();
+        }
+
         #endregion
+
     }
 }
