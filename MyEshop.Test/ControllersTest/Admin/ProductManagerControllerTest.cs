@@ -265,5 +265,17 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultProductEdit);
         }
+
+        [Fact]
+        public async Task Test_Edti_Post_Product_Result_Not_Found()
+        {
+            _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
+                .ReturnsAsync(null as ResultMethodService);
+
+            var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as NotFoundResult;
+
+            Assert.NotNull(resultProductEdit);
+        }
+
     }
 }
