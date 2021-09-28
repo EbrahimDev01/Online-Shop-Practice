@@ -4,7 +4,7 @@ using MyEshop.Application.Interfaces;
 using MyEshop.Application.ViewModels.Category;
 using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
-using MyEshop.Application.ViewModels.Public;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Models;
@@ -301,7 +301,20 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultProductEdit);
             Assert.False(_productController.ModelState.IsValid);
-            Assert.Equal(1,_productController.ModelState.ErrorCount);
+            Assert.Equal(1, _productController.ModelState.ErrorCount);
+        }
+
+
+        [Fact]
+        public async Task Test_Edti_Post_Product_Result_Edited()
+        {
+            _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
+                .ReturnsAsync(new ResultMethodService());
+
+            var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as RedirectToActionResult;
+
+            Assert.NotNull(resultProductEdit);
+            Assert.Equal(nameof(ProductManagerController.Index),resultProductEdit.ActionName);
         }
     }
 }
