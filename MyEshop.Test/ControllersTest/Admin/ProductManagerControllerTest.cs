@@ -6,6 +6,7 @@ using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.Public;
 using MyEshop.Application.ViewModels.Tag;
+using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Models;
 using MyEshop.Mvc.Areas.Admin.Controllers;
 using System;
@@ -270,7 +271,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async Task Test_Edti_Post_Product_Result_Not_Found()
         {
             _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
-                .ReturnsAsync(new ResultMethodService(false,true));
+                .ReturnsAsync(new ResultMethodService(false, true));
 
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as NotFoundResult;
 
@@ -287,5 +288,20 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductEdit);
         }
 
+        [Fact]
+        public async Task Test_Edti_Post_Product_Result_Not_Saved()
+        {
+            var resultMethodService = new ResultMethodService();
+            resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
+
+            _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
+                .ReturnsAsync(resultMethodService);
+
+            var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as ViewResult;
+
+            Assert.NotNull(resultProductEdit);
+            Assert.False(_productController.ModelState.IsValid);
+            Assert.Equal(1,_productController.ModelState.ErrorCount);
+        }
     }
 }
