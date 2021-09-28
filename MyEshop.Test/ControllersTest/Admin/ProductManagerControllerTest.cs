@@ -277,5 +277,15 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductEdit);
         }
 
+        [Fact]
+        public async Task Test_Edti_Post_Product_Result_Model_State_Not_Valid()
+        {
+            _productController.ModelState.AddModelError("", "");
+
+            var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as ViewResult;
+
+            Assert.NotNull(resultProductEdit);
+        }
+
     }
 }
