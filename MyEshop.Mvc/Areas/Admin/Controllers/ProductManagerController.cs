@@ -21,7 +21,6 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             _productService = productService;
             _tagService = tagService;
             _categoryService = categoryService;
-
         }
 
         public IActionResult Index()

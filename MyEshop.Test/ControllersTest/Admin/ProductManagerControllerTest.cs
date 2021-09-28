@@ -270,7 +270,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async Task Test_Edti_Post_Product_Result_Not_Found()
         {
             _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
-                .ReturnsAsync(null as ResultMethodService);
+                .ReturnsAsync(new ResultMethodService(false,true));
 
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as NotFoundResult;
 
