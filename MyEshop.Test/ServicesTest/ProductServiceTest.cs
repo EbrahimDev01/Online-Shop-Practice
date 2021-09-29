@@ -487,7 +487,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(product);
             Assert.IsType<ProductEditViewModel>(product);
-}
+        }
 
         [Fact]
         public async Task Test_GetProductEditDetailsByProductIdAsync_Result_Not_Found()
@@ -499,5 +499,20 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.Null(product);
         }
+
+        [Fact]
+        public async Task Test_EditProductAsync_Result_Not_Found()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null as Product);
+
+            var resultProductEdit = _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.True(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+        }
+
     }
 }
