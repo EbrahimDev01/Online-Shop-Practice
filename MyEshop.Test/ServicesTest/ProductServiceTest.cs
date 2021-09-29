@@ -230,7 +230,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(isCreateProduct.IsSuccess);
             Assert.Single(isCreateProduct.Errors);
             Assert.Equal(nameof(ProductCreateViewModel.Tags), isCreateProduct.Errors.FirstOrDefault().Title);
-            Assert.Equal(ErrorMessage.ExceptionExistTag, isCreateProduct.Errors.FirstOrDefault().Message);
+            Assert.Equal(ErrorMessage.ExceptionExistTags, isCreateProduct.Errors.FirstOrDefault().Message);
         }
 
         [Fact]
@@ -545,6 +545,31 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultProductEdit.IsSuccess);
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Category, ErrorMessage.ExceptionExistCategory), resultProductEdit.Errors);
+        }
+
+        [Fact]
+        public async Task Test_EditProductAsync_Tags_Is_Not_Accepted()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(false);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(null as List<Tag>);
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+                .Returns(true);
+
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Tags, ErrorMessage.ExceptionExistTags), resultProductEdit.Errors);
         }
 
     }
