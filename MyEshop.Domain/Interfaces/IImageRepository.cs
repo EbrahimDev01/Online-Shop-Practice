@@ -13,5 +13,6 @@ namespace MyEshop.Domain.Interfaces
         public ValueTask<string> GetFirstImageUrlProductByProductIdAsync(int productId);
         public ValueTask<bool> DeleteImagesAsync(IEnumerable<Image> images);
         public bool IsExistAvailableImages(IEnumerable<Image> images, int productId);
+        public IEnumerable<Image> GetImagesByImageIds(IEnumerable<int> imageIds);
     }
 }

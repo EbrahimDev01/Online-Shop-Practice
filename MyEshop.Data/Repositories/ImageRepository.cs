@@ -36,6 +36,12 @@ namespace MyEshop.Data.Repositories
         public async ValueTask<string> GetFirstImageUrlProductByProductIdAsync(int productId)
             => (await _dbContext.Images.FirstOrDefaultAsync(image => image.ProductId == productId)).UrlImage;
 
+        public IEnumerable<Image> GetImagesByImageIds(IEnumerable<int> imageIds)
+        {
+            foreach (var imageId in imageIds)
+                yield return _dbContext.Images.Find(imageId);
+        }
+
         public IEnumerable<Image> GetImagesProductByProductId(int productId) =>
             _dbContext.Images.Where(image => image.ProductId == productId);
 

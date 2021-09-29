@@ -555,7 +555,7 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
@@ -584,7 +584,7 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
 
@@ -619,8 +619,9 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(false);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
+
 
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
@@ -653,7 +654,7 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(false);
 
 
@@ -688,12 +689,13 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
+
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
-                    .ReturnsAsync(false);
+               imageRepository.GetImagesByImageIds(It.IsAny<IEnumerable<int>>()))
+                   .Returns(new List<Image>());
 
 
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
@@ -727,12 +729,18 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
-                    .ReturnsAsync(true);
+               imageRepository.GetImagesByImageIds(It.IsAny<IEnumerable<int>>()))
+                   .Returns(new List<Image>
+                   {
+                        new(),
+                        new(),
+                        new(),
+                   });
+
 
             _mockImageRepository.Setup(imageRepository =>
                  imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
@@ -771,12 +779,18 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
-                    .ReturnsAsync(true);
+               imageRepository.GetImagesByImageIds(It.IsAny<IEnumerable<int>>()))
+                   .Returns(new List<Image>
+                   {
+                        new(),
+                        new(),
+                        new(),
+                   });
+
 
             _mockImageRepository.Setup(imageRepository =>
                  imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
@@ -818,12 +832,17 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
-                    .ReturnsAsync(true);
+               imageRepository.GetImagesByImageIds(It.IsAny<IEnumerable<int>>()))
+                   .Returns(new List<Image>
+                   {
+                        new(),
+                        new(),
+                        new(),
+                   });
 
             _mockImageRepository.Setup(imageRepository =>
                  imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
@@ -870,8 +889,13 @@ namespace MyEshop.Test.ServicesTest
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
-                    .ReturnsAsync(true);
+                imageRepository.GetImagesByImageIds(It.IsAny<IEnumerable<int>>()))
+                    .Returns(new List<Image>
+                    {
+                        new(),
+                        new(),
+                        new(),
+                    });
 
             _mockImageRepository.Setup(imageRepository =>
                  imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
