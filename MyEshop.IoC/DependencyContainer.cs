@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
+using MyEshop.Application.Utilities.File;
 using MyEshop.Data.Repositories;
 using MyEshop.Domain.Interfaces;
 using System;
@@ -24,6 +25,8 @@ namespace MyEshop.IoC
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddScoped<IFileHandler, FileHandler>();
         }
 
         private static void RegisterServiceData(IServiceCollection services)

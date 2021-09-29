@@ -23,10 +23,11 @@ namespace MyEshop.Application.Services
         private readonly ITagRepository _tagRepository;
         private readonly IImageRepository _imageRepository;
         private readonly ICommentRepository _commentRepository;
+        private readonly IFileHandler _fileHandler;
 
         public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository,
             ITagRepository tagRepository, IImageRepository imageRepository,
-            ICommentRepository commentRepository)
+            ICommentRepository commentRepository, IFileHandler fileHandler)
         {
             _productRepository = productRepository;
             _tagRepository = tagRepository;
@@ -34,6 +35,7 @@ namespace MyEshop.Application.Services
             _imageRepository = imageRepository;
             _categoryService = new CategoryService(categoryRepository);
             _commentRepository = commentRepository;
+            _fileHandler = fileHandler;
         }
 
         public async ValueTask<ResultMethodService> CreateProductAsync(ProductCreateViewModel createProduct)
@@ -70,7 +72,7 @@ namespace MyEshop.Application.Services
             if (createProduct?.Images?.Count > 0 && createProduct?.Images?.FirstOrDefault().Length > 0)
                 foreach (var imageItem in createProduct.Images)
                 {
-                    string resultNameFile = await FileCreate.CreateAsync(imageItem);
+                    string resultNameFile = await _fileHandler.CreateAsync(imageItem);
 
                     if (resultNameFile == null)
                     {
@@ -141,7 +143,7 @@ namespace MyEshop.Application.Services
 
             if (imagesProductCopy?.Count > 0)
             {
-                bool isDeletFiles = FileDelete.Delete(imagesProductCopy);
+                bool isDeletFiles = _fileHandler.Delete(imagesProductCopy);
 
                 if (!isDeletFiles)
                     return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
@@ -185,7 +187,7 @@ namespace MyEshop.Application.Services
             var categories = _categoryService.GetCategoriesChildrenAsync();
 
             var tagsProduct = _tagRepository.GetTagsProductByProductId(productId);
-            
+
             var tags = await _tagRepository.GetTagsAsync()
                 .Select(tag => new TagForSelect(tag)
                 {

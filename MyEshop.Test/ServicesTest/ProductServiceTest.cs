@@ -46,6 +46,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagService = new Mock<ITagService>();
             _mockFileHandler = new Mock<IFileHandler>();
 
+            IFileHandler f = new FileHandler();
 
             _productService = new ProductService(_mockProductRepository.Object, _mockCategoryRepository.Object,
                     _mockTagRepository.Object, _mockImageRepository.Object,
@@ -84,6 +85,9 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.Null(products);
         }
+
+
+        #region Create
 
         [Fact]
         public async Task Test_Create_Product_input_CreateProductViewModel_Result_Not_Create()
@@ -234,6 +238,10 @@ namespace MyEshop.Test.ServicesTest
             Assert.Equal(nameof(ProductCreateViewModel.Tags), isCreateProduct.Errors.FirstOrDefault().Title);
             Assert.Equal(ErrorMessage.ExceptionExistTags, isCreateProduct.Errors.FirstOrDefault().Message);
         }
+
+        #endregion
+
+        #region Delete
 
         [Fact]
         public async Task Test_Delete_Product_Result_Deleted()
@@ -423,6 +431,10 @@ namespace MyEshop.Test.ServicesTest
             Assert.Single(resultProductDelete.Errors);
         }
 
+        #endregion
+
+        #region Test GetProductDetailsByIdAsync
+
         [Fact]
         public async Task Test_GetProductDetailsByIdAsync_Result_Found()
         {
@@ -505,6 +517,10 @@ namespace MyEshop.Test.ServicesTest
             Assert.Null(product);
         }
 
+        #endregion
+
+        #region Test EditProductAsync
+
         [Fact]
         public async Task Test_EditProductAsync_Result_Not_Found()
         {
@@ -536,7 +552,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -565,7 +581,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
                .Returns(null as List<Tag>);
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -600,7 +616,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(false);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -634,7 +650,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -669,7 +685,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -708,7 +724,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -752,7 +768,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -799,7 +815,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -847,7 +863,7 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                });
 
-            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -877,5 +893,6 @@ namespace MyEshop.Test.ServicesTest
             Assert.Empty(resultProductEdit.Errors);
         }
 
+        #endregion
     }
 }

@@ -8,6 +8,9 @@ namespace MyEshop.Application.Utilities.File
     public interface IFileHandler
     {
         public ValueTask<string> CreateAsync(IFormFile formFile, string newPath = null);
+
         public bool Delete(IEnumerable<Image> images);
+
+        public bool IsImage(IEnumerable<IFormFile> formFiles);
     }
 }
