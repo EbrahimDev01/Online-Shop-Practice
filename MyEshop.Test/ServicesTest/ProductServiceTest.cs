@@ -4,6 +4,7 @@ using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
 using MyEshop.Application.ViewModels.Category;
+using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
@@ -537,6 +538,10 @@ namespace MyEshop.Test.ServicesTest
             _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
                 .Returns(true);
 
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                    .Returns(true);
+
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
             Assert.NotNull(resultProductEdit);
@@ -554,13 +559,18 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(new Product());
 
             _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
-                .ReturnsAsync(false);
+                .ReturnsAsync(true);
 
             _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
                .Returns(null as List<Tag>);
 
             _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
                 .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                    .Returns(true);
+
 
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
@@ -570,6 +580,40 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultProductEdit.IsSuccess);
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Tags, ErrorMessage.ExceptionExistTags), resultProductEdit.Errors);
+        }
+
+        [Fact]
+        public async Task Test_EditProductAsync_Type_Image_Is_Not_Accepted()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(new List<Tag>
+               {
+                   new(),
+                   new(),
+                   new(),
+               });
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+                .Returns(false);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                    .Returns(true);
+
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionFileImagesType), resultProductEdit.Errors);
         }
 
     }
