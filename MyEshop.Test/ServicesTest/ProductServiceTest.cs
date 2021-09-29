@@ -780,5 +780,54 @@ namespace MyEshop.Test.ServicesTest
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionSave), resultProductEdit.Errors);
         }
 
+
+        [Fact]
+        public async Task Test_EditProductAsync_Result_Can_Not_Save()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(new List<Tag>
+               {
+                   new(),
+                   new(),
+                   new(),
+               });
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+                .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                    .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                    .ReturnsAsync(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                 imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
+                     .ReturnsAsync(true);
+
+            _mockProductRepository.Setup(productRepository => productRepository.EditProductAsync(It.IsAny<Product>()))
+                .ReturnsAsync(true);
+
+            _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
+                .ReturnsAsync(false);
+
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionSave), resultProductEdit.Errors);
+        }
+
     }
 }
