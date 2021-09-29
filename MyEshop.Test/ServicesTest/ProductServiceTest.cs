@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Moq;
+using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
 using MyEshop.Application.ViewModels.Category;
@@ -29,6 +30,7 @@ namespace MyEshop.Test.ServicesTest
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<ICommentRepository> _mockCommentRepository;
         private readonly Mock<ICategoryService> _mockCategoryService;
+        private readonly Mock<IFileHandler> _mockFileHandler;
         private readonly IProductService _productService;
 
         public ProductServiceTest()
@@ -40,11 +42,12 @@ namespace MyEshop.Test.ServicesTest
             _mockCommentRepository = new Mock<ICommentRepository>();
             _mockCategoryService = new Mock<ICategoryService>();
             _mockTagService = new Mock<ITagService>();
+            _mockFileHandler = new Mock<IFileHandler>();
 
 
             _productService = new ProductService(_mockProductRepository.Object, _mockCategoryRepository.Object,
                     _mockTagRepository.Object, _mockImageRepository.Object,
-                    _mockCommentRepository.Object);
+                    _mockCommentRepository.Object, _mockFileHandler.Object);
         }
 
         [Fact]
@@ -506,12 +509,42 @@ namespace MyEshop.Test.ServicesTest
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(null as Product);
 
-            var resultProductEdit = _productService.EditProductAsync(new ProductEditViewModel());
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
             Assert.NotNull(resultProductEdit);
             Assert.IsType<ResultMethodService>(resultProductEdit);
             Assert.True(resultProductEdit.IsNotFound);
             Assert.False(resultProductEdit.IsSuccess);
+        }
+
+        [Fact]
+        public async Task Test_EditProductAsync_Category_Is_Not_Accepted()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(false);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(new List<Tag>
+               {
+                   new(),
+                   new(),
+                   new(),
+               });
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+                .Returns(true);
+
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Category, ErrorMessage.ExceptionExistCategory), resultProductEdit.Errors);
         }
 
     }
