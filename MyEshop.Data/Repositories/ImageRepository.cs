@@ -38,5 +38,10 @@ namespace MyEshop.Data.Repositories
 
         public IEnumerable<Image> GetImagesProductByProductId(int productId) =>
             _dbContext.Images.Where(image => image.ProductId == productId);
+
+        public bool IsExistAvailableImages(IEnumerable<Image> images, int productId)
+            => images.All(image => _dbContext.Images.Any(imagedb =>
+                     image.ProductId == productId && imagedb.ImageId == image.ImageId && imagedb.UrlImage == image.UrlImage));
+
     }
 }

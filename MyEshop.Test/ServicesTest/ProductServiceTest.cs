@@ -46,7 +46,6 @@ namespace MyEshop.Test.ServicesTest
             _mockTagService = new Mock<ITagService>();
             _mockFileHandler = new Mock<IFileHandler>();
 
-            IFileHandler f = new FileHandler();
 
             _productService = new ProductService(_mockProductRepository.Object, _mockCategoryRepository.Object,
                     _mockTagRepository.Object, _mockImageRepository.Object,
@@ -632,7 +631,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionFileImagesType), resultProductEdit.Errors);
         }
-
+        
         [Fact]
         public async Task Test_EditProductAsync_AvailableImages_Is_Not_Accepted()
         {
@@ -693,7 +692,7 @@ namespace MyEshop.Test.ServicesTest
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
                     .ReturnsAsync(false);
 
 
@@ -732,7 +731,7 @@ namespace MyEshop.Test.ServicesTest
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
                     .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -776,7 +775,7 @@ namespace MyEshop.Test.ServicesTest
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
                     .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -823,7 +822,7 @@ namespace MyEshop.Test.ServicesTest
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
                     .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository =>
@@ -867,11 +866,11 @@ namespace MyEshop.Test.ServicesTest
                 .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
             _mockImageRepository.Setup(imageRepository =>
-                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>()))
                     .ReturnsAsync(true);
 
             _mockImageRepository.Setup(imageRepository =>
