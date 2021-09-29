@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MyEshop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace MyEshop.Application.Utilities.File
 {
-    public static class FileCreate
+    public class FileHandler : IFileHandler
     {
-        public static async ValueTask<string> CreateAsync(IFormFile formFile, string newPath = null)
+        public async ValueTask<string> CreateAsync(IFormFile formFile, string newPath = null)
         {
             if (formFile == null)
                 return null;
@@ -47,6 +48,28 @@ namespace MyEshop.Application.Utilities.File
             catch
             {
                 return null;
+            }
+        }
+
+        public bool Delete(IEnumerable<Image> images)
+        {
+            try
+            {
+                foreach (var image in images)
+                {
+                    string urlImage = image.UrlImage.Remove(0, 7);
+
+                    string pathFile = Path.Combine(Directory.GetCurrentDirectory(),
+                                                       "wwwroot", "image", urlImage);
+
+                    System.IO.File.Delete(pathFile);
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }

@@ -3,6 +3,7 @@ using Moq;
 using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
+using MyEshop.Application.Utilities.File;
 using MyEshop.Application.ViewModels.Category;
 using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
