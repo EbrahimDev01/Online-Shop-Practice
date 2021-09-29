@@ -13,7 +13,7 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string Compare = "{0} باید با {1} مطابقت داشته باشد";
         public const string ExceptionSave = "مشکلی در ذخیره فایل وجود دارد";
         public const string ExceptionExistCategory = "گروه وارد شده مورد تایید نمی باشد";
-        public const string ExceptionExistTag = "برچسب های وارد شده مورد تایید نمی باشد";
+        public const string ExceptionExistTags = "برچسب های وارد شده مورد تایید نمی باشد";
         public const string ExceptionCommentsDelete = "مشکلی در حذف کامنت های این محصول به وجود آمده";
         public const string ExceptionImagesFind = "مشکلی در یافتن تصاویر این محصول به وجود آمده";
         public const string ExceptionImagesDelete = "مشکلی در حذف تصاویر این محصول به وجود آمده";

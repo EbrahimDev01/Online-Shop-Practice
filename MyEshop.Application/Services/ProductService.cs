@@ -49,7 +49,7 @@ namespace MyEshop.Application.Services
                 resultMethodService.AddError(nameof(createProduct.CategoryId), ErrorMessage.ExceptionExistCategory);
 
             if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
-                resultMethodService.AddError(nameof(createProduct.Tags), ErrorMessage.ExceptionExistTag);
+                resultMethodService.AddError(nameof(createProduct.Tags), ErrorMessage.ExceptionExistTags);
 
             if (!resultMethodService.IsSuccess)
                 return resultMethodService;
