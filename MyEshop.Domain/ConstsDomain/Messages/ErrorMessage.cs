@@ -20,6 +20,7 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string ExceptionProductDelete = "مشکلی در حذف این محصول به وجود آمده";
         public const string ExceptionFileImagesDelete = "مشکلی در حذف فایل های تصاویر این محصول به وجود آمده";
         public const string ExceptionFileImagesType = "نوع فایل ارسالی قابل قبول نمی باشد";
+        public const string ExceptionAvailableImages = "تصاویر انتخاب شده برای حذف قابل قبول نمی باشد";
 
         public static string NotFound(string name) => $"{name} پیدا نشد";
     }
