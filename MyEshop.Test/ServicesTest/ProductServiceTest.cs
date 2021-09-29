@@ -615,6 +615,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionFileImagesType), resultProductEdit.Errors);
         }
+
         [Fact]
         public async Task Test_EditProductAsync_AvailableImages_Is_Not_Accepted()
         {
@@ -650,5 +651,43 @@ namespace MyEshop.Test.ServicesTest
             Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionAvailableImages), resultProductEdit.Errors);
         }
 
+        [Fact]
+        public async Task Test_EditProductAsync_Result_Not_Found_Image()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(new List<Tag>
+               {
+                   new(),
+                   new(),
+                   new(),
+               });
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IFormFile>()))
+                .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<SelectImageToDelete>>(), It.IsAny<int>()))
+                    .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.GetImagesByImageIdsAsync(It.IsAny<Image>())
+                    .ReturnsAsync(false);
+
+
+            var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionImagesFind), resultProductEdit.Errors);
+        }
     }
 }
