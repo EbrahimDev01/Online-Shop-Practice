@@ -19,7 +19,11 @@ namespace MyEshop.Domain.Models
         {
             UrlImage = urlImage;
         }
-
+        public Image(int imageId, string urlImage)
+        {
+            ImageId = imageId;
+            UrlImage = urlImage;
+        }
         public int ImageId { set; get; }
         public string UrlImage { set; get; }
 
