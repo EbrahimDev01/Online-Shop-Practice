@@ -1,4 +1,5 @@
-﻿using MyEshop.Application.Interfaces;
+﻿using MyEshop.Application.ConstApplication.Names;
+using MyEshop.Application.Interfaces;
 using MyEshop.Application.Utilities.File;
 using MyEshop.Application.ViewModels.Image;
 using MyEshop.Application.ViewModels.Product;
@@ -38,39 +39,46 @@ namespace MyEshop.Application.Services
             _fileHandler = fileHandler;
         }
 
-        public async ValueTask<ResultMethodService> CreateProductAsync(ProductCreateViewModel createProduct)
+        public async ValueTask<ResultMethodService> CreateProductAsync(ProductCreateViewModel createProductModel)
         {
             var resultMethodService = new ResultMethodService();
 
-            bool isExistCategory = await _categoryRepository.IsExistCategoryAsync(createProduct.CategoryId);
+            bool isExistCategory = await _categoryRepository.IsExistCategoryAsync(createProductModel.CategoryId);
 
-            var tagIdesSelected = createProduct.Tags.Where(t => t.IsSelected).Select(t => t.Id);
+            var tagIdesSelected = createProductModel.Tags.Where(t => t.IsSelected).Select(t => t.Id);
             var tags = _tagRepository.GetTagsByIds(tagIdesSelected).ToList();
 
+
+            bool fileTypeIsImage = _fileHandler.IsImage(createProductModel.Images);
+
             if (!isExistCategory)
-                resultMethodService.AddError(nameof(createProduct.CategoryId), ErrorMessage.ExceptionExistCategory);
+                resultMethodService.AddError(nameof(createProductModel.CategoryId), ErrorMessage.ExceptionExistCategory);
 
             if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
-                resultMethodService.AddError(nameof(createProduct.Tags), ErrorMessage.ExceptionExistTags);
+                resultMethodService.AddError(nameof(createProductModel.Tags), ErrorMessage.ExceptionExistTags);
+
+            if (!fileTypeIsImage)
+                resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesType);
+
 
             if (!resultMethodService.IsSuccess)
                 return resultMethodService;
 
             var product = new Product
             {
-                CategoryId = createProduct.CategoryId,
+                CategoryId = createProductModel.CategoryId,
                 CreateDateTime = DateTime.Now,
-                Descritption = createProduct.Descritption,
-                Explanation = createProduct.Explanation,
-                Price = createProduct.Price,
-                QuantityInStok = createProduct.QuantityInStok,
-                Title = createProduct.Title,
+                Descritption = createProductModel.Descritption,
+                Explanation = createProductModel.Explanation,
+                Price = createProductModel.Price,
+                QuantityInStok = createProductModel.QuantityInStok,
+                Title = createProductModel.Title,
                 Views = 0,
                 Tags = tags
             };
 
-            if (createProduct?.Images?.Count > 0 && createProduct?.Images?.FirstOrDefault().Length > 0)
-                foreach (var imageItem in createProduct.Images)
+            if (createProductModel?.Images?.Count > 0 && createProductModel?.Images?.FirstOrDefault().Length > 0)
+                foreach (var imageItem in createProductModel.Images)
                 {
                     string resultNameFile = await _fileHandler.CreateAsync(imageItem);
 
@@ -128,7 +136,7 @@ namespace MyEshop.Application.Services
             bool isDeleteImages = await _imageRepository.DeleteImagesAsync(imagesProduct);
 
             if (imagesProduct != null && !isDeleteImages)
-                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionImagesDelete);
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
 
 
             bool isDeleteProduct = await _productRepository.DeleteProductAsync(product);
@@ -143,7 +151,7 @@ namespace MyEshop.Application.Services
 
             if (imagesProductCopy?.Count > 0)
             {
-                bool isDeletFiles = _fileHandler.Delete(imagesProductCopy);
+                bool isDeletFiles = _fileHandler.DeleteImages(imagesProductCopy);
 
                 if (!isDeletFiles)
                     return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
@@ -157,6 +165,98 @@ namespace MyEshop.Application.Services
 
                 return resultMethod;
             }
+        }
+
+        public async ValueTask<ResultMethodService> EditProductAsync(ProductEditViewModel editProductModel)
+        {
+            var resultMethodService = new ResultMethodService();
+
+            var product = await _productRepository.GetProductByIdAsync(editProductModel.ProductId);
+            if (product is null)
+            {
+                resultMethodService.NotFound();
+
+                return resultMethodService;
+            }
+
+            bool isExistCategory = await _categoryRepository.IsExistCategoryAsync(product.CategoryId);
+
+            var tagIdesSelected = editProductModel.Tags.Where(t => t.IsSelected).Select(t => t.Id);
+            var tags = _tagRepository.GetTagsByIds(tagIdesSelected).ToList();
+
+            bool fileTypeIsImage = _fileHandler.IsImage(editProductModel.Images);
+
+            var availableImagesTypeClassImage = editProductModel.AvailableImages
+                .Where(image => image.IsSelected)
+                .Select(image => new Image(image.ImageId, image.UrlImage));
+
+            bool isExistAvailableImages = _imageRepository.IsExistAvailableImages(availableImagesTypeClassImage, editProductModel.ProductId);
+
+            if (!isExistCategory)
+                resultMethodService.AddError(nameof(ProductEditViewModel.CategoryId), ErrorMessage.ExceptionExistCategory);
+
+            if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
+                resultMethodService.AddError(nameof(ProductEditViewModel.Tags), ErrorMessage.ExceptionExistTags);
+
+            if (!fileTypeIsImage)
+                resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesType);
+
+            if (availableImagesTypeClassImage.Any() && !isExistAvailableImages)
+                resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionAvailableImages);
+
+
+            if (!resultMethodService.IsSuccess)
+                return resultMethodService;
+
+            product.CategoryId = editProductModel.CategoryId;
+            product.Title = editProductModel.Title;
+            product.Price = editProductModel.Price;
+            product.QuantityInStok = editProductModel.QuantityInStok;
+            product.Explanation = editProductModel.Explanation;
+            product.Descritption = editProductModel.Descritption;
+
+
+            if (editProductModel?.Images?.Count > 0 && editProductModel?.Images?.FirstOrDefault().Length > 0)
+                foreach (var imageItem in editProductModel.Images)
+                {
+                    string resultNameFile = await _fileHandler.CreateAsync(imageItem);
+
+                    if (resultNameFile == null)
+                    {
+                        _fileHandler.DeleteImages(product.Images);
+
+                        resultMethodService.AddError(nameof(Product.Images), ErrorMessage.ExceptionFileSave);
+
+                        return resultMethodService;
+                    }
+
+                    product.Images.Add(new Image(resultNameFile));
+                }
+
+            if (isExistAvailableImages && availableImagesTypeClassImage.Any())
+                await _imageRepository.DeleteImagesByImageIdsAsync(availableImagesTypeClassImage.Select(image => image.ImageId));
+
+
+            bool isEdit = await _productRepository.EditProductAsync(product);
+            bool isSave = await _productRepository.SaveAsync();
+
+            if (isEdit)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionEditProduct("محصول"));
+            }
+            if (isSave)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
+            }
+
+            if (isSave || isEdit)
+                return resultMethodService;
+
+            if (isExistAvailableImages && availableImagesTypeClassImage.Any())
+                _fileHandler.DeleteImages(availableImagesTypeClassImage);
+
+            return resultMethodService;
+
         }
 
         public IAsyncEnumerable<PreviewAdminProductViewModel> GetAllPreviewAdminProductsAsync()
