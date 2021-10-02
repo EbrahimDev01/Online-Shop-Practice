@@ -283,9 +283,13 @@ namespace MyEshop.Test.ControllersTest.Admin
         {
             _productController.ModelState.AddModelError("", "");
 
+            _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
+                .ReturnsAsync(new ResultMethodService());
+
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as ViewResult;
 
             Assert.NotNull(resultProductEdit);
+            _productController.ModelState.Clear();
         }
 
         [Fact]
@@ -297,7 +301,12 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
                 .ReturnsAsync(resultMethodService);
 
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new ProductEditViewModel());
+
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as ViewResult;
+
+
 
             Assert.NotNull(resultProductEdit);
             Assert.False(_productController.ModelState.IsValid);
@@ -314,7 +323,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as RedirectToActionResult;
 
             Assert.NotNull(resultProductEdit);
-            Assert.Equal(nameof(ProductManagerController.Index),resultProductEdit.ActionName);
+            Assert.Equal(nameof(ProductManagerController.Index), resultProductEdit.ActionName);
         }
     }
 }
