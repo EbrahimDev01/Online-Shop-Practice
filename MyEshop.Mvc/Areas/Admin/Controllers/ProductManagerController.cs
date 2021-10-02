@@ -130,7 +130,10 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             if (id != productModel.ProductId)
                 return NotFound();
 
-            var resultEditProduct =await _productService.EditProductAsync(productModel);
+            if (!ModelState.IsValid)
+                return View();
+
+            var resultEditProduct = await _productService.EditProductAsync(productModel);
 
             if (resultEditProduct.IsSuccess)
                 return RedirectToAction(nameof(ProductManagerController.Index));
