@@ -755,7 +755,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultProductEdit.IsNotFound);
             Assert.False(resultProductEdit.IsSuccess);
             Assert.Single(resultProductEdit.Errors);
-            Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionImagesDelete), resultProductEdit.Errors);
+            Assert.Contains(new ErrorResultMethodService(DisplayNames.Image, ErrorMessage.ExceptionFileImagesDelete), resultProductEdit.Errors);
         }
 
         [Fact]
