@@ -67,7 +67,7 @@ namespace MyEshop.Test.UtilitiesTest.File
         [Fact]
         public void Test_File_Delete_Result_null()
         {
-            bool isFileDeleted = _fileHandler.Delete(new List<Image>());
+            bool isFileDeleted = _fileHandler.DeleteImages(new List<Image>());
 
             Assert.True(isFileDeleted);
         }
@@ -97,7 +97,7 @@ namespace MyEshop.Test.UtilitiesTest.File
                 }
             };
 
-            bool isFileDeleted = _fileHandler.Delete(images);
+            bool isFileDeleted = _fileHandler.DeleteImages(images);
 
 
             bool isExist = System.IO.File.Exists(images.FirstOrDefault().UrlImage);

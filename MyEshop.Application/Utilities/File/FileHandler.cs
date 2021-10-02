@@ -58,7 +58,7 @@ namespace MyEshop.Application.Utilities.File
             }
         }
 
-        public bool Delete(IEnumerable<Domain.Models.Image> images)
+        public bool DeleteImages(IEnumerable<Domain.Models.Image> images)
         {
             try
             {

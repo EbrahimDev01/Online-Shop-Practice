@@ -9,7 +9,7 @@ namespace MyEshop.Application.Utilities.File
     {
         public ValueTask<string> CreateAsync(IFormFile formFile, string newPath = null);
 
-        public bool Delete(IEnumerable<Image> images);
+        public bool DeleteImages(IEnumerable<Image> images);
 
         public bool IsImage(IEnumerable<IFormFile> formFiles);
     }
