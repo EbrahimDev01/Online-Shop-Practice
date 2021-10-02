@@ -48,6 +48,20 @@ namespace MyEshop.Data.Repositories
         public bool IsExistAvailableImages(IEnumerable<Image> images, int productId)
             => images.All(image => _dbContext.Images.Any(imagedb =>
                      image.ProductId == productId && imagedb.ImageId == image.ImageId && imagedb.UrlImage == image.UrlImage));
+        public async ValueTask<bool> DeleteImagesByImageIdsAsync(IEnumerable<int> imageIds)
+        {
+            try
+            {
+                var images = GetImagesByImageIds(imageIds);
+
+
+                return await DeleteImagesAsync(images);
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
     }
 }
