@@ -38,9 +38,11 @@
                 <span asp-validation-for="QuantityInStok" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId">
                     <partial name="_SelectOptionsCategoryPartialView" model="Model.Categories" />
                 </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Tags" class="control-label"></label>
@@ -54,6 +56,8 @@
                         برچسب موجد نیست
                     </span>
                 }
+                <span asp-validation-for="Tags" class="text-danger"></span>
+
             </div>
 
             <div class="form-group">
