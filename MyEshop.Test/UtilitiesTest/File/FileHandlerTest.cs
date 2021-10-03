@@ -13,16 +13,17 @@ namespace MyEshop.Test.UtilitiesTest.File
 {
     public class FileHandlerTest
     {
+
         private readonly IFileHandler _fileHandler;
 
-        public FileHandlerTest(IFileHandler fileHandler)
+        public FileHandlerTest()
         {
-            _fileHandler = fileHandler;
+            _fileHandler = new FileHandler();
         }
 
 
         #region test create file
-        
+
         [Fact]
         public async Task Test_CreateAsync_Result_null()
         {
@@ -34,7 +35,7 @@ namespace MyEshop.Test.UtilitiesTest.File
         [Fact]
         public async Task Test_FileCreate_CreateAsync_Result_new_Name_and_Create_File()
         {
-
+            
             using var stream = System.IO.File.OpenRead(@"D:\ebrahim\wallpapers\download.jpg");
 
             var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
@@ -61,7 +62,7 @@ namespace MyEshop.Test.UtilitiesTest.File
         }
 
         #endregion
-        
+
         #region test file delete
 
         [Fact]
@@ -104,7 +105,7 @@ namespace MyEshop.Test.UtilitiesTest.File
 
             Assert.False(isExist);
         }
-        
+
         #endregion
 
         #region Test is image
