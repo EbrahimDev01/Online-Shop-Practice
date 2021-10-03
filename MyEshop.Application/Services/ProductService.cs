@@ -52,14 +52,19 @@ namespace MyEshop.Application.Services
             bool fileTypeIsImage = _fileHandler.IsImage(createProductModel.Images);
 
             if (!isExistCategory)
+            {
                 resultMethodService.AddError(nameof(createProductModel.CategoryId), ErrorMessage.ExceptionExistCategory);
+            }
 
             if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
+            {
                 resultMethodService.AddError(nameof(createProductModel.Tags), ErrorMessage.ExceptionExistTags);
+            }
 
             if (!fileTypeIsImage)
+            {
                 resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesType);
-
+            }
 
             if (!resultMethodService.IsSuccess)
                 return resultMethodService;
@@ -78,6 +83,7 @@ namespace MyEshop.Application.Services
             };
 
             if (createProductModel?.Images?.Count > 0 && createProductModel?.Images?.FirstOrDefault().Length > 0)
+            {
                 foreach (var imageItem in createProductModel.Images)
                 {
                     string resultNameFile = await _fileHandler.CreateAsync(imageItem);
@@ -91,14 +97,23 @@ namespace MyEshop.Application.Services
 
                     product.Images.Add(new Image(resultNameFile));
                 }
+            }
 
             bool isCreate = await _productRepository.CreateProductAsync(product);
+            if (!isCreate)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionProductCreate("محصول"));
+
+                return resultMethodService;
+            }
+
             bool isSave = await _productRepository.SaveAsync();
+            if (!isSave)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
 
-            resultMethodService.IsSuccess = isCreate && isSave;
-
-            if (!isCreate && !isSave)
-                resultMethodService.AddError("", ErrorMessage.ExceptionSave);
+                return resultMethodService;
+            }
 
             return resultMethodService;
         }
@@ -118,10 +133,12 @@ namespace MyEshop.Application.Services
             bool isDeleteComments = _commentRepository.DeleteCommentsByProductId(productId);
 
             if (!isDeleteComments)
+            {
                 return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionCommentsDelete);
+            }
+
 
             IEnumerable<Image> imagesProduct;
-
             try
             {
                 imagesProduct = _imageRepository.GetImagesProductByProductId(productId);
@@ -136,25 +153,32 @@ namespace MyEshop.Application.Services
             bool isDeleteImages = await _imageRepository.DeleteImagesAsync(imagesProduct);
 
             if (imagesProduct != null && !isDeleteImages)
-                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
-
+            {
+                return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionImagesDeletse);
+            }
 
             bool isDeleteProduct = await _productRepository.DeleteProductAsync(product);
 
             if (!isDeleteProduct)
+            {
                 return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionProductDelete);
+            }
 
             bool isSave = await _productRepository.SaveAsync();
 
             if (!isSave)
+            {
                 return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionSave);
+            }
 
             if (imagesProductCopy?.Count > 0)
             {
                 bool isDeletFiles = _fileHandler.DeleteImages(imagesProductCopy);
 
                 if (!isDeletFiles)
+                {
                     return ReturnMethodWithErrorMessage(ErrorMessage.ExceptionFileImagesDelete);
+                }
             }
 
             return resultMethod;
@@ -193,20 +217,29 @@ namespace MyEshop.Application.Services
             bool isExistAvailableImages = _imageRepository.IsExistAvailableImages(availableImagesTypeClassImage, editProductModel.ProductId);
 
             if (!isExistCategory)
+            {
                 resultMethodService.AddError(nameof(ProductEditViewModel.CategoryId), ErrorMessage.ExceptionExistCategory);
+            }
 
             if (tagIdesSelected?.Count() > 0 && tags?.Count <= 0)
+            {
                 resultMethodService.AddError(nameof(ProductEditViewModel.Tags), ErrorMessage.ExceptionExistTags);
+            }
 
             if (!fileTypeIsImage)
+            {
                 resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesType);
+            }
 
             if (availableImagesTypeClassImage.Any() && !isExistAvailableImages)
+            {
                 resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionAvailableImages);
-
+            }
 
             if (!resultMethodService.IsSuccess)
+            {
                 return resultMethodService;
+            }
 
             product.CategoryId = editProductModel.CategoryId;
             product.Title = editProductModel.Title;
@@ -217,6 +250,7 @@ namespace MyEshop.Application.Services
 
 
             if (editProductModel?.Images?.Count > 0 && editProductModel?.Images?.FirstOrDefault().Length > 0)
+            {
                 foreach (var imageItem in editProductModel.Images)
                 {
                     string resultNameFile = await _fileHandler.CreateAsync(imageItem);
@@ -232,31 +266,38 @@ namespace MyEshop.Application.Services
 
                     product.Images.Add(new Image(resultNameFile));
                 }
+            }
 
             if (isExistAvailableImages && availableImagesTypeClassImage.Any())
+            {
                 await _imageRepository.DeleteImagesByImageIdsAsync(availableImagesTypeClassImage.Select(image => image.ImageId));
-
+            }
 
             bool isEdit = await _productRepository.EditProductAsync(product);
-            bool isSave = await _productRepository.SaveAsync();
-
-            if (isEdit)
+            if (!isEdit)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionEditProduct("محصول"));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionProductEdit("محصول"));
+
+                return resultMethodService;
             }
-            if (isSave)
+
+            bool isSave = await _productRepository.SaveAsync();
+            if (!isSave)
             {
                 resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
+
+                return resultMethodService;
             }
 
-            if (isSave || isEdit)
-                return resultMethodService;
-
             if (isExistAvailableImages && availableImagesTypeClassImage.Any())
-                _fileHandler.DeleteImages(availableImagesTypeClassImage);
+            {
+                bool isDeleteImages = _fileHandler.DeleteImages(availableImagesTypeClassImage);
+
+                if (!isDeleteImages)
+                    resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesDelete);
+            }
 
             return resultMethodService;
-
         }
 
         public IAsyncEnumerable<PreviewAdminProductViewModel> GetAllPreviewAdminProductsAsync()
