@@ -23,7 +23,8 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string ExceptionFileImagesType = "نوع فایل ارسالی قابل قبول نمی باشد";
         public const string ExceptionAvailableImages = "تصاویر انتخاب شده برای حذف قابل قبول نمی باشد";
 
-        public static string ExceptionEditProduct(string name) => $"در حذف {name} مشکلی به وجود آمده";
+        public static string ExceptionProductEdit(string name) => $"در حذف {name} مشکلی به وجود آمده";
+        public static string ExceptionProductCreate(string name) => $"در ساخت {name} مشکلی به وجود آمده";
         public static string NotFound(string name) => $"{name} پیدا نشد";
     }
 }
