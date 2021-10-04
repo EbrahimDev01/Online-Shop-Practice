@@ -128,27 +128,29 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(ProductEditViewModel productModel, int id)
         {
             if (id != productModel.ProductId)
+            {
                 return NotFound();
+            }
 
-            if (!ModelState.IsValid)
-                return View();
+            if (ModelState.IsValid)
+            {
+                var resultEditProduct = await _productService.EditProductAsync(productModel);
 
-            var resultEditProduct = await _productService.EditProductAsync(productModel);
+                if (resultEditProduct.IsSuccess)
+                    return RedirectToAction(nameof(ProductManagerController.Index));
 
-            if (resultEditProduct.IsSuccess)
-                return RedirectToAction(nameof(ProductManagerController.Index));
+                if (resultEditProduct.IsNotFound)
+                    return NotFound();
 
-            if (resultEditProduct.IsNotFound)
-                return NotFound();
+                foreach (var error in resultEditProduct.Errors)
+                    ModelState.AddModelError(error.Title, error.Message);
+            }
 
-            foreach (var error in resultEditProduct.Errors)
-                ModelState.AddModelError(error.Title, error.Message);
+            productModel = await _productService.GetProductEditDetailsByProductIdAsync(productModel.ProductId);
 
-            var product = await _productService.GetProductEditDetailsByProductIdAsync(productModel.ProductId);
+            if (productModel is null) return NotFound();
 
-            if (product is null) return NotFound();
-
-            return View();
+            return View(productModel);
         }
 
         #endregion
