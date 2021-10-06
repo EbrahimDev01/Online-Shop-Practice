@@ -25,12 +25,20 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async Task Test_Index_Result_Contains_Value()
         {
+            _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
+                .ReturnsAsync(new List<TagViewModel>
+                {
+                    new()
+                }
+                .ToAsyncEnumerable());
+
             var resultProductIndex = _tagManagerController.Index() as ViewResult;
 
-            var resultProductIndexModel = resultProductIndex.Model as IEnumerable<TagViewModel>;
+            var resultProductIndexModel = resultProductIndex.Model as IAsyncEnumerable<TagViewModel>;
 
             Assert.NotNull(resultProductIndex);
             Assert.NotNull(resultProductIndexModel);
+            Assert.Single(resultProductIndexModel.ToEnumerable());
         }
     }
 }
