@@ -27,7 +27,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         {
             var resultProductIndex = _tagManagerController.Index() as ViewResult;
 
-            var resultProductIndexModel = resultProductIndex.Model as TagViewModel;
+            var resultProductIndexModel = resultProductIndex.Model as IEnumerable<TagViewModel>;
 
             Assert.NotNull(resultProductIndex);
             Assert.NotNull(resultProductIndexModel);
