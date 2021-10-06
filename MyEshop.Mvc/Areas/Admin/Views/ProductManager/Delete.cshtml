@@ -16,7 +16,7 @@
         @Html.DisplayNameFor(model => model.UrlImages)
     </div>
     <div id="carouselExampleIndicators" class="carousel slide mb-4" data-ride="carousel">
-        @if (!Model.UrlImages.Any())
+        @if (Model.UrlImages.Any())
         {
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -58,11 +58,10 @@
         }
         else
         {
-    <span>
+            <span>
                 تصویری ثبت نشده
-    </span>
+            </span>
         }
-
     </div>
 
     <dl class="row">
