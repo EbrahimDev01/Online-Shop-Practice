@@ -21,6 +21,8 @@ namespace MyEshop.Domain.Interfaces
 
         public ValueTask<bool> DeleteProductAsync(Product product);
 
+        public ValueTask<bool> DeleteTagsProductByProductIdAsync(int productId);
+
         public ValueTask<bool> SaveAsync();
     }
 }

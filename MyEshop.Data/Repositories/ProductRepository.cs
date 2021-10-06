@@ -1,4 +1,5 @@
-﻿using MyEshop.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MyEshop.Data.Context;
 using MyEshop.Domain.Interfaces;
 using MyEshop.Domain.Models;
 using System;
@@ -82,6 +83,25 @@ namespace MyEshop.Data.Repositories
             try
             {
                 await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async ValueTask<bool> DeleteTagsProductByProductIdAsync(int productId)
+        {
+            try
+            {
+                var product = await _dbContext.Products
+                .Where(product => product.ProductId == productId)
+                .Include(product => product.Tags)
+                .FirstOrDefaultAsync();
+
+                product.Tags = null;
 
                 return true;
             }
