@@ -34,7 +34,7 @@ namespace MyEshop.Data.Repositories
         }
 
         public async ValueTask<string> GetFirstImageUrlProductByProductIdAsync(int productId)
-            => (await _dbContext.Images.FirstOrDefaultAsync(image => image.ProductId == productId)).UrlImage;
+            => (await _dbContext.Images.FirstOrDefaultAsync(image => image.ProductId == productId))?.UrlImage;
 
         public IEnumerable<Image> GetImagesByImageIds(IEnumerable<int> imageIds)
         {
