@@ -35,6 +35,7 @@ namespace MyEshop.Application.ViewModels.Product
             Explanation = product.Explanation;
             Price = (int)product.Price;
             QuantityInStok = product.QuantityInStok;
+            CategoryId = product.CategoryId;
         }
 
         [Display(Name = DisplayNames.Title)]
@@ -54,15 +55,18 @@ namespace MyEshop.Application.ViewModels.Product
         public string Explanation { get; set; }
 
         [Display(Name = DisplayNames.Price)]
+        [Range(1, 2147483647, ErrorMessage = ErrorMessage.RangeNumber)]
         public int Price { set; get; }
 
         [Display(Name = DisplayNames.QuantityInStok)]
+        [Range(1, 2147483647, ErrorMessage = ErrorMessage.RangeNumber)]
         public int QuantityInStok { set; get; }
 
         #region Relations
 
         [Display(Name = DisplayNames.SelectCategory)]
         [Required(ErrorMessage = ErrorMessage.Required)]
+        [Range(1, 2147483647, ErrorMessage = ErrorMessage.ExceptionExistCategory)]
         public int CategoryId { get; set; }
 
         public virtual IAsyncEnumerable<CategoryViewModel> Categories { set; get; }
