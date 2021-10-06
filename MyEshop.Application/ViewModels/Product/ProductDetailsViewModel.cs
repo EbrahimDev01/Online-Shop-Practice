@@ -67,7 +67,7 @@ namespace MyEshop.Application.ViewModels.Product
         [Display(Name = DisplayNames.Views)]
         public string Views { set; get; }
 
-        [Display(Name = DisplayNames.Views)]
+        [Display(Name = DisplayNames.CommentCount)]
         public string CommentCount { set; get; }
 
         #region Relations
