@@ -216,6 +216,9 @@ namespace MyEshop.Application.Services
 
             bool isExistAvailableImages = _imageRepository.IsExistAvailableImages(availableImagesTypeClassImage, editProductModel.ProductId);
 
+            var isDeleteTags = await _productRepository.DeleteTagsProductByProductIdAsync(product.ProductId);
+
+
             if (!isExistCategory)
             {
                 resultMethodService.AddError(nameof(ProductEditViewModel.CategoryId), ErrorMessage.ExceptionExistCategory);
@@ -236,10 +239,16 @@ namespace MyEshop.Application.Services
                 resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionAvailableImages);
             }
 
+            if (!isDeleteTags)
+            {
+                resultMethodService.AddError(nameof(ProductEditViewModel.Tags), ErrorMessage.ExceptionTagsDelete);
+            }
+
             if (!resultMethodService.IsSuccess)
             {
                 return resultMethodService;
             }
+
 
             product.CategoryId = editProductModel.CategoryId;
             product.Title = editProductModel.Title;
@@ -247,7 +256,7 @@ namespace MyEshop.Application.Services
             product.QuantityInStok = editProductModel.QuantityInStok;
             product.Explanation = editProductModel.Explanation;
             product.Descritption = editProductModel.Descritption;
-
+            product.Tags = tags;
 
             if (editProductModel?.Images?.Count > 0 && editProductModel?.Images?.FirstOrDefault().Length > 0)
             {
