@@ -9,7 +9,7 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string StringLength = "{0}" + " باید کمتر از " + "{1}" + " و بیشتر از " + "{2}" + " کارکتر باشد";
         public const string SuccessFormat = "{0} مورد تایید نمی باشد";
         public const string IsExist = "{0} وارد شده از قبل موجود است";
-        public const string RangeNumber = "عدد وارد شده باید {0} رقمی باشد";
+        public const string RangeNumber = "{0} وارد شده باید بیشتر از {1} و کمتر از {2} باشد";
         public const string Compare = "{0} باید با {1} مطابقت داشته باشد";
         public const string ExceptionSave = "مشکلی در ذخیره وجود دارد";
         public const string ExceptionFileSave = "مشکلی در ذخیره فایل وجود دارد";
@@ -22,6 +22,7 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string ExceptionFileImagesDelete = "مشکلی در حذف فایل های تصاویر این محصول به وجود آمده";
         public const string ExceptionFileImagesType = "نوع فایل ارسالی قابل قبول نمی باشد";
         public const string ExceptionAvailableImages = "تصاویر انتخاب شده برای حذف قابل قبول نمی باشد";
+        public const string ExceptionTagsDelete = "مشکلی در حذف این برچسب ها به وجود آمده";
 
         public static string ExceptionProductEdit(string name) => $"در حذف {name} مشکلی به وجود آمده";
         public static string ExceptionProductCreate(string name) => $"در ساخت {name} مشکلی به وجود آمده";
