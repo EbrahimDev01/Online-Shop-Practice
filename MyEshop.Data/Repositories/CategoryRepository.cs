@@ -27,9 +27,5 @@ namespace MyEshop.Data.Repositories
 
         public Task<bool> IsExistCategoryAsync(int id) => _dbContext.Categories.AnyAsync(c => c.CategoryId == id);
 
-        public IAsyncEnumerable<Category> GetCategoryByIdAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
