@@ -36,10 +36,24 @@ namespace MyEshop.Test.ServicesTest
 
             _mockTagRepository.Setup(mtr => mtr.GetTagsAsync()).Returns(tagsList);
 
-            var tags =await _tagService.GetTagsForSelectAsync();
+            var tags = await _tagService.GetTagsForSelectAsync();
 
             Assert.NotNull(tags);
             Assert.IsAssignableFrom<IList<TagForSelect>>(tags);
+        }
+
+        [Fact]
+        public async Task Test_GetAllTags_Result_List_Empty()
+        {
+            var tagsList = new List<Tag>().ToAsyncEnumerable();
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetAllTagsAsync()).Returns(tagsList);
+
+            var tags = await _tagService.GetAllTagsAsync();
+
+            Assert.NotNull(tags);
+            Assert.IsAssignableFrom<IAsyncEnumerable<TagViewModel>>(tags);
+            Assert.Empty(tags);
         }
     }
 }
