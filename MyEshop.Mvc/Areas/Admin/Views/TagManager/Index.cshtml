@@ -1,0 +1,51 @@
+﻿@model IAsyncEnumerable<TagViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @DisplayNames.Title
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @await foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <a class="btn btn-info"
+                       asp-action="Details"
+                       asp-route-id="@item.Id">
+                        جزئیات
+                    </a> |
+
+                    <a class="btn btn-warning"
+                       asp-action="Edit"
+                       asp-route-id="@item.Id">
+                        ویرایش
+                    </a> |
+
+                    <a class="btn btn-danger"
+                       asp-action="Delete"
+                       asp-route-id="@item.Id">
+                        حذف
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
