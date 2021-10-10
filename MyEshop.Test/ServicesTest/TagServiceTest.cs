@@ -43,30 +43,30 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public async Task Test_GetAllTags_Result_List_Empty()
+        public void Test_GetAllTags_Result_List_Empty()
         {
             var tagsList = new List<Tag>().ToAsyncEnumerable();
 
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetAllTagsAsync()).Returns(tagsList);
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagsAsync()).Returns(tagsList);
 
-            var tags = await _tagService.GetAllTagsAsync();
+            var tags = _tagService.GetAllTagsAsync().ToEnumerable();
 
             Assert.NotNull(tags);
-            Assert.IsAssignableFrom<IAsyncEnumerable<TagViewModel>>(tags);
+            Assert.IsAssignableFrom<IEnumerable<TagViewModel>>(tags);
             Assert.Empty(tags);
         }
 
         [Fact]
-        public async Task Test_GetAllTags_Result_Single_Item_List()
+        public void Test_GetAllTags_Result_Single_Item_List()
         {
             var tagsList = new List<Tag> { new() }.ToAsyncEnumerable();
 
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetAllTagsAsync()).Returns(tagsList);
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagsAsync()).Returns(tagsList);
 
-            var tags = await _tagService.GetAllTagsAsync();
+            var tags = _tagService.GetAllTagsAsync().ToEnumerable();
 
             Assert.NotNull(tags);
-            Assert.IsAssignableFrom<IAsyncEnumerable<TagViewModel>>(tags);
+            Assert.IsAssignableFrom<IEnumerable<TagViewModel>>(tags);
             Assert.Single(tags);
         }
     }
