@@ -18,6 +18,9 @@ namespace MyEshop.Application.Services
             _tagRepository = tagRepository;
         }
 
+        public IAsyncEnumerable<TagViewModel> GetAllTagsAsync()
+            => _tagRepository.GetTagsAsync().Select(tag => new TagViewModel(tag));
+
         public async ValueTask<IList<TagForSelect>> GetTagsForSelectAsync()
             => await _tagRepository.GetTagsAsync().Select(t => new TagForSelect(t)).ToListAsync();
     }

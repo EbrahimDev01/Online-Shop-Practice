@@ -10,5 +10,7 @@ namespace MyEshop.Application.Interfaces
     public interface ITagService
     {
         public ValueTask<IList<TagForSelect>> GetTagsForSelectAsync();
+
+        public IAsyncEnumerable<TagViewModel> GetAllTagsAsync();
     }
 }
