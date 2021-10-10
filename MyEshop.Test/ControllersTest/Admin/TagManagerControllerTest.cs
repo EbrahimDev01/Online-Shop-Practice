@@ -27,7 +27,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async Task Test_Index_Result_Contains_Value()
         {
             _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
-                .ReturnsAsync(new List<TagViewModel>
+                .Returns(new List<TagViewModel>
                 {
                     new()
                 }
@@ -46,7 +46,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async Task Test_Index_Result_List_Is_Empty()
         {
             _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
-                .ReturnsAsync(new List<TagViewModel>().ToAsyncEnumerable());
+                .Returns(new List<TagViewModel>().ToAsyncEnumerable());
 
             var resultProductIndex = await _tagManagerController.Index() as ViewResult;
 
