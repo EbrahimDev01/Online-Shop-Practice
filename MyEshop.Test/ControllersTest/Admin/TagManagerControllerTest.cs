@@ -32,13 +32,28 @@ namespace MyEshop.Test.ControllersTest.Admin
                 }
                 .ToAsyncEnumerable());
 
-            var resultProductIndex = _tagManagerController.Index() as ViewResult;
+            var resultProductIndex = await _tagManagerController.Index() as ViewResult;
 
             var resultProductIndexModel = resultProductIndex.Model as IAsyncEnumerable<TagViewModel>;
 
             Assert.NotNull(resultProductIndex);
             Assert.NotNull(resultProductIndexModel);
             Assert.Single(resultProductIndexModel.ToEnumerable());
+        }
+
+        [Fact]
+        public async Task Test_Index_Result_List_Is_Empty()
+        {
+            _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
+                .ReturnsAsync(new List<TagViewModel>().ToAsyncEnumerable());
+
+            var resultProductIndex = await _tagManagerController.Index() as ViewResult;
+
+            var resultProductIndexModel = resultProductIndex.Model as IAsyncEnumerable<TagViewModel>;
+
+            Assert.NotNull(resultProductIndex);
+            Assert.NotNull(resultProductIndexModel);
+            Assert.Empty(resultProductIndexModel.ToEnumerable());
         }
     }
 }
