@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyEshop.Mvc.Areas.Admin.Controllers
 {
+    [Area(nameof(Admin))]
     public class TagManagerController : Controller
     {
         private readonly ITagService _tagService;
