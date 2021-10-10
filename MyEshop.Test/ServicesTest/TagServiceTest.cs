@@ -55,5 +55,19 @@ namespace MyEshop.Test.ServicesTest
             Assert.IsAssignableFrom<IAsyncEnumerable<TagViewModel>>(tags);
             Assert.Empty(tags);
         }
+
+        [Fact]
+        public async Task Test_GetAllTags_Result_Single_Item_List()
+        {
+            var tagsList = new List<Tag> { new() }.ToAsyncEnumerable();
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetAllTagsAsync()).Returns(tagsList);
+
+            var tags = await _tagService.GetAllTagsAsync();
+
+            Assert.NotNull(tags);
+            Assert.IsAssignableFrom<IAsyncEnumerable<TagViewModel>>(tags);
+            Assert.Single(tags);
+        }
     }
 }
