@@ -15,5 +15,11 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         {
             _tagService = tagService;
         }
+
+        public IActionResult Index()
+        {
+            var tags = _tagService.GetAllTagsAsync();
+            return View(tags);
+        }
     }
 }
