@@ -58,5 +58,13 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.Empty(resultProductIndexModel.ToEnumerable());
         }
 
+        [Fact]
+        public void Test_Create_View_Result_Return_View()
+        {
+            var resultTagCreate = _tagManagerController.Create() as ViewResult;
+
+            Assert.NotNull(resultTagCreate);
+            Assert.IsType<TagCreateViewModel>(resultTagCreate);
+        }
     }
 }
