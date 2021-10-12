@@ -22,5 +22,12 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             var tags = _tagService.GetAllTagsAsync();
             return View(tags);
         }
+
+        #region Creatae
+
+        public IActionResult Create() => View();
+
+        #endregion
+
     }
 }
