@@ -286,6 +286,9 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockProductService.Setup(productService => productService.EditProductAsync(It.IsAny<ProductEditViewModel>()))
                 .ReturnsAsync(new ResultMethodService());
 
+            _mockProductService.Setup(productService => productService.GetProductEditDetailsByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new ProductEditViewModel());
+
             var resultProductEdit = await _productController.Edit(new ProductEditViewModel(), It.IsAny<int>()) as ViewResult;
 
             Assert.NotNull(resultProductEdit);
