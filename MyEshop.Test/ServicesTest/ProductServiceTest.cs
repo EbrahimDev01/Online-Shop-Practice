@@ -389,7 +389,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
-                .ReturnsAsync(false); 
+                .ReturnsAsync(false);
 
             _mockProductRepository.Setup(productRepository => productRepository.DeleteProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(true);
@@ -608,6 +608,10 @@ namespace MyEshop.Test.ServicesTest
                 imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
             Assert.NotNull(resultProductEdit);
@@ -637,6 +641,10 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository.Setup(imageRepository =>
                 imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
 
             var productEdit = new ProductEditViewModel()
             {
@@ -678,6 +686,9 @@ namespace MyEshop.Test.ServicesTest
                 imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(true);
 
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
 
             var resultProductEdit = await _productService.EditProductAsync(new ProductEditViewModel());
 
@@ -713,6 +724,10 @@ namespace MyEshop.Test.ServicesTest
             _mockImageRepository.Setup(imageRepository =>
                 imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
                     .Returns(false);
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
 
             var productEdit = new ProductEditViewModel()
             {
@@ -763,6 +778,11 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.SaveAsync())
+                .ReturnsAsync(true);
+
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
 
@@ -820,6 +840,9 @@ namespace MyEshop.Test.ServicesTest
                  imageRepository.DeleteImagesAsync(It.IsAny<IEnumerable<Image>>()))
                      .ReturnsAsync(true);
 
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
 
             _mockProductRepository.Setup(productRepository => productRepository.EditProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(false);
@@ -853,6 +876,11 @@ namespace MyEshop.Test.ServicesTest
                    new(),
                    new(),
                });
+
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
 
             _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
                 .Returns(true);
@@ -898,6 +926,10 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(new Product());
 
             _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(true);
 
             _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
