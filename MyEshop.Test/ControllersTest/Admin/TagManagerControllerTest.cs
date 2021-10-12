@@ -2,6 +2,7 @@
 using Moq;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.ViewModels.Tag;
+using MyEshop.Mvc.Areas.Admin.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,11 @@ namespace MyEshop.Test.ControllersTest.Admin
         {
             _mockTagService = new Mock<ITagService>();
 
-            _tagManager = new TagManagerController(_mockTagService.Object);
+            _tagManagerController = new TagManagerController(_mockTagService.Object);
         }
 
         [Fact]
-        public async Task Test_Index_Result_Contains_Value()
+        public void Test_Index_Result_Contains_Value()
         {
             _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
                 .Returns(new List<TagViewModel>
@@ -33,7 +34,7 @@ namespace MyEshop.Test.ControllersTest.Admin
                 }
                 .ToAsyncEnumerable());
 
-            var resultProductIndex = await _tagManagerController.Index() as ViewResult;
+            var resultProductIndex = _tagManagerController.Index() as ViewResult;
 
             var resultProductIndexModel = resultProductIndex.Model as IAsyncEnumerable<TagViewModel>;
 
@@ -43,12 +44,12 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public async Task Test_Index_Result_List_Is_Empty()
+        public void Test_Index_Result_List_Is_Empty()
         {
             _mockTagService.Setup(tagService => tagService.GetAllTagsAsync())
                 .Returns(new List<TagViewModel>().ToAsyncEnumerable());
 
-            var resultProductIndex = await _tagManagerController.Index() as ViewResult;
+            var resultProductIndex = _tagManagerController.Index() as ViewResult;
 
             var resultProductIndexModel = resultProductIndex.Model as IAsyncEnumerable<TagViewModel>;
 
@@ -56,5 +57,6 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultProductIndexModel);
             Assert.Empty(resultProductIndexModel.ToEnumerable());
         }
+
     }
 }
