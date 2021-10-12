@@ -803,6 +803,52 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
+        public async Task Test_EditProductAsync_Result_Can_Not_Delete_Tags_Product()
+        {
+            _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Product());
+
+            _mockCategoryRepository.Setup(categoryRepository => categoryRepository.IsExistCategoryAsync(It.IsAny<int>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(mpr => mpr.GetTagsByIds(It.IsAny<IEnumerable<int>>()))
+               .Returns(new List<Tag>
+               {
+                   new(),
+                   new(),
+                   new(),
+               });
+
+            _mockFileHandler.Setup(fileHandler => fileHandler.IsImage(It.IsAny<IEnumerable<IFormFile>>()))
+                .Returns(true);
+
+            _mockImageRepository.Setup(imageRepository =>
+                imageRepository.IsExistAvailableImages(It.IsAny<IEnumerable<Image>>(), It.IsAny<int>()))
+                    .Returns(true);
+
+            _mockProductRepository.Setup(productRepository =>
+                productRepository.DeleteTagsProductByProductIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(false);
+
+
+            var productEdit = new ProductEditViewModel()
+            {
+                AvailableImages = new List<SelectImageToDelete>() { new() { ImageId = 1, UrlImage = "", IsSelected = true } }
+            };
+
+            var resultProductEdit = await _productService.EditProductAsync(productEdit);
+
+            Assert.NotNull(resultProductEdit);
+            Assert.IsType<ResultMethodService>(resultProductEdit);
+            Assert.False(resultProductEdit.IsNotFound);
+            Assert.False(resultProductEdit.IsSuccess);
+            Assert.Single(resultProductEdit.Errors);
+            Assert.Contains(resultProductEdit.Errors,
+                error => error.Title == nameof(ProductEditViewModel.Tags) && error.Message == ErrorMessage.ExceptionTagsDelete);
+        }
+
+
+        [Fact]
         public async Task Test_EditProductAsync_Result_Can_Not_Edit()
         {
             _mockProductRepository.Setup(productRepository => productRepository.GetProductByIdAsync(It.IsAny<int>()))
