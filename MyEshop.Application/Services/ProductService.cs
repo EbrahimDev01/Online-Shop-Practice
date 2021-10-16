@@ -173,7 +173,8 @@ namespace MyEshop.Application.Services
 
             if (imagesProductCopy?.Count > 0)
             {
-                bool isDeletFiles = _fileHandler.DeleteImages(imagesProductCopy);
+                var filesPath = imagesProductCopy.Select(image => _fileHandler.CombinePahtAndNameFile(image.NameImage));
+                bool isDeletFiles = _fileHandler.DeleteImages(filesPath);
 
                 if (!isDeletFiles)
                 {
@@ -266,7 +267,9 @@ namespace MyEshop.Application.Services
 
                     if (resultNameFile == null)
                     {
-                        _fileHandler.DeleteImages(product.Images);
+                        var filesPath = product.Images.Select(image => _fileHandler.CombinePahtAndNameFile(image.NameImage));
+
+                        _fileHandler.DeleteImages(filesPath);
 
                         resultMethodService.AddError(nameof(Product.Images), ErrorMessage.ExceptionFileSave);
 
@@ -300,7 +303,9 @@ namespace MyEshop.Application.Services
 
             if (isExistAvailableImages && availableImagesTypeClassImage.Any())
             {
-                bool isDeleteImages = _fileHandler.DeleteImages(availableImagesTypeClassImage);
+                var availablefilesPath = availableImagesTypeClassImage.Select(image => _fileHandler.CombinePahtAndNameFile(image.NameImage));
+
+                bool isDeleteImages = _fileHandler.DeleteImages(availablefilesPath);
 
                 if (!isDeleteImages)
                     resultMethodService.AddError(nameof(ProductEditViewModel.Images), ErrorMessage.ExceptionFileImagesDelete);

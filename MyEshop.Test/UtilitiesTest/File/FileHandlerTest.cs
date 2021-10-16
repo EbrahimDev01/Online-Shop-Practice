@@ -35,7 +35,7 @@ namespace MyEshop.Test.UtilitiesTest.File
         [Fact]
         public async Task Test_FileCreate_CreateAsync_Result_new_Name_and_Create_File()
         {
-            
+
             using var stream = System.IO.File.OpenRead(@"D:\ebrahim\wallpapers\download.jpg");
 
             var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
@@ -44,21 +44,19 @@ namespace MyEshop.Test.UtilitiesTest.File
                 ContentType = "image/jpeg",
             };
 
-            string newPath = Path.Combine("D:", "", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc");
+            string newPath = Path.Combine("D:", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc", "wwwroot", "image");
 
 
             string nameFile = await _fileHandler.CreateAsync(file, newPath);
 
-            nameFile = nameFile.Remove(0, 7);
 
-            string pahtFile = Path.Combine(newPath,
-                                               "wwwroot", "image", nameFile);
+            string pahtFile = Path.Combine(newPath, nameFile);
 
             bool isExist = System.IO.File.Exists(pahtFile);
 
             Assert.True(isExist);
 
-            System.IO.File.Delete(nameFile);
+            System.IO.File.Delete(pahtFile);
         }
 
         #endregion
@@ -68,7 +66,7 @@ namespace MyEshop.Test.UtilitiesTest.File
         [Fact]
         public void Test_File_Delete_Result_null()
         {
-            bool isFileDeleted = _fileHandler.DeleteImages(new List<Image>());
+            bool isFileDeleted = _fileHandler.DeleteImages(new List<string>());
 
             Assert.True(isFileDeleted);
         }
@@ -83,26 +81,21 @@ namespace MyEshop.Test.UtilitiesTest.File
                 Headers = new HeaderDictionary(),
                 ContentType = "image/jpeg",
             };
-            string newPath = Path.Combine("D:", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc");
-
+            string newPath = Path.Combine("D:", "ebrahim", "Projects", "Web", "Web", "MyEshop", "MyEshop.Mvc", "wwwroot", "image");
 
             string nameFile = await _fileHandler.CreateAsync(file, newPath);
 
-            nameFile = nameFile.Remove(0, 7);
-
-            IEnumerable<Image> images = new List<Image>
+            IEnumerable<string> images = new List<string>
             {
-                new Image
-                {
-                    UrlImage= Path.Combine("image", nameFile)
-                }
+                nameFile
             };
 
-            bool isFileDeleted = _fileHandler.DeleteImages(images);
+            bool isFileDeleted = _fileHandler.DeleteImages(images, newPath);
 
 
-            bool isExist = System.IO.File.Exists(images.FirstOrDefault().UrlImage);
+            bool isExist = System.IO.File.Exists(images.FirstOrDefault());
 
+            Assert.True(isFileDeleted);
             Assert.False(isExist);
         }
 

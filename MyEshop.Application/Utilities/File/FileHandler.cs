@@ -14,41 +14,27 @@ namespace MyEshop.Application.Utilities.File
     public class FileHandler : IFileHandler
     {
 
-        public async ValueTask<string> CreateAsync(IFormFile formFile, string newPath = null)
+
+        public async ValueTask<string> CreateAsync(IFormFile formFile, string pathFile = null)
         {
             if (formFile is null)
             {
                 return null;
             }
 
+
+            string fileExtension = Path.GetExtension(formFile.FileName);
+            string newFileName = Guid.NewGuid() + fileExtension;
+
+            string pathAndNameFile = CombinePahtAndNameFile(newFileName, pathFile);
+
             try
             {
-                string fileExtension = Path.GetExtension(formFile.FileName);
-                string newFileName = Guid.NewGuid() + fileExtension;
-                string newPathFile = "";
-
-                if (string.IsNullOrEmpty(newPath))
-                {
-                    newPathFile = Path.Combine(Directory.GetCurrentDirectory(),
-                                               "wwwroot",
-                                               "image",
-                                               newFileName);
-                }
-                else
-                {
-                    newPathFile = Path.Combine(newPath,
-                                               "wwwroot",
-                                               "image",
-                                               newFileName);
-                }
-
-                using var fileStream = System.IO.File.Create(newPathFile);
+                using var fileStream = System.IO.File.Create(pathAndNameFile);
 
                 await formFile.CopyToAsync(fileStream);
 
-                newPath = Path.Combine("/image/", newFileName);
-
-                return newPath;
+                return newFileName;
             }
             catch
             {
@@ -56,21 +42,19 @@ namespace MyEshop.Application.Utilities.File
             }
         }
 
-        public bool DeleteImages(IEnumerable<Domain.Models.Image> images)
+
+        public bool DeleteImages(IEnumerable<string> namesFile, string pathFile = null)
         {
-            if (images is null)
+            if (namesFile is null)
                 return true;
 
             try
             {
-                foreach (var image in images)
+                foreach (var nameFile in namesFile)
                 {
-                    string urlImage = image.UrlImage.Remove(0, 7);
+                    string fullPathFile = CombinePahtAndNameFile(nameFile, pathFile);
 
-                    string pathFile = Path.Combine(Directory.GetCurrentDirectory(),
-                                                       "wwwroot", "image", urlImage);
-
-                    System.IO.File.Delete(pathFile);
+                    System.IO.File.Delete(fullPathFile);
                 }
 
                 return true;
@@ -83,9 +67,14 @@ namespace MyEshop.Application.Utilities.File
 
         public const int ImageMinimumBytes = 512;
 
+
+        public string CombinePahtAndNameFile(string fileName, string pathFile = null)
+            => Path.Combine(pathFile ?? IFileHandler.ImageFilePath, fileName);
+
         public bool IsImage(IEnumerable<IFormFile> formFiles)
         {
             if (formFiles is not null)
+            {
                 foreach (var formFile in formFiles)
                 {
                     #region Check image
@@ -165,6 +154,8 @@ namespace MyEshop.Application.Utilities.File
                     }
                     #endregion
                 }
+            }
+
             return true;
         }
     }

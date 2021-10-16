@@ -64,7 +64,6 @@ namespace MyEshop.Test.ControllersTest.Admin
             var resultTagCreate = _tagManagerController.Create() as ViewResult;
 
             Assert.NotNull(resultTagCreate);
-            Assert.IsType<TagCreateViewModel>(resultTagCreate.Model);
         }
     }
 }
