@@ -65,5 +65,14 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultTagCreate);
         }
+
+        [Fact]
+        public void Test_Create_Result_Model_State_Not_Valid()
+        {
+            _tagManagerController.ModelState.AddModelError("", "");
+            var resultTagCreate = _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
+
+            Assert.NotNull(resultTagCreate);
+        }
     }
 }
