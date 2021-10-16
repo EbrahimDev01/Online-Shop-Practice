@@ -18,7 +18,6 @@ namespace MyEshop.Data.Context
         public MyEshopDBContext(DbContextOptions<MyEshopDBContext> options)
             : base(options)
         {
-
         }
 
 
