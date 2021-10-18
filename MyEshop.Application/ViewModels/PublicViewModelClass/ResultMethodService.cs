@@ -34,6 +34,14 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
             Errors.Add(new ErrorResultMethodService(title, message));
         }
 
+        public void AddError(ErrorResultMethodService errorResultMethodService)
+        {
+            if (IsSuccess)
+                IsSuccess = false;
+
+            AddError(errorResultMethodService.Title, errorResultMethodService.Message)));
+        }
+
 
         public void NotFound()
         {
