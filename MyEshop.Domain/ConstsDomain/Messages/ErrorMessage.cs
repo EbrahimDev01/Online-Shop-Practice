@@ -27,5 +27,7 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public static string ExceptionProductEdit(string name) => $"در حذف {name} مشکلی به وجود آمده";
         public static string ExceptionProductCreate(string name) => $"در ساخت {name} مشکلی به وجود آمده";
         public static string NotFound(string name) => $"{name} پیدا نشد";
+        public static string IsExistWithName(string name) => IsExist.Replace("{0}", name);
+
     }
 }
