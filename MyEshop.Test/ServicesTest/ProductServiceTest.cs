@@ -117,7 +117,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultCreateProduct.IsNotFound);
             Assert.Single(resultCreateProduct.Errors);
             Assert.Contains(resultCreateProduct.Errors,
-                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionProductCreate("محصول"));
+                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionCreate("محصول"));
         }
 
         [Fact]
@@ -901,7 +901,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultProductEdit.IsSuccess);
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(resultProductEdit.Errors,
-                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionProductEdit("محصول"));
+                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionEdit("محصول"));
 
         }
 

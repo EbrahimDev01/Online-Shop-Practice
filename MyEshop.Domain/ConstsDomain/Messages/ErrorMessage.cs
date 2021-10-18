@@ -24,8 +24,8 @@ namespace MyEshop.Domain.ConstsDomain.Messages
         public const string ExceptionAvailableImages = "تصاویر انتخاب شده برای حذف قابل قبول نمی باشد";
         public const string ExceptionTagsDelete = "مشکلی در حذف این برچسب ها به وجود آمده";
 
-        public static string ExceptionProductEdit(string name) => $"در حذف {name} مشکلی به وجود آمده";
-        public static string ExceptionProductCreate(string name) => $"در ساخت {name} مشکلی به وجود آمده";
+        public static string ExceptionEdit(string name) => $"در حذف {name} مشکلی به وجود آمده";
+        public static string ExceptionCreate(string name) => $"در ساخت {name} مشکلی به وجود آمده";
         public static string NotFound(string name) => $"{name} پیدا نشد";
         public static string IsExistWithName(string name) => IsExist.Replace("{0}", name);
 

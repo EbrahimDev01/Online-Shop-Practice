@@ -102,7 +102,7 @@ namespace MyEshop.Application.Services
             bool isCreate = await _productRepository.CreateProductAsync(product);
             if (!isCreate)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionProductCreate("محصول"));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate("محصول"));
 
                 return resultMethodService;
             }
@@ -288,7 +288,7 @@ namespace MyEshop.Application.Services
             bool isEdit = await _productRepository.EditProductAsync(product);
             if (!isEdit)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionProductEdit("محصول"));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionEdit("محصول"));
 
                 return resultMethodService;
             }
