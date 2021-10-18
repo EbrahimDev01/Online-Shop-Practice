@@ -81,8 +81,13 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public void Test_Create_Result_Is_Not_Exist_Tag()
         {
-            _mockTagService.Setup(tagService => tagService.IsExistTagByTitle(It.IsAny<string>()))
-                .ResultAsync(false);
+            var errorResult = new ErrorResultMethodService(nameof(TagCreateViewModel.Title), ErrorMessage.IsExistWithName(DisplayNames.Tag));
+            var resultMethod = new ResultMethodService();
+
+            resultMethod.AddError(errorResult);
+
+            _mockTagService.Setup(tagService => tagService.CreateTagAsync(It.IsAny<TagCreateViewModel>()))
+                .ResultAsync(resultMethod);
 
             var resultTagCreate = _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
 
@@ -93,8 +98,9 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.Equal(1, _tagManagerController.ModelState.ErrorCount);
             Assert.False(_tagManagerController.ModelState.IsValid);
             Assert.Contains(resultTagCreateErrors,
-                error => error.Title == nameof(TagCreateViewModel.Title) &&
-                error.Message == ErrorMessage.IsExistWithName(DisplayNames.Tag));
+                error => error.Title == errorResult.Title &&
+                error.Message == errorResult.Message);
         }
+
     }
 }
