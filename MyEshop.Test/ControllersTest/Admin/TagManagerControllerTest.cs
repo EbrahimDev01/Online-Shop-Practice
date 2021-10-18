@@ -95,11 +95,29 @@ namespace MyEshop.Test.ControllersTest.Admin
                         .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
 
             Assert.NotNull(resultTagCreate);
-            Assert.Equal(1, _tagManagerController.ModelState.ErrorCount);
+            Assert.Single(resultTagCreateErrors);
             Assert.False(_tagManagerController.ModelState.IsValid);
             Assert.Contains(resultTagCreateErrors,
                 error => error.Title == errorResult.Title &&
                 error.Message == errorResult.Message);
+        }
+
+        [Fact]
+        public void Test_Create_Tag_Result_Completed()
+        {
+            var resultMethod = new ResultMethodService();
+
+            _mockTagService.Setup(tagService => tagService.CreateTagAsync(It.IsAny<TagCreateViewModel>()))
+                .ResultAsync(resultMethod);
+
+            var resultTagCreate = _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
+
+            var resultTagCreateErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
+                        .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
+
+            Assert.NotNull(resultTagCreate);
+            Assert.Empty(resultTagCreateErrors);
+            Assert.True(_tagManagerController.ModelState.IsValid);
         }
     }
 }
