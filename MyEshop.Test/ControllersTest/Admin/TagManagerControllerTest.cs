@@ -62,7 +62,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public void Test_Create_View_Result_Return_View()
+        public void Test_Create_Tag_View_Result_Return_View()
         {
             var resultTagCreate = _tagManagerController.Create() as ViewResult;
 
@@ -70,7 +70,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public void Test_Create_Result_Model_State_Not_Valid()
+        public void Test_Create_Tag_Result_Model_State_Not_Valid()
         {
             _tagManagerController.ModelState.AddModelError("", "");
             var resultTagCreate = _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
@@ -79,9 +79,9 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public void Test_Create_Result_Is_Not_Exist_Tag()
+        public void Test_Create_Tag_Result_Exception()
         {
-            var errorResult = new ErrorResultMethodService(nameof(TagCreateViewModel.Title), ErrorMessage.IsExistWithName(DisplayNames.Tag));
+            var errorResult = new ErrorResultMethodService("Tag", "ExceptionCreate");
             var resultMethod = new ResultMethodService();
 
             resultMethod.AddError(errorResult);
@@ -101,30 +101,5 @@ namespace MyEshop.Test.ControllersTest.Admin
                 error => error.Title == errorResult.Title &&
                 error.Message == errorResult.Message);
         }
-
-        [Fact]
-        public void Test_Create_Result_Not_Save()
-        {
-            var errorResult = new ErrorResultMethodService(string.Empty, ErrorMessage.ExceptionSave);
-            var resultMethod = new ResultMethodService();
-
-            resultMethod.AddError(errorResult);
-
-            _mockTagService.Setup(tagService => tagService.CreateTagAsync(It.IsAny<TagCreateViewModel>()))
-                .ResultAsync(resultMethod);
-
-            var resultTagCreate = _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
-
-            var resultTagCreateErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
-                        .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
-
-            Assert.NotNull(resultTagCreate);
-            Assert.Equal(1, _tagManagerController.ModelState.ErrorCount);
-            Assert.False(_tagManagerController.ModelState.IsValid);
-            Assert.Contains(resultTagCreateErrors,
-                error => error.Title == errorResult.Title &&
-                error.Message == errorResult.Message);
-        }
-
     }
 }
