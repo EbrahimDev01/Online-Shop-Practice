@@ -39,7 +39,7 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
             if (IsSuccess)
                 IsSuccess = false;
 
-            AddError(errorResultMethodService.Title, errorResultMethodService.Message)));
+            AddError(errorResultMethodService.Title, errorResultMethodService.Message);
         }
 
 
