@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,9 @@ namespace MyEshop.Mvc
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
+
+            services.Configure<MvcOptions>(options =>
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
             RegisterService(services);
         }
