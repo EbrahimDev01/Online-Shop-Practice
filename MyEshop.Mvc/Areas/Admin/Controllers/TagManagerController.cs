@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyEshop.Application.Interfaces;
+using MyEshop.Application.ViewModels.Tag;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,33 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
         #region Creatae
 
+        [HttpGet]
         public IActionResult Create() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(TagCreateViewModel tagCreateModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(tagCreateModel);
+            }
+
+            var tagCreateResult = await _tagService.CreateTagAsync(tagCreateModel);
+
+            if (tagCreateResult.IsSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            foreach (var error in tagCreateResult.Errors)
+            {
+                ModelState.AddModelError(error.Title, error.Message);
+            }
+
+            return View(tagCreateModel);
+        }
+
 
         #endregion
 
