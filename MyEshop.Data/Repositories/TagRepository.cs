@@ -27,6 +27,10 @@ namespace MyEshop.Data.Repositories
         public IQueryable<Tag> GetTagsProductByProductId(int ProductId)
             => _dbContext.Tags.Where(tag => tag.Products.Any(product => product.ProductId == ProductId));
 
+        public Task<bool> IsExistTagByTitle(string title)
+            => _dbContext.Tags.AnyAsync(tag => tag.Title == title);
+
+
 
     }
 }
