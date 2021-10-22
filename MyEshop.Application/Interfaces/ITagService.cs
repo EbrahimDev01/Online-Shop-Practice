@@ -1,4 +1,5 @@
-﻿using MyEshop.Application.ViewModels.Tag;
+﻿using MyEshop.Application.ViewModels.PublicViewModelClass;
+using MyEshop.Application.ViewModels.Tag;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace MyEshop.Application.Interfaces
         public ValueTask<IList<TagForSelect>> GetTagsForSelectAsync();
 
         public IAsyncEnumerable<TagViewModel> GetAllTagsAsync();
+
+        public ValueTask<ResultMethodService> CreateTagAsync(TagCreateViewModel tagCreateModel);
     }
 }

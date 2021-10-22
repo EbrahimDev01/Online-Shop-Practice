@@ -1,6 +1,10 @@
-﻿using MyEshop.Application.Interfaces;
+﻿using MyEshop.Application.ConstApplication.Names;
+using MyEshop.Application.Interfaces;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
+using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Interfaces;
+using MyEshop.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +27,39 @@ namespace MyEshop.Application.Services
 
         public async ValueTask<IList<TagForSelect>> GetTagsForSelectAsync()
             => await _tagRepository.GetTagsAsync().Select(t => new TagForSelect(t)).ToListAsync();
+
+        public async ValueTask<ResultMethodService> CreateTagAsync(TagCreateViewModel tagCreateModel)
+        {
+            var resultMethodService = new ResultMethodService();
+
+            bool isExistTag = await _tagRepository.IsExistTagByTitle(tagCreateModel.Title);
+
+            if (isExistTag)
+            {
+                resultMethodService.AddError(nameof(TagCreateViewModel.Title), ErrorMessage.IsExistWithName(DisplayNames.Tag));
+
+                return resultMethodService;
+            }
+
+
+            bool isCreate = await _tagRepository.CreateTagAsync(new Tag(tagCreateModel.Title));
+
+            if (!isCreate)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate(DisplayNames.Tag));
+
+                return resultMethodService;
+            }
+
+
+            bool isSave = await _tagRepository.SaveAsync();
+
+            if (isSave)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate(DisplayNames.Tag));
+            }
+
+            return resultMethodService;
+        }
     }
 }
