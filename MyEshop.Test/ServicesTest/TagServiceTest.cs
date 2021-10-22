@@ -1,7 +1,10 @@
 ﻿using Moq;
+using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
+using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
+using MyEshop.Domain.ConstsDomain.Messages;
 using MyEshop.Domain.Interfaces;
 using MyEshop.Domain.Models;
 using System;
@@ -68,6 +71,26 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(tags);
             Assert.IsAssignableFrom<IEnumerable<TagViewModel>>(tags);
             Assert.Single(tags);
+        }
+
+        [Fact]
+        public void Test_Create_Result_Tag_Is_Exist()
+        {
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
+                .ReturnsAsync(false);
+
+            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+
+            Assert.NotNull(resultTagCreate);
+            Assert.IsType<ResultMethodService>(resultTagCreate);
+            Assert.False(resultTagCreate.IsNotFound);
+            Assert.False(resultTagCreate.IsSuccess);
+            Assert.Single(resultTagCreate.Errors);
+
+            Assert.Contains(resultTagCreate.Errors,
+                error => error.Title == nameof(TagCreateViewModel.Title) &&
+                error.Message == ErrorMessage.IsExistWithName(DisplayNames.Tag));
         }
     }
 }
