@@ -74,12 +74,12 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Tag_Result_Tag_Is_Exist()
+        public async void Test_Create_Tag_Result_Tag_Is_Exist()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(false);
 
-            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+            var resultTagCreate = await _tagService.CreateTagAsync(new TagCreateViewModel());
 
             Assert.NotNull(resultTagCreate);
             Assert.IsType<ResultMethodService>(resultTagCreate);
@@ -93,7 +93,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Tag_Result_Tag_Failed_Add()
+        public async void Test_Create_Tag_Result_Tag_Failed_Add()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -101,7 +101,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(false);
 
-            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+            var resultTagCreate = await _tagService.CreateTagAsync(new TagCreateViewModel());
 
             Assert.NotNull(resultTagCreate);
             Assert.IsType<ResultMethodService>(resultTagCreate);
@@ -115,7 +115,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Tag_Result_Tag_Failed_Save()
+        public async void Test_Create_Tag_Result_Tag_Failed_Save()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -126,7 +126,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
                 .ReturnsAsync(false);
 
-            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+            var resultTagCreate = await _tagService.CreateTagAsync(new TagCreateViewModel());
 
             Assert.NotNull(resultTagCreate);
             Assert.IsType<ResultMethodService>(resultTagCreate);
@@ -140,7 +140,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Tag_Result_Tag_Successful()
+        public async void Test_Create_Tag_Result_Tag_Successful()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -151,7 +151,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+            var resultTagCreate = await _tagService.CreateTagAsync(new TagCreateViewModel());
 
             Assert.NotNull(resultTagCreate);
             Assert.IsType<ResultMethodService>(resultTagCreate);
