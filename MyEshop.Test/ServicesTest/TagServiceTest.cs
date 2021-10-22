@@ -74,7 +74,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Result_Tag_Is_Exist()
+        public void Test_Create_Tag_Result_Tag_Is_Exist()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(false);
@@ -93,7 +93,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Result_Tag_Failed_Add()
+        public void Test_Create_Tag_Result_Tag_Failed_Add()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -115,7 +115,7 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public void Test_Create_Result_Tag_Failed_Save()
+        public void Test_Create_Tag_Result_Tag_Failed_Save()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -137,6 +137,27 @@ namespace MyEshop.Test.ServicesTest
             Assert.Contains(resultTagCreate.Errors,
                 error => error.Title == string.Empty &&
                 error.Message == ErrorMessage.ExceptionSave);
+        }
+
+        [Fact]
+        public void Test_Create_Tag_Result_Tag_Successful()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
+                .ReturnsAsync(true);
+
+            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+
+            Assert.NotNull(resultTagCreate);
+            Assert.IsType<ResultMethodService>(resultTagCreate);
+            Assert.False(resultTagCreate.IsNotFound);
+            Assert.True(resultTagCreate.IsSuccess);
+            Assert.Empty(resultTagCreate.Errors);
         }
     }
 }
