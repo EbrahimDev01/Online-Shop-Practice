@@ -76,7 +76,6 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public void Test_Create_Result_Tag_Is_Exist()
         {
-
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(false);
 
@@ -91,6 +90,28 @@ namespace MyEshop.Test.ServicesTest
             Assert.Contains(resultTagCreate.Errors,
                 error => error.Title == nameof(TagCreateViewModel.Title) &&
                 error.Message == ErrorMessage.IsExistWithName(DisplayNames.Tag));
+        }
+
+        [Fact]
+        public void Test_Create_Result_Tag_Failed_Add()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
+                .ReturnsAsync(false);
+
+            var resultTagCreate = _tagService.CreateTagAsync(new TagCreateViewModel());
+
+            Assert.NotNull(resultTagCreate);
+            Assert.IsType<ResultMethodService>(resultTagCreate);
+            Assert.False(resultTagCreate.IsNotFound);
+            Assert.False(resultTagCreate.IsSuccess);
+            Assert.Single(resultTagCreate.Errors);
+
+            Assert.Contains(resultTagCreate.Errors,
+                error => error.Title == string.Empty &&
+                error.Message == ErrorMessage.ExceptionCreate(DisplayNames.Tag));
         }
     }
 }
