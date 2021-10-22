@@ -19,6 +19,20 @@ namespace MyEshop.Data.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<bool> CreateTagAsync(Tag tag)
+        {
+            try
+            {
+                await _dbContext.Tags.AddAsync(tag);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public IAsyncEnumerable<Tag> GetTagsAsync() => _dbContext.Tags;
 
         public IEnumerable<Tag> GetTagsByIds(IEnumerable<int> ids)
@@ -29,8 +43,5 @@ namespace MyEshop.Data.Repositories
 
         public Task<bool> IsExistTagByTitle(string title)
             => _dbContext.Tags.AnyAsync(tag => tag.Title == title);
-
-
-
     }
 }

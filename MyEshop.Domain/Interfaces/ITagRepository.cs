@@ -13,6 +13,6 @@ namespace MyEshop.Domain.Interfaces
         public IAsyncEnumerable<Tag> GetTagsAsync();
         public IQueryable<Tag> GetTagsProductByProductId(int ProductId);
         public Task<bool> IsExistTagByTitle(string title);
-
+        public Task<bool> CreateTagAsync(Tag tag);
     }
 }
