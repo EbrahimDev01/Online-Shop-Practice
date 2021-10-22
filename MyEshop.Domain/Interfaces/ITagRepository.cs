@@ -10,9 +10,15 @@ namespace MyEshop.Domain.Interfaces
     public interface ITagRepository
     {
         public IEnumerable<Tag> GetTagsByIds(IEnumerable<int> ids);
+
         public IAsyncEnumerable<Tag> GetTagsAsync();
+
         public IQueryable<Tag> GetTagsProductByProductId(int ProductId);
+
         public Task<bool> IsExistTagByTitle(string title);
+
         public Task<bool> CreateTagAsync(Tag tag);
+
+        public Task<bool> SaveAsync();
     }
 }

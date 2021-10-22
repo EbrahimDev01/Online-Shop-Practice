@@ -43,5 +43,19 @@ namespace MyEshop.Data.Repositories
 
         public Task<bool> IsExistTagByTitle(string title)
             => _dbContext.Tags.AnyAsync(tag => tag.Title == title);
+
+        public async Task<bool> SaveAsync()
+        {
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
