@@ -70,7 +70,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public async Task Test_Create_Tag_Result_Exception()
+        public async void Test_Create_Tag_Result_Exception()
         {
             var errorResult = new ErrorResultMethodService("Tag", "ExceptionCreate");
             var resultMethod = new ResultMethodService();
@@ -78,7 +78,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             resultMethod.AddError(errorResult);
 
             _mockTagService.Setup(tagService => tagService.CreateTagAsync(It.IsAny<TagCreateViewModel>()))
-                .ResultAsync(resultMethod);
+                .ReturnsAsync(resultMethod);
 
             var resultTagCreate = await _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
 
@@ -94,14 +94,14 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public async Task Test_Create_Tag_Result_Completed()
+        public async void Test_Create_Tag_Result_Completed()
         {
             var resultMethod = new ResultMethodService();
 
             _mockTagService.Setup(tagService => tagService.CreateTagAsync(It.IsAny<TagCreateViewModel>()))
-                .ResultAsync(resultMethod);
+                .ReturnsAsync(resultMethod);
 
-            var resultTagCreate = await _tagManagerController.Create(new TagCreateViewModel()) as ViewResult;
+            var resultTagCreate = await _tagManagerController.Create(new TagCreateViewModel()) as RedirectToActionResult;
 
             var resultTagCreateErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
                         .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
@@ -109,6 +109,30 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultTagCreate);
             Assert.Empty(resultTagCreateErrors);
             Assert.True(_tagManagerController.ModelState.IsValid);
+        }
+
+
+        [Theory]
+        [InlineData("apple", false)]
+        [InlineData("hp", true)]
+        public async void Test_Is_Exist_Tag_With_Name(string tagSample, bool expected)
+        {
+            var tagsList = new List<string>
+            {
+                "apple",
+                "Microsoft",
+                "Samsung",
+                "LG"
+            };
+
+            _mockTagService.Setup(tagService => tagService.IsExistTagByName(It.IsAny<string>()))
+                .ReturnsAsync(tagsList.Any(tag => tag == tagSample));
+
+
+            var resultIsExistTagByName = await _tagManagerController.IsExistTagByName(tagSample) as JsonResult;
+
+            Assert.NotNull(resultIsExistTagByName);
+            Assert.Equal(resultIsExistTagByName.Value, expected);
         }
     }
 }
