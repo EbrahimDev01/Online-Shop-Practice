@@ -54,9 +54,9 @@ namespace MyEshop.Application.Services
 
             bool isSave = await _tagRepository.SaveAsync();
 
-            if (isSave)
+            if (!isSave)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate(DisplayNames.Tag));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
             }
 
             return resultMethodService;
