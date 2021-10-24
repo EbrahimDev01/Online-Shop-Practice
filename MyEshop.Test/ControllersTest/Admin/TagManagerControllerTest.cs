@@ -125,14 +125,14 @@ namespace MyEshop.Test.ControllersTest.Admin
                 "LG"
             };
 
-            _mockTagService.Setup(tagService => tagService.IsExistTagByName(It.IsAny<string>()))
+            _mockTagService.Setup(tagService => tagService.IsExistTagByTitle(It.IsAny<string>()))
                 .ReturnsAsync(tagsList.Any(tag => tag == tagSample));
 
 
-            var resultIsExistTagByName = await _tagManagerController.IsExistTagByName(tagSample) as JsonResult;
+            var resultIsExistTagByTitle = await _tagManagerController.IsExistTagByTitle(tagSample) as JsonResult;
 
-            Assert.NotNull(resultIsExistTagByName);
-            Assert.Equal(resultIsExistTagByName.Value, expected);
+            Assert.NotNull(resultIsExistTagByTitle);
+            Assert.Equal(resultIsExistTagByTitle.Value, expected);
         }
     }
 }
