@@ -77,7 +77,7 @@ namespace MyEshop.Test.ServicesTest
         public async void Test_Create_Tag_Result_Tag_Is_Exist()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
-                .ReturnsAsync(false);
+                .ReturnsAsync(true);
 
             var resultTagCreate = await _tagService.CreateTagAsync(new TagCreateViewModel());
 
@@ -96,7 +96,7 @@ namespace MyEshop.Test.ServicesTest
         public async void Test_Create_Tag_Result_Tag_Failed_Add()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(false);
 
             _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(false);
@@ -118,7 +118,7 @@ namespace MyEshop.Test.ServicesTest
         public async void Test_Create_Tag_Result_Tag_Failed_Save()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(false);
 
             _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(true);
@@ -143,7 +143,7 @@ namespace MyEshop.Test.ServicesTest
         public async void Test_Create_Tag_Result_Tag_Successful()
         {
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(false);
 
             _mockTagRepository.Setup(tagRepository => tagRepository.CreateTagAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(true);
