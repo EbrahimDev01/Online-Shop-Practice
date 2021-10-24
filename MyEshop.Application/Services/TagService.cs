@@ -61,5 +61,8 @@ namespace MyEshop.Application.Services
 
             return resultMethodService;
         }
+
+        public Task<bool> IsExistTagByTitle(string tagTitle)
+            => _tagRepository.IsExistTagByTitle(tagTitle);
     }
 }

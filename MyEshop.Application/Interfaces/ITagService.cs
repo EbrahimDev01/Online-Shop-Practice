@@ -15,5 +15,7 @@ namespace MyEshop.Application.Interfaces
         public IAsyncEnumerable<TagViewModel> GetAllTagsAsync();
 
         public ValueTask<ResultMethodService> CreateTagAsync(TagCreateViewModel tagCreateModel);
+
+        public Task<bool> IsExistTagByTitle(string tagTitle);
     }
 }
