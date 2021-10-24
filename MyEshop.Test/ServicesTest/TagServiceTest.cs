@@ -160,6 +160,26 @@ namespace MyEshop.Test.ServicesTest
             Assert.Empty(resultTagCreate.Errors);
         }
 
-       
+        [Theory]
+        [InlineData("apple", true)]
+        [InlineData("hp", false)]
+        public async void Test_Is_Exist_Tag_With_Name(string tagSample, bool expected)
+        {
+            var tagsList = new List<string>
+            {
+                "apple",
+                "Microsoft",
+                "Samsung",
+                "LG"
+            };
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTitle(It.IsAny<string>()))
+                .ReturnsAsync(tagsList.Any(tag => tag == tagSample));
+
+
+            bool resultIsExistTagByTitle = await _tagService.IsExistTagByTitle(tagSample);
+
+            Assert.Equal(resultIsExistTagByTitle, expected);
+        }
     }
 }
