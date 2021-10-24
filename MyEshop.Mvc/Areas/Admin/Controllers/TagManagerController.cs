@@ -56,9 +56,10 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
         #endregion
 
-        public async Task<JsonResult> IsExistTagByTitle(string name)
+        [HttpPost]
+        public async Task<JsonResult> IsExistTagByTitle(string title)
         {
-            bool isExistTag = !await _tagService.IsExistTagByTitle(name);
+            bool isExistTag = !await _tagService.IsExistTagByTitle(title);
 
             return Json(isExistTag);
         }
