@@ -24,6 +24,23 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(tags);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id is 0)
+            {
+                return NotFound();
+            }
+
+            var tag = await _tagService.GetTagByTagIdAsync(id);
+
+            if (tag is null)
+            {
+                return NotFound();
+            }
+
+            return View(tag);
+        }
+
         #region Creatae
 
         [HttpGet]

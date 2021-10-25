@@ -166,7 +166,5 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultDetailsTagModel);
             Assert.IsType<TagDetailsViewModel>(resultDetailsTagModel);
         }
-
-
     }
 }
