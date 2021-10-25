@@ -153,6 +153,20 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultDetailsTag);
         }
 
+        [Fact]
+        public async void Test_Details_Tag_Result_Found()
+        {
+            _mockTagService.Setup(tagService => tagService.GetTagByTagIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new TagDetailsViewModel());
+
+            var resultDetailsTag = await _tagManagerController.Details(1) as ViewResult;
+            var resultDetailsTagModel = resultDetailsTag.Model;
+
+            Assert.NotNull(resultDetailsTag);
+            Assert.NotNull(resultDetailsTagModel);
+            Assert.IsType<TagDetailsViewModel>(resultDetailsTagModel);
+        }
+
 
     }
 }
