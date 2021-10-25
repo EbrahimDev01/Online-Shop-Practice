@@ -111,7 +111,6 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.True(_tagManagerController.ModelState.IsValid);
         }
 
-
         [Theory]
         [InlineData("apple", false)]
         [InlineData("hp", true)]
@@ -133,6 +132,17 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultIsExistTagByTitle);
             Assert.Equal(resultIsExistTagByTitle.Value, expected);
+        }
+
+        [Fact]
+        public async void Test_Details_Tag_Result_Not_Found()
+        {
+            _mockTagService.Setup(tagService => tagService.GetTagByTagIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null);
+
+            var resultDetailsTag = await _tagManagerController.Details(It.IsAny<int>()) as NotFoundResult;
+
+            Assert.NotNull(resultDetailsTag);
         }
     }
 }
