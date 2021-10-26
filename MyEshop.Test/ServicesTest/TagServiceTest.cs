@@ -188,9 +188,18 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(null as Tag);
 
-            var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(It.IsAny<int>());
+            var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(1);
 
             Assert.Null(resultGetTagDetails);
         }
+
+        [Fact]
+        public async void Test_GetTagDetailsByTagIdAsync_Input_Method_Is_Zero_Result_Not_Found()
+        {
+            var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(0);
+
+            Assert.Null(resultGetTagDetails);
+        }
+
     }
 }
