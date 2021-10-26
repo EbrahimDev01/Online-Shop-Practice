@@ -1,0 +1,81 @@
+﻿@model TagDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TagDetailsViewModel</h4>
+    @Html.DisplayNameFor(model => model.Title)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Title)
+    </dd>
+    <hr />
+    <div class="row">
+        <table class="col-sm-10">
+            <caption>
+                محصول های این برچسب
+            </caption>
+
+            <tbody>
+                @await foreach (var item in Model.PreviewAdminProducts)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" width="90" />
+                            }
+                            else
+                            {
+                                <span>
+                                    تصویری ثبت نشده
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityInStok)
+                        </td>
+                        <td>
+                            <time datetime="@item.CreateDateTime">
+                                @item.CreateDateTimePersian
+                            </time>
+                        </td>
+                        <td>
+                            <a class="btn btn-info"
+                               asp-action="Details"
+                               asp-route-id="@item.Id">
+                                جزئیات
+                            </a> |
+
+                            <a class="btn btn-warning"
+                               asp-action="Edit"
+                               asp-route-id="@item.Id">
+                                ویرایش
+                            </a> |
+
+                            <a class="btn btn-danger"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id">
+                                حذف
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
