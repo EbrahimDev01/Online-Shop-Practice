@@ -182,5 +182,15 @@ namespace MyEshop.Test.ServicesTest
             Assert.Equal(resultIsExistTagByTitle, expected);
         }
 
+        [Fact]
+        public async void Test_GetTagDetailsByTagIdAsync_Result_Not_Found()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(null as Tag);
+
+            var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(It.IsAny<int>());
+
+            Assert.Null(resultGetTagDetails);
+        }
     }
 }
