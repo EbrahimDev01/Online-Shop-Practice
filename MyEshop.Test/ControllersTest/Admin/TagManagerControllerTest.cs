@@ -137,7 +137,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async void Test_Details_Tag_Result_Not_Found()
         {
-            _mockTagService.Setup(tagService => tagService.GetTagByTagIdAsync(It.IsAny<int>()))
+            _mockTagService.Setup(tagService => tagService.GetTagDetailsByTagIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(null);
 
             var resultDetailsTag = await _tagManagerController.Details(It.IsAny<int>()) as NotFoundResult;
@@ -156,7 +156,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async void Test_Details_Tag_Result_Found()
         {
-            _mockTagService.Setup(tagService => tagService.GetTagByTagIdAsync(It.IsAny<int>()))
+            _mockTagService.Setup(tagService => tagService.GetTagDetailsByTagIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new TagDetailsViewModel());
 
             var resultDetailsTag = await _tagManagerController.Details(1) as ViewResult;

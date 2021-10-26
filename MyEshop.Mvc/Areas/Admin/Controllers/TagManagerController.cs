@@ -31,7 +31,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var tag = await _tagService.GetTagByTagIdAsync(id);
+            var tag = await _tagService.GetTagDetailsByTagIdAsync(id);
 
             if (tag is null)
             {
