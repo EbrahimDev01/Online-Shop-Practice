@@ -144,15 +144,7 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultDetailsTag);
         }
-
-        [Fact]
-        public async void Test_Details_Tag_Id_Is_0_Result_Not_Found()
-        {
-            var resultDetailsTag = await _tagManagerController.Details(0) as NotFoundResult;
-
-            Assert.NotNull(resultDetailsTag);
-        }
-
+    
         [Fact]
         public async void Test_Details_Tag_Result_Found()
         {

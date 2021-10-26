@@ -25,11 +25,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> Details(int id)
-        {
-            if (id is 0)
-            {
-                return NotFound();
-            }
+        {   
 
             var tag = await _tagService.GetTagDetailsByTagIdAsync(id);
 
