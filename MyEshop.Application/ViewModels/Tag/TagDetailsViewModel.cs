@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyEshop.Application.ViewModels.Product;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,12 @@ namespace MyEshop.Application.ViewModels.Tag
 
         }
 
-        public TagDetailsViewModel(Domain.Models.Tag tag, IAsyncEnumerable<Product.PreviewAdminProductViewModel> previewAdminProducts)
+        public TagDetailsViewModel(Domain.Models.Tag tag, IAsyncEnumerable<PreviewAdminProductViewModel> previewAdminProducts)
             : base(tag)
         {
             PreviewAdminProducts = previewAdminProducts;
         }
 
-        public IAsyncEnumerable<Product.PreviewAdminProductViewModel> PreviewAdminProducts { set; get; }
+        public IAsyncEnumerable<PreviewAdminProductViewModel> PreviewAdminProducts { set; get; }
     }
 }

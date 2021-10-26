@@ -2,6 +2,7 @@
 using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
 using MyEshop.Application.Services;
+using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
@@ -199,6 +200,23 @@ namespace MyEshop.Test.ServicesTest
             var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(0);
 
             Assert.Null(resultGetTagDetails);
+        }
+
+        [Fact]
+        public async void Test_GetTagDetailsByTagIdAsync_Result_Found()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetProductsTagsByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new List<Product>() { new() });
+
+            var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(1);
+
+            Assert.NotNull(resultGetTagDetails);
+            Assert.NotNull(resultGetTagDetails.PreviewAdminProducts);
+            Assert.IsType<IAsyncEnumerable<PreviewAdminProductViewModel>>(resultGetTagDetails.PreviewAdminProducts);
+            Assert.IsType<TagDetailsViewModel>(resultGetTagDetails);
         }
 
     }
