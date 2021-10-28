@@ -16,6 +16,8 @@ namespace MyEshop.Application.Interfaces
 
         public ValueTask<ResultMethodService> CreateTagAsync(TagCreateViewModel tagCreateModel);
 
+        public ValueTask<TagDetailsViewModel> GetTagDetailsByTagIdAsync(int tagId);
+
         public Task<bool> IsExistTagByTitle(string tagTitle);
     }
 }

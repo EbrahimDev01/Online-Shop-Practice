@@ -1,5 +1,6 @@
 ﻿using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
+using MyEshop.Application.ViewModels.Product;
 using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
@@ -16,6 +17,8 @@ namespace MyEshop.Application.Services
     public class TagService : ITagService
     {
         private readonly ITagRepository _tagRepository;
+        private readonly IImageRepository _imageRepository;
+
 
         public TagService(ITagRepository tagRepository)
         {
@@ -64,5 +67,19 @@ namespace MyEshop.Application.Services
 
         public Task<bool> IsExistTagByTitle(string tagTitle)
             => _tagRepository.IsExistTagByTitle(tagTitle);
+
+        public async ValueTask<TagDetailsViewModel> GetTagDetailsByTagIdAsync(int tagId)
+        {
+            var tag = await _tagRepository.GetTagIncludeProductsByTagId(tagId);
+
+            var products = tag.Products.ToAsyncEnumerable()
+                .SelectAwait(async product =>
+                    new PreviewAdminProductViewModel(
+                        product,
+                        await _imageRepository.GetFirstImageUrlProductByProductIdAsync(product.ProductId))
+                    );
+
+            return new TagDetailsViewModel(tag, products);
+        }
     }
 }
