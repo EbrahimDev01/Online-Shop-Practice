@@ -186,7 +186,7 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public async void Test_GetTagDetailsByTagIdAsync_Result_Not_Found()
         {
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagIncludeProductsByTagId(It.IsAny<int>()))
                 .ReturnsAsync(null as Tag);
 
             var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(1);
@@ -197,6 +197,9 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public async void Test_GetTagDetailsByTagIdAsync_Input_Method_Is_Zero_Result_Not_Found()
         {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagIncludeProductsByTagId(It.IsAny<int>()))
+                 .ReturnsAsync(null as Tag);
+
             var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(0);
 
             Assert.Null(resultGetTagDetails);
@@ -205,11 +208,8 @@ namespace MyEshop.Test.ServicesTest
         [Fact]
         public async void Test_GetTagDetailsByTagIdAsync_Result_Found()
         {
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
-                .ReturnsAsync(new Tag());
-
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetProductsTagByTagId(It.IsAny<int>()))
-                .ReturnsAsync(new List<Product>() { new() });
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagIncludeProductsByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag() { Products = new List<Product>() { new() } });
 
             var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(1);
 
