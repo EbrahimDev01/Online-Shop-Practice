@@ -21,6 +21,8 @@ namespace MyEshop.Domain.Interfaces
 
         public ValueTask<Tag> GetTagByTagId(int tagId);
 
+        public Task<Tag> GetTagIncludeProductsByTagId(int tagId);
+
         public Task<bool> SaveAsync();
     }
 }

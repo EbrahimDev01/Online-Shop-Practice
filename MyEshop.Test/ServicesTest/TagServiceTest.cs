@@ -208,7 +208,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(new Tag());
 
-            _mockTagRepository.Setup(tagRepository => tagRepository.GetProductsTagsByTagId(It.IsAny<int>()))
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetProductsTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(new List<Product>() { new() });
 
             var resultGetTagDetails = await _tagService.GetTagDetailsByTagIdAsync(1);

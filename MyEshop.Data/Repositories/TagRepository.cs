@@ -44,8 +44,11 @@ namespace MyEshop.Data.Repositories
         public Task<bool> IsExistTagByTitle(string title)
             => _dbContext.Tags.AnyAsync(tag => tag.Title == title);
 
-        public ValueTask<Tag> GetTagByTagId(int tagId) 
+        public ValueTask<Tag> GetTagByTagId(int tagId)
             => _dbContext.Tags.FindAsync(tagId);
+
+        public Task<Tag> GetTagIncludeProductsByTagId(int tagId)
+            => (_dbContext.Tags.Include(tag => tag.Products).FirstOrDefaultAsync(tag => tag.TagId == tagId));
 
         public async Task<bool> SaveAsync()
         {
