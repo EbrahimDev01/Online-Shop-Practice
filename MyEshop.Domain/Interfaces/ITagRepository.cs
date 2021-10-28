@@ -19,6 +19,8 @@ namespace MyEshop.Domain.Interfaces
 
         public Task<bool> CreateTagAsync(Tag tag);
 
+        public ValueTask<Tag> GetTagByTagId(int tagId);
+
         public Task<bool> SaveAsync();
     }
 }

@@ -44,6 +44,9 @@ namespace MyEshop.Data.Repositories
         public Task<bool> IsExistTagByTitle(string title)
             => _dbContext.Tags.AnyAsync(tag => tag.Title == title);
 
+        public ValueTask<Tag> GetTagByTagId(int tagId) 
+            => _dbContext.Tags.FindAsync(tagId);
+
         public async Task<bool> SaveAsync()
         {
             try
