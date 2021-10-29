@@ -138,13 +138,13 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async void Test_Details_Tag_Result_Not_Found()
         {
             _mockTagService.Setup(tagService => tagService.GetTagDetailsByTagIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(null);
+                .ReturnsAsync(null as TagDetailsViewModel);
 
             var resultDetailsTag = await _tagManagerController.Details(It.IsAny<int>()) as NotFoundResult;
 
             Assert.NotNull(resultDetailsTag);
         }
-    
+
         [Fact]
         public async void Test_Details_Tag_Result_Found()
         {
