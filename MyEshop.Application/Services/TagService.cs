@@ -20,9 +20,10 @@ namespace MyEshop.Application.Services
         private readonly IImageRepository _imageRepository;
 
 
-        public TagService(ITagRepository tagRepository)
+        public TagService(ITagRepository tagRepository, IImageRepository imageRepository)
         {
             _tagRepository = tagRepository;
+            _imageRepository = imageRepository;
         }
 
         public IAsyncEnumerable<TagViewModel> GetAllTagsAsync()
@@ -70,13 +71,23 @@ namespace MyEshop.Application.Services
 
         public async ValueTask<TagDetailsViewModel> GetTagDetailsByTagIdAsync(int tagId)
         {
+            if (tagId is 0)
+            {
+                return null;
+            }
+
             var tag = await _tagRepository.GetTagIncludeProductsByTagId(tagId);
+
+            if (tag is null)
+            {
+                return null;
+            }
 
             var products = tag.Products.ToAsyncEnumerable()
                 .SelectAwait(async product =>
                     new PreviewAdminProductViewModel(
                         product,
-                        await _imageRepository.GetFirstImageUrlProductByProductIdAsync(product.ProductId))
+                       await _imageRepository.GetFirstImageUrlProductByProductIdAsync(product.ProductId))
                     );
 
             return new TagDetailsViewModel(tag, products);
