@@ -215,7 +215,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(resultGetTagDetails);
             Assert.NotNull(resultGetTagDetails.PreviewAdminProducts);
-            Assert.IsType<IAsyncEnumerable<PreviewAdminProductViewModel>>(resultGetTagDetails.PreviewAdminProducts);
+            Assert.IsAssignableFrom<IAsyncEnumerable<PreviewAdminProductViewModel>>(resultGetTagDetails.PreviewAdminProducts);
             Assert.IsType<TagDetailsViewModel>(resultGetTagDetails);
         }
 
