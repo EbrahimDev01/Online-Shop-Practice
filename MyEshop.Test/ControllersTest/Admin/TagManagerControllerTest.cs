@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿        using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
@@ -158,5 +158,16 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultDetailsTagModel);
             Assert.IsType<TagDetailsViewModel>(resultDetailsTagModel);
         }
+
+        [Fact]
+        public async void Test_Edit_Tag_Id_Is_Zero_Result_Not_Found()
+        {
+            var resultEditTag = await _tagManagerController.Edit(0) as NotFoundResult;
+
+            Assert.NotNull(resultEditTag);
+        }
+
+
     }
+
 }
