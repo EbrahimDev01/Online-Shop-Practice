@@ -1,4 +1,4 @@
-﻿        using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using MyEshop.Application.ConstApplication.Names;
 using MyEshop.Application.Interfaces;
@@ -176,6 +176,20 @@ namespace MyEshop.Test.ControllersTest.Admin
             var resultEditTag = await _tagManagerController.Edit(1) as NotFoundResult;
 
             Assert.NotNull(resultEditTag);
+        }
+
+
+        [Fact]
+        public async void Test_Edit_Tag_Result_Found()
+        {
+            _mockTagService.Setup(tagService => tagService.GetTagFormEditModelByTagIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(new TagEditViewModel());
+
+            var resultEditTag = await _tagManagerController.Edit(1) as ViewResult;
+            var resultEditTagModel = resultEditTag.Model;
+
+            Assert.NotNull(resultEditTag);
+            Assert.IsType<TagEditViewModel>(resultEditTagModel);
         }
 
     }
