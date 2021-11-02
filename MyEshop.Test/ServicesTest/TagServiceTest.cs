@@ -20,13 +20,14 @@ namespace MyEshop.Test.ServicesTest
     public class TagServiceTest
     {
         private readonly Mock<ITagRepository> _mockTagRepository;
+        private readonly Mock<IImageRepository> _mockIImageRepository;
         private readonly ITagService _tagService;
 
         public TagServiceTest()
         {
             _mockTagRepository = new Mock<ITagRepository>();
 
-            _tagService = new TagService(_mockTagRepository.Object);
+            _tagService = new TagService(_mockTagRepository.Object, _mockIImageRepository.Object);
         }
 
         [Fact]
