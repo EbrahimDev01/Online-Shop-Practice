@@ -25,7 +25,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> Details(int id)
-        {   
+        {
 
             var tag = await _tagService.GetTagDetailsByTagIdAsync(id);
 
@@ -66,6 +66,27 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(tagCreateModel);
         }
 
+
+        #endregion
+
+        #region Edit
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id is 0)
+            {
+                return NotFound();
+            }
+
+            var tag = await _tagService.GetTagShapeEditViewModelByTagIdAsync(id);
+
+            if (tag is null)
+            {
+                return NotFound();
+            }
+
+            return View(tag);
+        }
 
         #endregion
 
