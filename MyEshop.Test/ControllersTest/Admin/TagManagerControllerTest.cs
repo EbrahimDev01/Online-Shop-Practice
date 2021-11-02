@@ -167,6 +167,16 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultEditTag);
         }
 
+        [Fact]
+        public async void Test_Edit_Tag_Can_Not_Found_Result_Not_Found()
+        {
+            _mockTagService.Setup(tagService => tagService.GetTagFormEditModelByTagIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(null as TagEditViewModel);
+
+            var resultEditTag = await _tagManagerController.Edit(1) as NotFoundResult;
+
+            Assert.NotNull(resultEditTag);
+        }
 
     }
 
