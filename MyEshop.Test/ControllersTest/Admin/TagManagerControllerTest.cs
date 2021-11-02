@@ -170,7 +170,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async void Test_Edit_Tag_Can_Not_Found_Result_Not_Found()
         {
-            _mockTagService.Setup(tagService => tagService.GetTagFormEditModelByTagIdAsync(It.IsAny<int>()))
+            _mockTagService.Setup(tagService => tagService.GetTagShapeEditViewModelByTagIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(null as TagEditViewModel);
 
             var resultEditTag = await _tagManagerController.Edit(1) as NotFoundResult;
@@ -182,7 +182,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async void Test_Edit_Tag_Result_Found()
         {
-            _mockTagService.Setup(tagService => tagService.GetTagFormEditModelByTagIdAsync(It.IsAny<int>()))
+            _mockTagService.Setup(tagService => tagService.GetTagShapeEditViewModelByTagIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new TagEditViewModel());
 
             var resultEditTag = await _tagManagerController.Edit(1) as ViewResult;
