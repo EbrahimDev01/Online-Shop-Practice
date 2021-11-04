@@ -73,11 +73,6 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            if (id is 0)
-            {
-                return NotFound();
-            }
-
             var resultTag = await _tagService.GetTagShapeEditViewModelByTagIdAsync(id);
 
             if (!resultTag.IsNotFound)
