@@ -76,9 +76,6 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             var resultTag = await _tagService.GetTagShapeEditViewModelByTagIdAsync(id);
 
             if (!resultTag.IsNotFound)
-            {
-                return NotFound();
-            }
 
             if (resultTag.IsSuccess)
             {
