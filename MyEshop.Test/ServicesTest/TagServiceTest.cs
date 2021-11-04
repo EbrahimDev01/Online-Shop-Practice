@@ -230,6 +230,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.IsType<ResultMethodService>(resultTagShapeEdit);
             Assert.False(resultTagShapeEdit.IsSuccess);
             Assert.True(resultTagShapeEdit.IsNotFound);
+            Assert.Empty(resultTagShapeEdit.Errors);
         }
 
         [Fact]
@@ -244,6 +245,22 @@ namespace MyEshop.Test.ServicesTest
             Assert.IsType<ResultMethodService>(resultTagShapeEdit);
             Assert.False(resultTagShapeEdit.IsSuccess);
             Assert.True(resultTagShapeEdit.IsNotFound);
+            Assert.Empty(resultTagShapeEdit.Errors);
+        }
+
+        [Fact]
+        public async void Test_GetTagShapeEditViewModelByTagIdAsync_Result_Found_Tag()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            var resultTagShapeEdit = await _tagService.GetTagShapeEditViewModelByTagIdAsync(1);
+
+            Assert.NotNull(resultTagShapeEdit);
+            Assert.IsType<ResultMethodService>(resultTagShapeEdit);
+            Assert.True(resultTagShapeEdit.IsSuccess);
+            Assert.False(resultTagShapeEdit.IsNotFound);
+            Assert.Empty(resultTagShapeEdit.Errors);
         }
     }
 }
