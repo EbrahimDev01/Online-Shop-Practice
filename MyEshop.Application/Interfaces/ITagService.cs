@@ -18,6 +18,8 @@ namespace MyEshop.Application.Interfaces
 
         public ValueTask<TagDetailsViewModel> GetTagDetailsByTagIdAsync(int tagId);
 
+        public ValueTask<TagEditViewModel> GetTagShapeEditViewModelByTagIdAsync(int tagId);
+
         public Task<bool> IsExistTagByTitle(string tagTitle);
     }
 }

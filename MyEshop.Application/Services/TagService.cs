@@ -18,7 +18,7 @@ namespace MyEshop.Application.Services
     {
         private readonly ITagRepository _tagRepository;
         private readonly IImageRepository _imageRepository;
-
+        private int Tagid;
 
         public TagService(ITagRepository tagRepository, IImageRepository imageRepository)
         {
@@ -91,6 +91,22 @@ namespace MyEshop.Application.Services
                     );
 
             return new TagDetailsViewModel(tag, products);
+        }
+
+        public async ValueTask<TagEditViewModel> GetTagShapeEditViewModelByTagIdAsync(int tagId)
+        {
+            if (tagId is 0)
+            {
+                return null;
+            }
+
+            var tag = await _tagRepository.GetTagByTagId(tagId);
+            if (tag is null)
+            {
+                return null;
+            }
+
+            return new TagEditViewModel(tag);
         }
     }
 }
