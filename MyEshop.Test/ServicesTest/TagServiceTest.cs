@@ -220,5 +220,17 @@ namespace MyEshop.Test.ServicesTest
             Assert.IsType<TagDetailsViewModel>(resultGetTagDetails);
         }
 
+        [Fact]
+        public async void Test_GetTagShapeEditViewModelByTagIdAsync_Id_Is_Zero_Result_Not_Found_Tag()
+        {
+            var resultTagShapeEdit = await _tagService.GetTagShapeEditViewModelByTagIdAsync(0);
+
+
+            Assert.NotNull(resultTagShapeEdit);
+            Assert.IsType<ResultMethodService>(resultTagShapeEdit);
+            Assert.False(resultTagShapeEdit.IsSuccess);
+            Assert.True(resultTagShapeEdit.IsNotFound);
+        }
+
     }
 }
