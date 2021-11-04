@@ -26,6 +26,7 @@ namespace MyEshop.Test.ServicesTest
         public TagServiceTest()
         {
             _mockTagRepository = new Mock<ITagRepository>();
+            _mockIImageRepository = new Mock<IImageRepository>();
 
             _tagService = new TagService(_mockTagRepository.Object, _mockIImageRepository.Object);
         }
