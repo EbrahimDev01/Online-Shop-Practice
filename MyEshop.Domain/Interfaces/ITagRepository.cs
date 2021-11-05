@@ -19,6 +19,8 @@ namespace MyEshop.Domain.Interfaces
 
         public Task<bool> CreateTagAsync(Tag tag);
 
+        public Task<bool> IsExistTagByTagTitleAndTagId(string tagTitle, int tagId);
+
         public ValueTask<Tag> GetTagByTagId(int tagId);
 
         public Task<Tag> GetTagIncludeProductsByTagId(int tagId);
