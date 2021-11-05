@@ -209,6 +209,17 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
 
+        [Fact]
+        public async void Test_Edit_Tag_Manager_Result_Model_State_Not_Valid()
+        {
+            _tagManagerController.ModelState.AddModelError("","");
+
+            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as ViewResult;
+
+            Assert.NotNull(resultTagManager);
+        }
+
+
     }
 
 }
