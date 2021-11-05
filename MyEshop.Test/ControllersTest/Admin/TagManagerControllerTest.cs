@@ -5,6 +5,7 @@ using MyEshop.Application.Interfaces;
 using MyEshop.Application.ViewModels.PublicViewModelClass;
 using MyEshop.Application.ViewModels.Tag;
 using MyEshop.Domain.ConstsDomain.Messages;
+using MyEshop.Domain.Models;
 using MyEshop.Mvc.Areas.Admin.Controllers;
 using System;
 using System.Collections.Generic;
@@ -191,6 +192,22 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultEditTag);
             Assert.IsType<TagEditViewModel>(resultEditTagModel);
         }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async void Test_IsExistTagByTagTitleAndTagId_Action(bool expected)
+        {
+            _mockTagService.Setup(tagService => tagService.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(expected);
+
+
+            var resultIsExistTagByTitle = await _tagManagerController.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()) as JsonResult;
+
+            Assert.NotNull(resultIsExistTagByTitle);
+            Assert.Equal(resultIsExistTagByTitle.Value, !expected);
+        }
+
 
     }
 
