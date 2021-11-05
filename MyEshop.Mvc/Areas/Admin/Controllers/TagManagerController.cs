@@ -83,6 +83,35 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(resultTag);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(TagEditViewModel tagEditModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(tagEditModel);
+            }
+
+            var resultEditTag = await _tagService.EditTagAsync(tagEditModel);
+
+            if (resultEditTag.IsSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (resultEditTag.IsNotFound)
+            {
+                return NotFound();
+            }
+
+            foreach (var error in resultEditTag.Errors)
+            {
+                ModelState.AddModelError(error.Title,error.Message);
+            }
+
+            return View(tagEditModel);
+        }
+
+
         #endregion
 
         [HttpPost]
