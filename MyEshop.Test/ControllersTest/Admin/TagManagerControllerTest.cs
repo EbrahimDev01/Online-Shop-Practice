@@ -235,7 +235,28 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
 
+        [Fact]
+        public async void Test_Edit_Tag_Manager_Result_Error()
+        {
+            var resultMethod = new ResultMethodService();
 
+            resultMethod.AddError("", "");
+
+            _mockTagService.Setup(tagService => tagService.EditTagAsync(It.IsAny<TagEditViewModel>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as NotFoundResult;
+
+            var resultTagEditManagerErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
+                        .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
+
+            Assert.NotNull(resultTagManager);
+            Assert.NotNull(resultTagEditManagerErrors);
+            Assert.Single(resultTagEditManagerErrors);
+            Assert.False(_tagManagerController.ModelState.IsValid);
+            Assert.Contains(resultTagEditManagerErrors,
+                error => error.Title == "" &&
+                error.Message == "");
+        }
     }
-
 }
