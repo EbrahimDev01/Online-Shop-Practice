@@ -29,7 +29,7 @@ namespace MyEshop.Application.ViewModels.Tag
         [Display(Name = DisplayNames.Title)]
         [Required(ErrorMessage = ErrorMessage.Required)]
         [MaxLength(150, ErrorMessage = ErrorMessage.MaxLength)]
-        [Remote("IsExistTagByTitleAndId", "TagManager", "Admin",
+        [Remote("IsExistTagByTagTitleAndTagId", "TagManager", "Admin",
             HttpMethod = "POST",
             AdditionalFields = MostUsedNames.RequestVerificationToken + "," + nameof(TagId),
             ErrorMessage = ErrorMessage.IsExist)]
