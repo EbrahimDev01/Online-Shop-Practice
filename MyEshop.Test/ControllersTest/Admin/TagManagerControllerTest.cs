@@ -212,12 +212,28 @@ namespace MyEshop.Test.ControllersTest.Admin
         [Fact]
         public async void Test_Edit_Tag_Manager_Result_Model_State_Not_Valid()
         {
-            _tagManagerController.ModelState.AddModelError("","");
+            _tagManagerController.ModelState.AddModelError("", "");
 
             var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as ViewResult;
 
             Assert.NotNull(resultTagManager);
         }
+
+        [Fact]
+        public async void Test_Edit_Tag_Manager_Result_Not_Found_Tag()
+        {
+            var resultMethod = new ResultMethodService();
+
+            resultMethod.NotFound();
+
+            _mockTagService.Setup(tagService => tagService.EditTagAsync(It.IsAny<TagEditViewModel>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as NotFoundResult;
+
+            Assert.NotNull(resultTagManager);
+        }
+
 
 
     }
