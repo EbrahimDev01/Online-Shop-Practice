@@ -108,5 +108,9 @@ namespace MyEshop.Application.Services
 
             return new TagEditViewModel(tag);
         }
+
+        public Task<bool> IsExistTagByTagTitleAndTagId(string tagTitle, int tagId)
+            => _tagRepository.IsExistTagByTagTitleAndTagId(tagTitle, tagId);
+
     }
 }
