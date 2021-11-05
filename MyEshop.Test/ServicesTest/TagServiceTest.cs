@@ -254,9 +254,9 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Theory]
-        [InlineData("Apple", 1, true)]
-        [InlineData("hp", 2, true)]
-        [InlineData("LG", 4, false)]
+        [InlineData("Apple", 1, false)]
+        [InlineData("hp", 2, false)]
+        [InlineData("LG", 4, true)]
         public async void Test_IsExistTagByTagTitleAndTagId_Method_Tag_Service(string tagSample, int id, bool expected)
         {
             var tagsList = new List<Tag>
@@ -279,13 +279,12 @@ namespace MyEshop.Test.ServicesTest
             };
 
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
-                .ReturnsAsync(tagsList.Any(tag => tag.Title == tagSample || tag.TagId != id));
+                .ReturnsAsync(tagsList.Any(tag => tag.Title == tagSample && tag.TagId != id));
 
 
             var resultIsExistTagByTitle = await _tagService.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>());
 
-            Assert.NotNull(resultIsExistTagByTitle);
-            Assert.Equal(resultIsExistTagByTitle.Value, expected);
+            Assert.Equal(resultIsExistTagByTitle, expected);
         }
 
 
