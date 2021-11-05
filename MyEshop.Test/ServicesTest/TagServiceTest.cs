@@ -252,5 +252,42 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(resultTagShapeEdit);
             Assert.IsType<TagEditViewModel>(resultTagShapeEdit);
         }
+
+        [Theory]
+        [InlineData("Apple", 1, true)]
+        [InlineData("hp", 2, true)]
+        [InlineData("LG", 4, false)]
+        public async void Test_IsExistTagByTagTitleAndTagId_Method_Tag_Service(string tagSample, int id, bool expected)
+        {
+            var tagsList = new List<Tag>
+            {
+                new Tag("Apple")
+                {
+                    TagId=1
+                },
+                new Tag("LG")
+                {
+                    TagId=2,
+                },
+                new Tag("Samsung")
+                {
+                    TagId=3,
+                },
+                new Tag("Microsoft"){
+                    TagId=4,
+                }
+            };
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(tagsList.Any(tag => tag.Title == tagSample || tag.TagId != id));
+
+
+            var resultIsExistTagByTitle = await _tagService.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>());
+
+            Assert.NotNull(resultIsExistTagByTitle);
+            Assert.Equal(resultIsExistTagByTitle.Value, expected);
+        }
+
+
     }
 }
