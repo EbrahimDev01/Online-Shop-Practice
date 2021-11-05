@@ -95,9 +95,9 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> IsExistTagByTagTitleAndTagId(string tagTitle, string tagId)
+        public async Task<JsonResult> IsExistTagByTagTitleAndTagId(string title, int id)
         {
-            bool isExistTag = !await _tagService.IsExistTagByTagTitleAndTagId(tagTitle, tagId);
+            bool isExistTag = !await _tagService.IsExistTagByTagTitleAndTagId(title, id);
 
             return Json(isExistTag);
         }
