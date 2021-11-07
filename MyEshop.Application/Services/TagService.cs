@@ -141,6 +141,7 @@ namespace MyEshop.Application.Services
                 return resultMethod;
             }
 
+            tag.Title = tagEditModel.Title;
 
             bool resultEditTag = await _tagRepository.EditTagAsync(tag);
             if (!resultEditTag)
