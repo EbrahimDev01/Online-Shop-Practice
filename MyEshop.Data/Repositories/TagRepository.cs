@@ -50,6 +50,22 @@ namespace MyEshop.Data.Repositories
         public ValueTask<Tag> GetTagByTagId(int tagId)
             => _dbContext.Tags.FindAsync(tagId);
 
+        public ValueTask<bool> EditTagAsync(Tag tagModel)
+        {
+            bool isUpdate;
+            try
+            {
+                _dbContext.Update(tagModel);
+                isUpdate = true;
+            }
+            catch
+            {
+                isUpdate = false;
+            }
+
+            return ValueTask.FromResult(isUpdate);
+        }
+
         public Task<Tag> GetTagIncludeProductsByTagId(int tagId)
             => (_dbContext.Tags.Include(tag => tag.Products).FirstOrDefaultAsync(tag => tag.TagId == tagId));
 
