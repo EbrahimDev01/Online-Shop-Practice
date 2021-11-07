@@ -18,7 +18,6 @@ namespace MyEshop.Application.Services
     {
         private readonly ITagRepository _tagRepository;
         private readonly IImageRepository _imageRepository;
-        private int Tagid;
 
         public TagService(ITagRepository tagRepository, IImageRepository imageRepository)
         {
@@ -112,5 +111,56 @@ namespace MyEshop.Application.Services
         public Task<bool> IsExistTagByTagTitleAndTagId(string tagTitle, int tagId)
             => _tagRepository.IsExistTagByTagTitleAndTagId(tagTitle, tagId);
 
+        public async ValueTask<ResultMethodService> EditTagAsync(TagEditViewModel tagEditModel)
+        {
+            var resultMethod = new ResultMethodService();
+
+
+            if (tagEditModel.TagId is 0)
+            {
+                resultMethod.NotFound();
+
+                return resultMethod;
+            }
+
+
+            bool isExistTag = await _tagRepository.IsExistTagByTagTitleAndTagId(tagEditModel.Title, tagEditModel.TagId);
+            if (isExistTag)
+            {
+                resultMethod.AddError(nameof(TagEditViewModel.Title), ErrorMessage.IsExistWithName(DisplayNames.Title));
+
+                return resultMethod;
+            }
+
+
+            var tag = await _tagRepository.GetTagByTagId(tagEditModel.TagId);
+            if (tag is null)
+            {
+                resultMethod.NotFound();
+
+                return resultMethod;
+            }
+
+
+            bool resultEditTag = await _tagRepository.EditTagAsync(tag);
+            if (!resultEditTag)
+            {
+                resultMethod.AddError(string.Empty, ErrorMessage.ExceptionEdit(DisplayNames.Tag));
+
+                return resultMethod;
+            }
+
+
+            bool resultSave = await _tagRepository.SaveAsync();
+            if (!resultSave)
+            {
+                resultMethod.AddError(string.Empty, ErrorMessage.ExceptionSave);
+
+                return resultMethod;
+            }
+
+
+            return resultMethod;
+        }
     }
 }
