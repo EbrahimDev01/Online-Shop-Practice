@@ -386,5 +386,33 @@ namespace MyEshop.Test.ServicesTest
                 error.Title == nameof(TagEditViewModel.Title) &&
                 error.Message == ErrorMessage.ExceptionSave);
         }
+
+        [Fact]
+        public async void Test_EditTagAsync_Exception_Result_Complete_Edit_Tag()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(false);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.EditTagAsync(It.IsAny<Tag>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
+                .ReturnsAsync(true);
+
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+
+            Assert.NotNull(resultEditTag);
+            Assert.IsType<ResultMethodService>(resultEditTag);
+            Assert.False(resultEditTag.IsNotFound);
+            Assert.False(resultEditTag.IsSuccess);
+            Assert.Single(resultEditTag.Errors);
+            Assert.Contains(resultEditTag.Errors,
+                error =>
+                error.Title == nameof(TagEditViewModel.Title) &&
+                error.Message == ErrorMessage.ExceptionSave);
+        }
     }
 }
