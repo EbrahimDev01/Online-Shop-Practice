@@ -322,6 +322,9 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(null as Tag);
 
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(false);
+
             var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
 
             Assert.NotNull(resultEditTag);
@@ -336,8 +339,12 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(new Tag());
 
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(false);
+
             _mockTagRepository.Setup(tagRepository => tagRepository.TagEditAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(false);
+
 
             var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
 
@@ -358,6 +365,9 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
                 .ReturnsAsync(new Tag());
 
+            _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync(false);
+
             _mockTagRepository.Setup(tagRepository => tagRepository.TagEditAsync(It.IsAny<Tag>()))
                 .ReturnsAsync(true);
 
@@ -376,5 +386,6 @@ namespace MyEshop.Test.ServicesTest
                 error.Title == nameof(TagEditViewModel.Title) &&
                 error.Message == ErrorMessage.ExceptionSave);
         }
+
     }
 }
