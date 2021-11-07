@@ -287,6 +287,16 @@ namespace MyEshop.Test.ServicesTest
             Assert.Equal(resultIsExistTagByTitle, expected);
         }
 
+        [Fact]
+        public async void Test_TagEditAsync_Tag_Id_Is_Zero_Result_Not_Found_Is_True()
+        {
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel { TagId = 0 });
+
+            Assert.NotNull(resultEditTag);
+            Assert.IsType<ResultMethodService>(resultEditTag);
+            Assert.True(resultEditTag.IsNotFound);
+            Assert.False(resultEditTag.IsSuccess);
+        }
 
     }
 }
