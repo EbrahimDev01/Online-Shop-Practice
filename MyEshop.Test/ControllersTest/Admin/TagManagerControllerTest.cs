@@ -245,7 +245,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockTagService.Setup(tagService => tagService.EditTagAsync(It.IsAny<TagEditViewModel>()))
                 .ReturnsAsync(resultMethod);
 
-            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as NotFoundResult;
+            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as ViewResult;
 
             var resultTagEditManagerErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
                         .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
@@ -268,15 +268,9 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockTagService.Setup(tagService => tagService.EditTagAsync(It.IsAny<TagEditViewModel>()))
                 .ReturnsAsync(resultMethod);
 
-            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as NotFoundResult;
-
-            var resultTagEditManagerErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
-                        .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
+            var resultTagManager = await _tagManagerController.Edit(new TagEditViewModel()) as RedirectToActionResult;
 
             Assert.NotNull(resultTagManager);
-            Assert.NotNull(resultTagEditManagerErrors);
-            Assert.Empty(resultTagEditManagerErrors);
-            Assert.True(_tagManagerController.ModelState.IsValid);
         }
 
     }

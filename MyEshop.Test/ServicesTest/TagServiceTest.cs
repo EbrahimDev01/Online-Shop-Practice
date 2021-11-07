@@ -307,12 +307,16 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.IsExistTagByTagTitleAndTagId(It.IsAny<string>(), It.IsAny<int>()))
                 .ReturnsAsync(true);
 
-            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel() { TagId = 1 });
 
             Assert.NotNull(resultEditTag);
             Assert.IsType<ResultMethodService>(resultEditTag);
-            Assert.True(resultEditTag.IsNotFound);
+            Assert.False(resultEditTag.IsNotFound);
             Assert.False(resultEditTag.IsSuccess);
+            Assert.Single(resultEditTag.Errors);
+            Assert.Contains(resultEditTag.Errors,
+                error =>
+                error.Title == nameof(TagEditViewModel.Title) && error.Message == ErrorMessage.IsExistWithName(DisplayNames.Title));
         }
 
 
@@ -346,7 +350,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(false);
 
 
-            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel(){ TagId = 1 });
 
             Assert.NotNull(resultEditTag);
             Assert.IsType<ResultMethodService>(resultEditTag);
@@ -355,7 +359,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.Single(resultEditTag.Errors);
             Assert.Contains(resultEditTag.Errors,
                 error =>
-                error.Title == nameof(TagEditViewModel.Title) &&
+                error.Title == string.Empty &&
                 error.Message == ErrorMessage.ExceptionEdit(DisplayNames.Tag));
         }
 
@@ -374,7 +378,7 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
                 .ReturnsAsync(false);
 
-            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel() { TagId = 1 });
 
             Assert.NotNull(resultEditTag);
             Assert.IsType<ResultMethodService>(resultEditTag);
@@ -383,7 +387,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.Single(resultEditTag.Errors);
             Assert.Contains(resultEditTag.Errors,
                 error =>
-                error.Title == nameof(TagEditViewModel.Title) &&
+                error.Title == string.Empty &&
                 error.Message == ErrorMessage.ExceptionSave);
         }
 
@@ -402,17 +406,13 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
                 .ReturnsAsync(true);
 
-            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel() { TagId = 1 });
 
             Assert.NotNull(resultEditTag);
             Assert.IsType<ResultMethodService>(resultEditTag);
             Assert.False(resultEditTag.IsNotFound);
-            Assert.False(resultEditTag.IsSuccess);
-            Assert.Single(resultEditTag.Errors);
-            Assert.Contains(resultEditTag.Errors,
-                error =>
-                error.Title == nameof(TagEditViewModel.Title) &&
-                error.Message == ErrorMessage.ExceptionSave);
+            Assert.True(resultEditTag.IsSuccess);
+            Assert.Empty(resultEditTag.Errors);
         }
     }
 }

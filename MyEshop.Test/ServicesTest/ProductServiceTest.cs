@@ -28,10 +28,8 @@ namespace MyEshop.Test.ServicesTest
         private readonly Mock<IProductRepository> _mockProductRepository;
         private readonly Mock<ICategoryRepository> _mockCategoryRepository;
         private readonly Mock<ITagRepository> _mockTagRepository;
-        private readonly Mock<ITagService> _mockTagService;
         private readonly Mock<IImageRepository> _mockImageRepository;
         private readonly Mock<ICommentRepository> _mockCommentRepository;
-        private readonly Mock<ICategoryService> _mockCategoryService;
         private readonly Mock<IFileHandler> _mockFileHandler;
         private readonly IProductService _productService;
 
@@ -42,8 +40,6 @@ namespace MyEshop.Test.ServicesTest
             _mockTagRepository = new Mock<ITagRepository>();
             _mockImageRepository = new Mock<IImageRepository>();
             _mockCommentRepository = new Mock<ICommentRepository>();
-            _mockCategoryService = new Mock<ICategoryService>();
-            _mockTagService = new Mock<ITagService>();
             _mockFileHandler = new Mock<IFileHandler>();
 
 
