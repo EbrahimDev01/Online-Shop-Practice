@@ -26,6 +26,7 @@ namespace MyEshop.Application.ConstApplication.Names
         public const string AvailableImages = "تصاویر ثبت شده برای این محصول";
         public const string AvailableImagesInfo = "برای حذف هر تصویر آن را انتخاب کنید";
         public const string CommentCount = "تعداد کامنت ها";
+        public const string Product = "محصول";
 
     }
 }

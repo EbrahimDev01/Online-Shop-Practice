@@ -102,7 +102,7 @@ namespace MyEshop.Application.Services
             bool isCreate = await _productRepository.CreateProductAsync(product);
             if (!isCreate)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate("محصول"));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionCreate(DisplayNames.Product));
 
                 return resultMethodService;
             }
@@ -127,7 +127,7 @@ namespace MyEshop.Application.Services
             if (product == null)
             {
                 resultMethod.NotFound();
-                return ReturnMethodWithErrorMessage(ErrorMessage.NotFound("محصول"));
+                return ReturnMethodWithErrorMessage(ErrorMessage.NotFound(DisplayNames.Product));
             }
 
             bool isDeleteComments = _commentRepository.DeleteCommentsByProductId(productId);
@@ -288,7 +288,7 @@ namespace MyEshop.Application.Services
             bool isEdit = await _productRepository.EditProductAsync(product);
             if (!isEdit)
             {
-                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionEdit("محصول"));
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionEdit(DisplayNames.Product));
 
                 return resultMethodService;
             }

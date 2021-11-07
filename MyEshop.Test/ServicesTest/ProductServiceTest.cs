@@ -117,7 +117,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultCreateProduct.IsNotFound);
             Assert.Single(resultCreateProduct.Errors);
             Assert.Contains(resultCreateProduct.Errors,
-                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionCreate("محصول"));
+                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionCreate(DisplayNames.Product));
         }
 
         [Fact]
@@ -343,7 +343,7 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.Contains(resultProductDelete.Errors,
                 error => error.Title == string.Empty &&
-                error.Message == ErrorMessage.NotFound("محصول"));
+                error.Message == ErrorMessage.NotFound(DisplayNames.Product));
         }
 
         [Fact]
@@ -901,7 +901,7 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultProductEdit.IsSuccess);
             Assert.Single(resultProductEdit.Errors);
             Assert.Contains(resultProductEdit.Errors,
-                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionEdit("محصول"));
+                error => error.Title == string.Empty && error.Message == ErrorMessage.ExceptionEdit(DisplayNames.Product));
 
         }
 
