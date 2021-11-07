@@ -299,7 +299,7 @@ namespace MyEshop.Test.ControllersTest.Admin
                 .ResultAsync(new TagDeleteViewModel());
 
             var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
-            var resultDeleteTagModel = resultDeleteTag.Model as TagDeleteViewModle;
+            var resultDeleteTagModel = resultDeleteTag.Model as TagDeleteViewModel;
 
             Assert.NotNull(resultDeleteTag);
             Assert.NotNull(resultDeleteTagModel);
