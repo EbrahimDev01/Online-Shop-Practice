@@ -311,5 +311,28 @@ namespace MyEshop.Test.ServicesTest
             Assert.True(resultEditTag.IsNotFound);
             Assert.False(resultEditTag.IsSuccess);
         }
+
+        [Fact]
+        public async void Test_TagEditAsync_Edit_Exception_Result_Single_Error()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.TagEditAsync(It.IsAny<Tag>()))
+                .ReturnsAsync(false);
+
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel());
+
+            Assert.NotNull(resultEditTag);
+            Assert.IsType<ResultMethodService>(resultEditTag);
+            Assert.False(resultEditTag.IsNotFound);
+            Assert.False(resultEditTag.IsSuccess);
+            Assert.Single(resultEditTag.Errors);
+            Assert.Contains(resultEditTag.Errors,
+                error =>
+                error.Title == nameof(TagEditViewModel.Title) &&
+                error.Message == ErrorMessage.ExceptionEdit(DisplayNames.Tag));
         }
+
+    }
 }
