@@ -273,5 +273,12 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultTagManager);
         }
 
+        [Fact]
+        public async void Test_Delete_Id_Is_Zero_Result_Not_Found()
+        {
+            var resultDeleteTag = await _tagManagerController.Delete(0) as NotFoundResult;
+
+            Assert.NotNull(resultDeleteTag);
+        }
     }
 }

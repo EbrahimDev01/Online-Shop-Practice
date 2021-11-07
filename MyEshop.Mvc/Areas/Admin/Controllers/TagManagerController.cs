@@ -105,7 +105,7 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
             foreach (var error in resultEditTag.Errors)
             {
-                ModelState.AddModelError(error.Title,error.Message);
+                ModelState.AddModelError(error.Title, error.Message);
             }
 
             return View(tagEditModel);
@@ -121,7 +121,6 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
             return Json(isExistTag);
         }
-
 
         [HttpPost]
         public async Task<JsonResult> IsExistTagByTagTitleAndTagId(string title, int tagId)
