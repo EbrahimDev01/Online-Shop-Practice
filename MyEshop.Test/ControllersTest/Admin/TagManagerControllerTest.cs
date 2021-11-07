@@ -291,5 +291,19 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultDeleteTag);
         }
+
+        [Fact]
+        public async void Test_Delete_Result_Found()
+        {
+            _mockTagService.Setup(tagService => tagService.GetTagShapeDeleteViewModelByTagIdAsync(It.IsAny<int>()))
+                .ResultAsync(new TagDeleteViewModel());
+
+            var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
+            var resultDeleteTagModel = resultDeleteTag.Model as TagDeleteViewModle;
+
+            Assert.NotNull(resultDeleteTag);
+            Assert.NotNull(resultDeleteTagModel);
+        }
+
     }
 }
