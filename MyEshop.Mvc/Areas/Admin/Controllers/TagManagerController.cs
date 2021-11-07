@@ -114,6 +114,22 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
 
         #endregion
 
+        #region Delete
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var tag = await _tagService.GetTagShapeDeleteViewModelByTagIdAsync(id);
+
+            if (tag is null)
+            {
+                return NotFound();
+            }
+
+            return View(tag);
+        }
+
+        #endregion
+
         [HttpPost]
         public async Task<JsonResult> IsExistTagByTitle(string title)
         {
