@@ -313,7 +313,6 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultDeleteTag);
         }
 
-
         [Fact]
         public async void Test_Delete_Confirm_Tag_Not_Found_By_Id_Result_Not_Found()
         {
@@ -328,6 +327,31 @@ namespace MyEshop.Test.ControllersTest.Admin
 
             Assert.NotNull(resultDeleteTag);
         }
+
+        [Fact]
+        public async void Test_Delete_Confirm_Failed_To_Delete_Result_Error()
+        {
+            var resultMethod = new ResultMethodService();
+
+            resultMethod.AddError(string.Empty, ErrorMessage.ExceptionDelete(DisplayNames.Tag));
+
+            _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
+
+            var resultTagDeleteErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
+                .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
+
+            Assert.NotNull(resultDeleteTag);
+            Assert.False(_tagManagerController.ModelState.IsValid);
+            Assert.Single(resultTagDeleteErrors);
+            Assert.Contains(resultTagDeleteErrors,
+                error => 
+                error.Title == string.Empty &&
+                error.Message == ErrorMessage.ExceptionDelete(DisplayNames.Tag));
+        }
+
 
     }
 }
