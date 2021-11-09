@@ -6,45 +6,59 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
     {
         public ResultMethodService()
         {
-            IsSuccess = true;
-            IsNotFound = false;
+            _isSuccess = true;
+            _isNotFound = false;
+            Errors = new List<ErrorResultMethodService>();
         }
-
+        
         public ResultMethodService(bool isSuccess, bool isNotFound)
         {
-            IsSuccess = isSuccess;
-            IsNotFound = isNotFound;
+            _isSuccess = isSuccess;
+            _isNotFound = isNotFound;
         }
 
 
-        public bool IsSuccess { set; get; }
-        public bool IsNotFound { set; get; }
+        private bool _isSuccess;
+        
+        private bool _isNotFound;
 
+
+        public bool IsSuccess
+        {
+            get
+            {
+                return _isSuccess;
+            }
+        }
+        
+        public bool IsNotFound
+        {
+            get
+            {
+                return _isNotFound;
+            }
+        }
+        
         public IList<ErrorResultMethodService> Errors { set; get; }
-            = new List<ErrorResultMethodService>();
 
 
         public void AddError(string title, string message)
-        {
-            if (IsSuccess)
-                IsSuccess = false;
-
-            Errors.Add(new ErrorResultMethodService(title, message));
-        }
-
+            => AddError(new ErrorResultMethodService(title, message));
+        
         public void AddError(ErrorResultMethodService errorResultMethodService)
         {
             if (IsSuccess)
-                IsSuccess = false;
+                _isSuccess = false;
+
+            _isNotFound = false;
 
             AddError(errorResultMethodService.Title, errorResultMethodService.Message);
         }
 
-
         public void NotFound()
         {
-            IsSuccess = false;
-            IsNotFound = true;
+            _isSuccess = false;
+            _isNotFound = true;
         }
     }
 }
