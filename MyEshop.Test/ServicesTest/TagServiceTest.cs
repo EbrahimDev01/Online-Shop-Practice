@@ -433,5 +433,16 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.Null(resultGetTagShapeDelete);
         }
+
+        [Fact]
+        public async void Test_Delete_Tag_Input_Id_Found_Result_Tag_Async()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            var resultGetTagShapeDelete = await _tagService.GetTagShapeDeleteViewModelByTagIdAsync(1);
+
+            Assert.NotNull(resultGetTagShapeDelete);
+        }
     }
 }
