@@ -163,5 +163,8 @@ namespace MyEshop.Application.Services
 
             return resultMethod;
         }
+
+        public async ValueTask<TagDeleteViewModel> GetTagShapeDeleteViewModelByTagIdAsync(int tagId)
+            => new TagDeleteViewModel(await _tagRepository.GetTagByTagId(tagId));
     }
 }

@@ -23,6 +23,8 @@ namespace MyEshop.Application.Interfaces
 
         public ValueTask<ResultMethodService> EditTagAsync(TagEditViewModel tagEditModel);
 
+        public ValueTask<TagDeleteViewModel> GetTagShapeDeleteViewModelByTagIdAsync(int tagId);
+
         public Task<bool> IsExistTagByTitle(string tagTitle);
     }
 }
