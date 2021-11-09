@@ -347,11 +347,23 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.False(_tagManagerController.ModelState.IsValid);
             Assert.Single(resultTagDeleteErrors);
             Assert.Contains(resultTagDeleteErrors,
-                error => 
+                error =>
                 error.Title == string.Empty &&
                 error.Message == ErrorMessage.ExceptionDelete(DisplayNames.Tag));
         }
 
+        [Fact]
+        public async void Test_Delete_Confirm_Successful()
+        {
+            var resultMethod = new ResultMethodService();
+
+            _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
+
+            Assert.NotNull(resultDeleteTag);
+        }
 
     }
 }
