@@ -128,6 +128,33 @@ namespace MyEshop.Mvc.Areas.Admin.Controllers
             return View(tag);
         }
 
+        [HttpPost]
+        [ActionName(nameof(Delete))]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var resultTagDelete = await _tagService.DeleteTagAsync(id);
+
+
+            if (resultTagDelete.IsSuccess)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (resultTagDelete.IsNotFound)
+            {
+                return NotFound();
+            }
+
+            foreach (var error in resultTagDelete.Errors)
+            {
+                ModelState.AddModelError(error.Title, error.Message);
+            }
+
+            var tag = _tagService.GetTagShapeDeleteViewModelByTagIdAsync(id);
+
+            return View(tag);
+        }
+
         #endregion
 
         [HttpPost]
