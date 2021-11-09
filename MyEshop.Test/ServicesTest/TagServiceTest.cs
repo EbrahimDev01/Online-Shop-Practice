@@ -416,9 +416,20 @@ namespace MyEshop.Test.ServicesTest
         }
 
         [Fact]
-        public async void Test_Delete_Tag_Input_Zero_Result_Not_Found_Async()
+        public async void Test_Delete_Tag_Input_Zero_Result_Null_Async()
         {
             var resultGetTagShapeDelete = await _tagService.GetTagShapeDeleteViewModelByTagIdAsync(0);
+
+            Assert.Null(resultGetTagShapeDelete);
+        }
+
+        [Fact]
+        public async void Test_Delete_Tag_Input_Id_Not_Found_Result_Null_Async()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(null as Tag);
+
+            var resultGetTagShapeDelete = await _tagService.GetTagShapeDeleteViewModelByTagIdAsync(1);
 
             Assert.Null(resultGetTagShapeDelete);
         }
