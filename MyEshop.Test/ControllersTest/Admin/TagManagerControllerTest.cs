@@ -323,7 +323,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
-            var resultDeleteTag = await _tagManagerController.Delete(1) as NotFoundResult;
+            var resultDeleteTag = await _tagManagerController.DeleteConfirm(1) as NotFoundResult;
 
             Assert.NotNull(resultDeleteTag);
         }
@@ -338,7 +338,7 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
-            var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
+            var resultDeleteTag = await _tagManagerController.DeleteConfirm(1) as ViewResult;
 
             var resultTagDeleteErrors = _tagManagerController.ModelState.Where(y => y.Value.Errors.Count > 0)
                 .Select(x => new ErrorResultMethodService(x.Key, x.Value.Errors.FirstOrDefault().ErrorMessage));
@@ -360,10 +360,10 @@ namespace MyEshop.Test.ControllersTest.Admin
             _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
                 .ReturnsAsync(resultMethod);
 
-            var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
+            var resultDeleteTag = await _tagManagerController.DeleteConfirm(1) as RedirectToActionResult;
 
             Assert.NotNull(resultDeleteTag);
+            Assert.Equal("Index", resultDeleteTag.ActionName);
         }
-
     }
 }
