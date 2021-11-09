@@ -313,5 +313,21 @@ namespace MyEshop.Test.ControllersTest.Admin
             Assert.NotNull(resultDeleteTag);
         }
 
+
+        [Fact]
+        public async void Test_Delete_Confirm_Tag_Not_Found_By_Id_Result_Not_Found()
+        {
+            var resultMethod = new ResultMethodService();
+
+            resultMethod.NotFound();
+
+            _mockTagService.Setup(tagService => tagService.DeleteTagAsync(It.IsAny<int>()))
+                .ReturnsAsync(resultMethod);
+
+            var resultDeleteTag = await _tagManagerController.Delete(1) as NotFoundResult;
+
+            Assert.NotNull(resultDeleteTag);
+        }
+
     }
 }
