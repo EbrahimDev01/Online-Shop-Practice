@@ -350,7 +350,7 @@ namespace MyEshop.Test.ServicesTest
                 .ReturnsAsync(false);
 
 
-            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel(){ TagId = 1 });
+            var resultEditTag = await _tagService.EditTagAsync(new TagEditViewModel() { TagId = 1 });
 
             Assert.NotNull(resultEditTag);
             Assert.IsType<ResultMethodService>(resultEditTag);
@@ -413,6 +413,14 @@ namespace MyEshop.Test.ServicesTest
             Assert.False(resultEditTag.IsNotFound);
             Assert.True(resultEditTag.IsSuccess);
             Assert.Empty(resultEditTag.Errors);
+        }
+
+        [Fact]
+        public async void Test_Delete_Tag_Input_Zero_Result_Not_Found_Async()
+        {
+            var resultGetTagShapeDelete = await _tagService.GetTagShapeDeleteViewModelByTagIdAsync(0);
+
+            Assert.Null(resultGetTagShapeDelete);
         }
     }
 }
