@@ -285,7 +285,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async void Test_Delete_Tag_Not_Found_By_Id_Result_Not_Found()
         {
             _mockTagService.Setup(tagService => tagService.GetTagShapeDeleteViewModelByTagIdAsync(It.IsAny<int>()))
-                .ResultAsync(null as TagDeleteViewModel);
+                .ReturnsAsync(null as TagDeleteViewModel);
 
             var resultDeleteTag = await _tagManagerController.Delete(1) as NotFoundResult;
 
@@ -296,7 +296,7 @@ namespace MyEshop.Test.ControllersTest.Admin
         public async void Test_Delete_Result_Found()
         {
             _mockTagService.Setup(tagService => tagService.GetTagShapeDeleteViewModelByTagIdAsync(It.IsAny<int>()))
-                .ResultAsync(new TagDeleteViewModel());
+                .ReturnsAsync(new TagDeleteViewModel());
 
             var resultDeleteTag = await _tagManagerController.Delete(1) as ViewResult;
             var resultDeleteTagModel = resultDeleteTag.Model as TagDeleteViewModel;
