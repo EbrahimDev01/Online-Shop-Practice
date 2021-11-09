@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MyEshop.Application.ViewModels.PublicViewModelClass
 {
@@ -10,6 +6,8 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
     {
         public ResultMethodService()
         {
+            IsSuccess = true;
+            IsNotFound = false;
         }
 
         public ResultMethodService(bool isSuccess, bool isNotFound)
@@ -19,8 +17,8 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
         }
 
 
-        public bool IsSuccess { set; get; } = true;
-        public bool IsNotFound { set; get; } = false;
+        public bool IsSuccess { set; get; }
+        public bool IsNotFound { set; get; }
 
         public IList<ErrorResultMethodService> Errors { set; get; }
             = new List<ErrorResultMethodService>();
