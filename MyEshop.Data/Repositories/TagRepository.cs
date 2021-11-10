@@ -66,6 +66,22 @@ namespace MyEshop.Data.Repositories
             return ValueTask.FromResult(isUpdate);
         }
 
+        public ValueTask<bool> DeleteTag(Tag tagModel)
+        {
+            bool isDelete;
+            try
+            {
+                _dbContext.Remove(tagModel);
+
+                isDelete = true;
+            }
+            catch
+            {
+                isDelete = false;
+            }
+            return ValueTask.FromResult(isDelete);
+        }
+
         public Task<Tag> GetTagIncludeProductsByTagId(int tagId)
             => (_dbContext.Tags.Include(tag => tag.Products).FirstOrDefaultAsync(tag => tag.TagId == tagId));
 
