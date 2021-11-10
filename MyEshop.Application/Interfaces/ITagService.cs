@@ -25,6 +25,8 @@ namespace MyEshop.Application.Interfaces
 
         public ValueTask<TagDeleteViewModel> GetTagShapeDeleteViewModelByTagIdAsync(int tagId);
 
+        public ValueTask<ResultMethodService> DeleteTagAsync(int tagId);
+
         public Task<bool> IsExistTagByTitle(string tagTitle);
     }
 }

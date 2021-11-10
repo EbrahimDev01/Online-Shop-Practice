@@ -179,5 +179,41 @@ namespace MyEshop.Application.Services
 
             return new(tag);
         }
+
+        public async ValueTask<ResultMethodService> DeleteTagAsync(int tagId)
+        {
+            var resultMethodService = new ResultMethodService();
+
+            if (tagId is 0)
+            {
+                resultMethodService.NotFound();
+
+                return resultMethodService;
+            }
+
+            var tag = await _tagRepository.GetTagByTagId(tagId);
+            if (tag is null)
+            {
+                resultMethodService.NotFound();
+
+                return resultMethodService;
+            }
+
+            bool isDelete = await _tagRepository.DeleteTag(tag);
+            if (!isDelete)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionDelete(DisplayNames.Tag));
+
+                return resultMethodService;
+            }
+
+            bool isSave = await _tagRepository.SaveAsync();
+            if (!isSave)
+            {
+                resultMethodService.AddError(string.Empty, ErrorMessage.ExceptionSave);
+            }
+
+            return resultMethodService;
+        }
     }
 }
