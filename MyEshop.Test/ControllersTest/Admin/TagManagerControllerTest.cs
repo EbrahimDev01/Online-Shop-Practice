@@ -306,14 +306,6 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public async void Test_Delete_Confirm_Id_Is_Zero_Result_Not_Found()
-        {
-            var resultDeleteTag = await _tagManagerController.DeleteConfirm(0) as NotFoundResult;
-
-            Assert.NotNull(resultDeleteTag);
-        }
-
-        [Fact]
         public async void Test_Delete_Confirm_Tag_Not_Found_By_Id_Result_Not_Found()
         {
             var resultMethod = new ResultMethodService();
