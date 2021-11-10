@@ -458,6 +458,20 @@ namespace MyEshop.Test.ServicesTest
             Assert.True(resultDeleteTag.IsNotFound);
         }
 
+        [Fact]
+        public async void Test_DeleteTagAsync_Input_Id_Not_Found_Result_Not_Found_Async()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(null as Tag);
+
+            var resultDeleteTag = await _tagService.DeleteTagAsync(1);
+
+            Assert.NotNull(resultDeleteTag);
+            Assert.IsType<ResultMethodService>(resultDeleteTag);
+            Assert.False(resultDeleteTag.IsSuccess);
+            Assert.True(resultDeleteTag.IsNotFound);
+        }
+
         #endregion
 
     }
