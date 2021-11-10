@@ -494,6 +494,31 @@ namespace MyEshop.Test.ServicesTest
                 error.Message == ErrorMessage.ExceptionDelete(DisplayNames.Tag));
         }
 
+        [Fact]
+        public async void Test_DeleteTagAsync_Save_Changes_Failed_Result_IsSuccess_Is_False_Async()
+        {
+            _mockTagRepository.Setup(tagRepository => tagRepository.GetTagByTagId(It.IsAny<int>()))
+                .ReturnsAsync(new Tag());
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.DeleteTag(It.IsAny<Tag>()))
+                .ReturnsAsync(true);
+
+            _mockTagRepository.Setup(tagRepository => tagRepository.SaveAsync())
+                .ReturnsAsync(false);
+
+            var resultDeleteTag = await _tagService.DeleteTagAsync(1);
+
+            Assert.NotNull(resultDeleteTag);
+            Assert.IsType<ResultMethodService>(resultDeleteTag);
+            Assert.False(resultDeleteTag.IsSuccess);
+            Assert.False(resultDeleteTag.IsNotFound);
+            Assert.Single(resultDeleteTag.Errors);
+            Assert.Contains(resultDeleteTag.Errors,
+                error =>
+                error.Title == string.Empty &&
+                error.Message == ErrorMessage.ExceptionSave);
+        }
+
         #endregion
 
     }
