@@ -335,11 +335,8 @@ namespace MyEshop.Test.ServicesTest
             Assert.NotNull(resultProductDelete);
             Assert.False(resultProductDelete.IsSuccess);
             Assert.True(resultProductDelete.IsNotFound);
-            Assert.Single(resultProductDelete.Errors);
+            Assert.Empty(resultProductDelete.Errors);
 
-            Assert.Contains(resultProductDelete.Errors,
-                error => error.Title == string.Empty &&
-                error.Message == ErrorMessage.NotFound(DisplayNames.Product));
         }
 
         [Fact]
