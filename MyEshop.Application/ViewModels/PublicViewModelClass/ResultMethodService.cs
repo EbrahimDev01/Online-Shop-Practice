@@ -10,7 +10,7 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
             _isNotFound = false;
             Errors = new List<ErrorResultMethodService>();
         }
-        
+
         public ResultMethodService(bool isSuccess, bool isNotFound)
         {
             _isSuccess = isSuccess;
@@ -19,7 +19,7 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
 
 
         private bool _isSuccess;
-        
+
         private bool _isNotFound;
 
 
@@ -30,7 +30,7 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
                 return _isSuccess;
             }
         }
-        
+
         public bool IsNotFound
         {
             get
@@ -38,13 +38,13 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
                 return _isNotFound;
             }
         }
-        
+
         public IList<ErrorResultMethodService> Errors { set; get; }
 
 
         public void AddError(string title, string message)
             => AddError(new ErrorResultMethodService(title, message));
-        
+
         public void AddError(ErrorResultMethodService errorResultMethodService)
         {
             if (IsSuccess)
@@ -52,7 +52,7 @@ namespace MyEshop.Application.ViewModels.PublicViewModelClass
 
             _isNotFound = false;
 
-            AddError(errorResultMethodService.Title, errorResultMethodService.Message);
+            Errors?.Add(errorResultMethodService);
         }
 
         public void NotFound()
