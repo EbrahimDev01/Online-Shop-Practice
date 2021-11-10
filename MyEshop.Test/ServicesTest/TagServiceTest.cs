@@ -444,5 +444,22 @@ namespace MyEshop.Test.ServicesTest
 
             Assert.NotNull(resultGetTagShapeDelete);
         }
+
+        #region Test DeleteTagAsync
+
+        [Fact]
+        public async void Test_DeleteTagAsync_Input_Zero_Result_Not_Found_Async()
+        {
+            var resultDeleteTag = await _tagService.DeleteTagAsync(0);
+
+            Assert.NotNull(resultDeleteTag);
+            Assert.IsType<ResultMethodService>(resultDeleteTag);
+            Assert.False(resultDeleteTag.IsSuccess);
+            Assert.True(resultDeleteTag.IsNotFound);
+        }
+
+        #endregion
+
     }
+
 }
