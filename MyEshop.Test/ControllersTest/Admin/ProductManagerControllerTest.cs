@@ -191,25 +191,6 @@ namespace MyEshop.Test.ControllersTest.Admin
         }
 
         [Fact]
-        public async Task Test_DeleteConfirm_Result_not_saved()
-        {
-            var resultMethod = new ResultMethodService(false, false);
-
-            _mockProductService.Setup(productService => productService.DeleteProductByProductIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(resultMethod);
-
-            _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(new ProductDetailsViewModel());
-
-
-            var resultProductDeleteConfirm = await _productController.DeleteConfirm(It.IsAny<int>()) as ViewResult;
-
-            Assert.NotNull(resultProductDeleteConfirm);
-            Assert.NotNull(resultProductDeleteConfirm.Model);
-            Assert.IsType<ProductDetailsViewModel>(resultProductDeleteConfirm.Model);
-        }
-
-        [Fact]
         public async Task Test_Details_Result_Founded()
         {
             _mockProductService.Setup(productService => productService.GetProductDetailsByIdAsync(It.IsAny<int>()))
