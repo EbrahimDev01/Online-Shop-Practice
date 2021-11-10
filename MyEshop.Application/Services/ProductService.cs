@@ -127,7 +127,7 @@ namespace MyEshop.Application.Services
             if (product == null)
             {
                 resultMethod.NotFound();
-                return ReturnMethodWithErrorMessage(ErrorMessage.NotFound(DisplayNames.Product));
+                return resultMethod;
             }
 
             bool isDeleteComments = _commentRepository.DeleteCommentsByProductId(productId);
