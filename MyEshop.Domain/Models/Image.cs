@@ -32,8 +32,11 @@ namespace MyEshop.Domain.Models
         public string UrlImage { set; get; }
         public string NameImage { set; get; }
 
-        public int ProductId { set; get; }
+        public int? ProductId { set; get; }
         [ForeignKey(nameof(ProductId))]
         public virtual Product Product { set; get; }
+
+
+        public virtual ApplicationUser ApplicationUser { set; get; }
     }
 }
