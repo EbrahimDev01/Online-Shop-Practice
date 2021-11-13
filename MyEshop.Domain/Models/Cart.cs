@@ -18,6 +18,11 @@ namespace MyEshop.Domain.Models
 
         public virtual ICollection<CartItem> CartItems { set; get; } = new HashSet<CartItem>();
 
+        public string ApplicationUserId { set; get; }
+        public virtual ApplicationUser ApplicationUser { set; get; }
+
+        public virtual UserWalletDetails UserWalletDetails { set; get; }
+
         #endregion
     }
 }
