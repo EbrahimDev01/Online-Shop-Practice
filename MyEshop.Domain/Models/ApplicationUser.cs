@@ -14,7 +14,7 @@ namespace MyEshop.Domain.Models
 
         #region Relations
 
-        public int UserImageId { set; get; }
+        public int? UserImageId { set; get; }
         public virtual Image UserImage { set; get; }
 
         public virtual ICollection<Comment> UserComments { set; get; } = new List<Comment>();
@@ -25,6 +25,7 @@ namespace MyEshop.Domain.Models
 
         public int UserWalletId { set; get; }
         public virtual UserWallet UserWallet { set; get; }
+       
         #endregion
     }
 }
