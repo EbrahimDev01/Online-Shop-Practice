@@ -31,6 +31,9 @@ namespace MyEshop.Domain.Models
         [ForeignKey(nameof(ProductId))]
         public virtual Product Product { set; get; }
 
+        public string ApplicationUserId { set; get; }
+        public virtual ApplicationUser ApplicationUser { set; get; }
+
         #endregion
     }
 }
