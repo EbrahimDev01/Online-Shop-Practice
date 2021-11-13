@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MyEshop.Data.FluentConfigs;
 using MyEshop.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -32,5 +33,10 @@ namespace MyEshop.Data.Context
         public virtual DbSet<UserAddress> UserAddresses { set; get; }
         public virtual DbSet<UserWallet> UserWallets { set; get; }
         public virtual DbSet<UserWalletDetails> UserWalletDetails { set; get; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new FluentApplicationUserConfig());
+        }
     }
 }
