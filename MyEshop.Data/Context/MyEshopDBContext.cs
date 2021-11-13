@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MyEshop.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyEshop.Data.Context
 {
-    public class MyEshopDBContext : DbContext
+    public class MyEshopDBContext : IdentityDbContext<ApplicationUser>
     {
         public MyEshopDBContext()
         {
@@ -28,5 +29,8 @@ namespace MyEshop.Data.Context
         public virtual DbSet<Category> Categories { set; get; }
         public virtual DbSet<Comment> Comments { set; get; }
         public virtual DbSet<Image> Images { set; get; }
+        public virtual DbSet<UserAddress> UserAddresses { set; get; }
+        public virtual DbSet<UserWallet> UserWallets { set; get; }
+        public virtual DbSet<UserWalletDetails> UserWalletDetails { set; get; }
     }
 }
