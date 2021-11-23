@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyEshop.Data.FluentConfigs;
 using MyEshop.Domain.Models;
@@ -12,11 +13,6 @@ namespace MyEshop.Data.Context
 {
     public class MyEshopDBContext : IdentityDbContext<ApplicationUser>
     {
-        public MyEshopDBContext()
-        {
-
-        }
-
         public MyEshopDBContext(DbContextOptions<MyEshopDBContext> options)
             : base(options)
         {
@@ -37,6 +33,18 @@ namespace MyEshop.Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new FluentApplicationUserConfig());
+            builder.ApplyConfiguration(new FluentCartConfig());
+            builder.ApplyConfiguration(new FluentCartItemConfig());
+            builder.ApplyConfiguration(new FluentCategoryConfig());
+            builder.ApplyConfiguration(new FluentCommentConfig());
+            builder.ApplyConfiguration(new FluentImageConfig());
+            builder.ApplyConfiguration(new FluentProductConfig());
+            builder.ApplyConfiguration(new FluentTagConfig());
+            builder.ApplyConfiguration(new FluentUserAddressConfig());
+            builder.ApplyConfiguration(new FluentUserWalletDetailsConfig());
+            builder.ApplyConfiguration(new FluentUserWalletConfig());
+
+            base.OnModelCreating(builder);
         }
     }
 }
