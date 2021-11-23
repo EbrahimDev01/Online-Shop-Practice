@@ -9,7 +9,6 @@ namespace MyEshop.Domain.Models
 {
     public class Cart
     {
-        [Key]
         public int CartId { get; set; }
         public bool CartIsActive { set; get; }
         public DateTime? DateTimeCompleteCart { set; get; }
@@ -21,7 +20,7 @@ namespace MyEshop.Domain.Models
         public string ApplicationUserId { set; get; }
         public virtual ApplicationUser ApplicationUser { set; get; }
 
-        public virtual UserWalletDetails UserWalletDetails { set; get; }
+        public virtual ICollection<UserWalletDetails> UserWalletDetails { set; get; } = new HashSet<UserWalletDetails>();
 
         #endregion
     }
