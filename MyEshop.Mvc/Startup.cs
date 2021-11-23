@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyEshop.Data.Context;
+using MyEshop.Domain.Models;
 using MyEshop.IoC;
 using System;
 using System.Collections.Generic;
@@ -31,9 +34,15 @@ namespace MyEshop.Mvc
                 .AddRazorRuntimeCompilation();
 
             services.AddDbContext<MyEshopDBContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
-            });
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServer"))
+            );
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+             {
+                 options.User.RequireUniqueEmail = true;
+             })
+                .AddEntityFrameworkStores<MyEshopDBContext>()
+                .AddDefaultTokenProviders();
 
             services.Configure<MvcOptions>(options =>
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
@@ -59,6 +68,7 @@ namespace MyEshop.Mvc
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
