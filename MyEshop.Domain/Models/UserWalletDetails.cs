@@ -8,6 +8,7 @@ namespace MyEshop.Domain.Models
 {
     public class UserWalletDetails
     {
+        public int UserWalletDetailsId { set; get; }
         public TypeOfTransaction Transaction { set; get; }
         public decimal AmountMoney { set; get; }
         public DateTime TransactionDate { set; get; }
@@ -16,7 +17,7 @@ namespace MyEshop.Domain.Models
         public int UserWalletId { set; get; }
         public virtual UserWallet UserWallet { set; get; }
 
-        public int? CartId { set; get; }
+        public int CartId { set; get; }
         public virtual Cart Cart { set; get; }
     }
 

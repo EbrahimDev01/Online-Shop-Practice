@@ -11,21 +11,15 @@ namespace MyEshop.Domain.Models
 {
     public class Product
     {
-        [Key]
         public int ProductId { set; get; }
 
-        [Required(ErrorMessage = ErrorMessage.Required)]
-        [MaxLength(150, ErrorMessage = ErrorMessage.MaxLength)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = ErrorMessage.Required)]
-        [StringLength(250, MinimumLength = 10, ErrorMessage = ErrorMessage.StringLength)]
+        [MinLength(10)]
         public string Descritption { set; get; }
 
-        [Required(ErrorMessage = ErrorMessage.Required)]
-        [MinLength(10, ErrorMessage = ErrorMessage.StringLength)]
+        [MinLength(10)]
         public string Explanation { get; set; }
-
 
         public Decimal Price { set; get; }
 
@@ -37,11 +31,8 @@ namespace MyEshop.Domain.Models
 
         #region Relations
 
-        [Required(ErrorMessage = ErrorMessage.Required)]
         public int CategoryId { get; set; }
-        [ForeignKey(nameof(CategoryId))]
         public virtual Category Category { set; get; }
-
 
         public virtual ICollection<Tag> Tags { set; get; } = new HashSet<Tag>();
         public virtual ICollection<CartItem> CartItems { set; get; } = new HashSet<CartItem>();

@@ -10,7 +10,6 @@ namespace MyEshop.Domain.Models
 {
     public class Tag
     {
-
         public Tag()
         {
 
@@ -20,13 +19,8 @@ namespace MyEshop.Domain.Models
             Title = title;
         }
 
-        [Key]
         public int TagId { get; set; }
-
-        [Required(ErrorMessage = ErrorMessage.Required)]
-        [MaxLength(150, ErrorMessage = ErrorMessage.MaxLength)]
         public string Title { get; set; }
-
 
         #region Relations
 
