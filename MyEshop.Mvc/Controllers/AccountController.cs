@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyEshop.Application.Interfaces;
 
 namespace MyEshop.Mvc.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult Index()
+        private readonly IAccountService _accountService;
+
+        public AccountController(IAccountService accountService)
         {
-            return View();
+            _accountService = accountService;
         }
     }
 }
