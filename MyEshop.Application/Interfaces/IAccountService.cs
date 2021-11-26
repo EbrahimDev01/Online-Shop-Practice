@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyEshop.Application.Interfaces
 {
-    internal interface IAccountService
+    public interface IAccountService
     {
     }
 }
